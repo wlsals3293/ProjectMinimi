@@ -18,6 +18,11 @@ public enum PlayerAniState
 
 public class PlayerController : MonoBehaviour
 {
+
+    private PlayerBehaviour playerBehaviour = null;
+
+
+
     // input
     Vector3 input;
     Vector3 inputDir;
@@ -63,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        playerBehaviour = new PlayerBehaviour(transform);
         rb = GetComponent<Rigidbody>();
         cameraT = Camera.main.transform;
 
@@ -71,6 +77,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+        playerBehaviour.DrawLineRaycatAllways();
+#endif
+
         GetInput();
         ApplyGravity();
         DetectGround();
@@ -88,6 +98,12 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            playerBehaviour.UpdateActiveKeyAction(PlayerBehaviour.ActiveKeyType.Use);
+        }
+
+
         input = new Vector3(
             Input.GetAxisRaw("Horizontal"),
             0.0f,
