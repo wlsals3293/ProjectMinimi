@@ -16,18 +16,18 @@ public class CameraController : MonoBehaviour
     // 부드러운 이동
     public bool smoothMovement = true;
     public float movementSmoothTime = 0.05f;
-    Vector3 movementSmoothVelocity;
-    Vector3 currentMovement;
+    private Vector3 movementSmoothVelocity;
+    private Vector3 currentMovement;
 
     // 부드러운 회전
     public bool smoothRotation = true;
     public float rotationSmoothTime = 0.05f;
-    Vector3 rotationSmoothVelocity;
-    Vector3 currentRotation;
+    private Vector3 rotationSmoothVelocity;
+    private Vector3 currentRotation;
 
 
-    float yaw;
-    float pitch;
+    private float yaw;
+    private float pitch;
 
 
     // Start is called before the first frame update

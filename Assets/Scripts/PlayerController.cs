@@ -5,15 +5,15 @@ using UnityEngine;
 
 public enum PlayerAniState
 {
-    Idle = 0,
-    Run = 1,
-    Jump_Start = 2,
-    Air = 3,
-    Jump_End = 4,
-    Dead = 5,
-    Hold_Start = 6,
-    Holding = 7,
-    Hold_End = 8
+    Idle,
+    Run,
+    Jump_Start,
+    Air,
+    Jump_End,
+    Dead,
+    Hold_Start,
+    Holding,
+    Hold_End
 }
 
 public class PlayerController : MonoBehaviour
@@ -24,46 +24,38 @@ public class PlayerController : MonoBehaviour
 
 
     // input
-    Vector3 input;
-    Vector3 inputDir;
-    bool jumpInput;
+    private Vector3 input;
+    private Vector3 inputDir;
+    private bool jumpInput;
 
-    Vector3 moveDirection;
-
-
-    // Move, Turn
+    // Move
     public float runSpeed = 10;
-
-    public float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
-
     public float speedSmoothTime = 0.1f;
-    float speedSmoothVelocity;
-    float currentSpeed;
-
+    private float speedSmoothVelocity;
+    private float currentSpeed;
     //public float maxGroundAngle = 120;
     //public float maxStepHeight = 0.1f;
+    private bool isOnGround = true;
+    private float verticalVelocity = 0;
+    private Vector3 moveDirection;
+    private Vector3 moveVelocity = Vector3.zero;
 
-
-    bool isOnGround = true;
-
-    float verticalVelocity = 0;
-    Vector3 moveVelocity = Vector3.zero;
-
+    // Turn
+    public float turnSmoothTime = 0.1f;
+    private float turnSmoothVelocity;
 
     // jump
     public float jumpPower = 18;
-    bool canJump = true;
-
+    private bool canJump = true;
 
     // air
     public float gravity = -42f;
 
 
-    LayerMask stepableMask;
+    private LayerMask steppableMask;
 
-    Rigidbody rb;
-    Transform cameraT;
+    private Rigidbody rb;
+    private Transform cameraT;
 
 
     private void Start()
@@ -72,7 +64,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cameraT = Camera.main.transform;
 
-        stepableMask = LayerMask.GetMask("Ground", "Object");
+        steppableMask = LayerMask.GetMask("Ground", "Object");
     }
 
     private void Update()
@@ -126,12 +118,11 @@ public class PlayerController : MonoBehaviour
     private void DetectGround()
     {
         RaycastHit hit;
-        bool isStepped = Physics.SphereCast(rb.position + (Vector3.up * 0.6f), 0.5f, Vector3.down, out hit, 0.11f, stepableMask);
+        bool isStepped = Physics.SphereCast(rb.position + (Vector3.up * 0.6f), 0.5f, Vector3.down, out hit, 0.11f, steppableMask);
 
-        if (isStepped)
+        if (isStepped && verticalVelocity <= 0.0f)
         {
-            if (verticalVelocity <= 0)
-                verticalVelocity = 0;
+            verticalVelocity = 0.0f;
 
             if (!isOnGround)
             {
@@ -159,7 +150,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        verticalVelocity += jumpPower;
+        verticalVelocity = jumpPower;
         canJump = false;
     }
 
