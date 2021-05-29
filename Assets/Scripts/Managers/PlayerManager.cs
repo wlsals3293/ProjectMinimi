@@ -7,6 +7,10 @@ public class PlayerManager : SimpleManager<PlayerManager>
 
     public PlayerController PlayerCtrl { get => playerCtrl; }
 
+    private PlayerCharacter playerChar = null;
+
+    public PlayerCharacter PlayerChar { get => playerChar; }
+
     private Dictionary<PlayerState, SimpleBehaviour> playerBehaviours = new Dictionary<PlayerState, SimpleBehaviour>();
 
 

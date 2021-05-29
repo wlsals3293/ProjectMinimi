@@ -21,6 +21,9 @@ public class FSMController
 
     public void ChangeState(PlayerState nextState)
     {
+        if (CurState == nextState)
+            return;
+
         if(curBehaviour != null)
         {
             curBehaviour.Exit(nextState);
@@ -31,6 +34,7 @@ public class FSMController
 
         PlayerState prev = curState;
         curState = nextState;
+        Debug.LogError(prev + " => " + nextState);
 
         curBehaviour = PlayerManager.Instance.GetBehaviour(nextState);
 

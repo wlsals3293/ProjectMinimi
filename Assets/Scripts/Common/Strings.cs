@@ -11,7 +11,9 @@ public static class Tags
 
 public static class Layers
 {
-    public static readonly int minimi = LayerMask.NameToLayer("Minimi");
     public static readonly int enemy = LayerMask.NameToLayer("enemy");
     public static readonly int player = LayerMask.NameToLayer("Player");
+
+    public static readonly int minimi = LayerMask.NameToLayer("Minimi");
+    public static readonly int obj = LayerMask.NameToLayer("Object");
 }

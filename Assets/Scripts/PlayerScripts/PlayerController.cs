@@ -3,22 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerController : MonoBehaviour
+public partial class PlayerController : MonoBehaviour
 {
-    private PlayerBehaviour playerBehaviour = null;
-    public PlayerBehaviour PlayerBehaviour { get => playerBehaviour; }
-
-    private PlayerCharacter playerCharacter = null;
-    public PlayerCharacter PlayerCharacter { get => playerCharacter; }
-
-    // input
-    private Vector3 input;
-    private Vector3 inputDir;
-    private bool jumpInput;
-
+    [Header("Default Status")]
     // Move
-    public float runSpeed = 10;
-    public float speedSmoothTime = 0.1f;
+    [SerializeField] private float runSpeed = 10;
+    [SerializeField] private float speedSmoothTime = 0.1f;
     private float speedSmoothVelocity;
     private float currentSpeed;
     //public float maxGroundAngle = 120;
@@ -33,11 +23,11 @@ public class PlayerController : MonoBehaviour
     private float turnSmoothVelocity;
 
     // jump
-    public float jumpPower = 18;
+    [SerializeField] private float jumpPower = 18;
     private bool canJump = true;
 
     // air
-    public float gravity = -42f;
+    [SerializeField] private float gravity = -42f;
 
 
     private LayerMask steppableMask;
@@ -58,55 +48,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private PlayerCharacter playerCharacter = null;
+    public PlayerCharacter PlayerCharacter { get => playerCharacter; }
+
+    // input
+    private Vector3 input;
+    private Vector3 inputDir;
+    private bool jumpInput;
+
+    private FSMController fsm = new FSMController();
 
     private void Awake()
     {
         playerCharacter = GetComponent<PlayerCharacter>();
-        playerBehaviour = new PlayerBehaviour(transform);
         rb = GetComponent<Rigidbody>();
         cameraT = Camera.main.transform;
 
         steppableMask = LayerMask.GetMask("Ground", "Object");
+
+        Idle_SetState();
+        Holding_SetState();
+
+        fsm.ChangeState(PlayerState.Idle);
     }
 
     private void Update()
     {
-#if UNITY_EDITOR
-        playerBehaviour.DrawLineRaycatAllways();
-#endif
-
-        GetInput();
-        ApplyGravity();
-        DetectGround();
-
-        if (jumpInput && canJump)
-        {
-            Jump();
-        }
-
-        Move();
-        Turn();
-
-        rb.velocity = moveVelocity + (Vector3.up * verticalVelocity);
-    }
-
-    private void GetInput()
-    {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            playerBehaviour.UpdateActiveKeyAction(ActiveKeyType.Use);
-        }
-
-
-        input = new Vector3(
-            Input.GetAxisRaw("Horizontal"),
-            0.0f,
-            Input.GetAxisRaw("Vertical")
-            );
-        inputDir = input.normalized;
-        jumpInput = Input.GetButton("Jump");
-
-        moveDirection = (input.z * Vector3.Scale(cameraT.forward, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+        fsm.Update();
     }
 
     private void Move()
@@ -116,6 +84,10 @@ public class PlayerController : MonoBehaviour
         currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, speedSmoothTime);
         moveVelocity = moveDirection * currentSpeed;
     }
+
+    
+
+    
 
     private void DetectGround()
     {
@@ -161,8 +133,15 @@ public class PlayerController : MonoBehaviour
         verticalVelocity += gravity * Time.deltaTime;
     }
 
+    private string GetHitTag()
+    {
+        return null;
+    }
+
     public void SetLocalPosition(Vector3 pos)
     {
         transform.position = pos;
     }
+
+
 }
