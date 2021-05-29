@@ -20,4 +20,6 @@ public class PlayerManager : SimpleManager<PlayerManager>
         playerCtrl.SetLocalPosition(new Vector3(40f, 0, 50f));
     }
 
+    
+
 }
