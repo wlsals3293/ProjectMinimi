@@ -29,6 +29,19 @@ public class CameraController : MonoBehaviour
     private float yaw;
     private float pitch;
 
+    private Transform trans = null;
+    public new Transform transform
+    {
+        get
+        {
+            if (trans == null)
+            {
+                trans = GetComponent<Transform>();
+            }
+            return trans;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +53,7 @@ public class CameraController : MonoBehaviour
         }
 
         if (target == null)
-            target = GameObject.FindWithTag("Player").transform;
+            target = PlayerManager.Instance.PlayerCtrl.transform;
     }
 
     // Update is called once per frame

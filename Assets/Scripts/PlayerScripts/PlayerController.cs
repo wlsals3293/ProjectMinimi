@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public PlayerBehaviour PlayerBehaviour { get => playerBehaviour; }
 
     private PlayerCharacter playerCharacter = null;
-
     public PlayerCharacter PlayerCharacter { get => playerCharacter; }
 
     // input
@@ -59,7 +58,19 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Transform cameraT;
 
-   
+    private Transform trans = null;
+    public new Transform transform 
+    { 
+        get
+        {
+            if(trans == null)
+            {
+                trans = GetComponent<Transform>();
+            }
+            return trans;
+        }
+    }
+
 
     private void Awake()
     {
@@ -161,5 +172,10 @@ public class PlayerController : MonoBehaviour
     private void ApplyGravity()
     {
         verticalVelocity += gravity * Time.deltaTime;
+    }
+
+    public void SetLocalPosition(Vector3 pos)
+    {
+        transform.position = pos;
     }
 }

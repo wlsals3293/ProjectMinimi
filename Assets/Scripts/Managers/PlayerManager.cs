@@ -9,12 +9,15 @@ public class PlayerManager : SimpleManager<PlayerManager>
     protected override void Awake()
     {
         base.Awake();
+
+        CreatePlayer();
     }
 
 
     public void CreatePlayer()
     {
-        //playerCtrl = ctrl;
+        playerCtrl = ResourceManager.Instance.CreatePrefab<PlayerController>(PrefabNames.Player);
+        playerCtrl.SetLocalPosition(new Vector3(40f, 0, 50f));
     }
 
 }
