@@ -12,10 +12,7 @@ public class PlayerBehaviour
         trans = playerTrans;
     }
 
-    public enum ActiveKeyType
-    {
-        Use // key E
-    }
+    
 
 
     public void UpdateActiveKeyAction(ActiveKeyType keyType)
