@@ -3,19 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum PlayerAniState
-{
-    Idle,
-    Run,
-    Jump_Start,
-    Air,
-    Jump_End,
-    Dead,
-    Hold_Start,
-    Holding,
-    Hold_End
-}
-
 public class PlayerController : MonoBehaviour
 {
     private PlayerBehaviour playerBehaviour = null;

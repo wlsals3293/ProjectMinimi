@@ -12,8 +12,6 @@ public class PlayerBehaviour
         trans = playerTrans;
     }
 
-    
-
 
     public void UpdateActiveKeyAction(ActiveKeyType keyType)
     {

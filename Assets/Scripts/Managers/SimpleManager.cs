@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class SimpleManager<T> : MonoBehaviour where T : class
+public abstract class SimpleManager<T> : MonoBehaviour where T : class
 {
     private static T _Instance = null;
 

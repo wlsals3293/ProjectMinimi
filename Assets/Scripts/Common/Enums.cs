@@ -10,11 +10,14 @@ public enum MinimiType
 public enum PlayerState
 {
     Idle,
-    Jump,
-    CreateMini, // 즉시 혹은 가이드라인?
-    Glider,
-    LiftingObject,
-    Interacting,
+    Run,
+    Jump_Start,
+    Air,
+    Jump_End,
+    Dead,
+    Hold_Start,
+    Holding,
+    Hold_End
 }
 
 public enum ActiveKeyType
