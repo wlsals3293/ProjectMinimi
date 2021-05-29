@@ -9,6 +9,7 @@ public enum MinimiType
 
 public enum PlayerState
 {
+    None,
     Idle,
     Run,
     Jump_Start,
