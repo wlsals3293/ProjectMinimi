@@ -18,10 +18,12 @@ public enum PlayerAniState
 
 public class PlayerController : MonoBehaviour
 {
-
     private PlayerBehaviour playerBehaviour = null;
+    public PlayerBehaviour PlayerBehaviour { get => playerBehaviour; }
 
+    private PlayerCharacter playerCharacter = null;
 
+    public PlayerCharacter PlayerCharacter { get => playerCharacter; }
 
     // input
     private Vector3 input;
@@ -57,9 +59,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Transform cameraT;
 
+   
 
-    private void Start()
+    private void Awake()
     {
+        playerCharacter = GetComponent<PlayerCharacter>();
         playerBehaviour = new PlayerBehaviour(transform);
         rb = GetComponent<Rigidbody>();
         cameraT = Camera.main.transform;
@@ -92,7 +96,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            playerBehaviour.UpdateActiveKeyAction(PlayerBehaviour.ActiveKeyType.Use);
+            playerBehaviour.UpdateActiveKeyAction(ActiveKeyType.Use);
         }
 
 
