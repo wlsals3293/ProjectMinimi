@@ -58,6 +58,11 @@ public partial class PlayerController : MonoBehaviour
             Debug.LogError("Input E Key");
             UseKeyAction(hit, useKeyType);
         }
+        /*if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            MinimiManager._instance.TakeOutMinimi(MinimiType.Block);
+            Debug.Log(MinimiManager._instance.onHandMinimiCount);
+        }*/
 
         input = new Vector3(
             Input.GetAxisRaw("Horizontal"),

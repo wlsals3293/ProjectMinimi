@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class Minimi : MonoBehaviour
 {
-    /// 상수
-
-    protected const float MERGE_DISTANCE = 1.0f;
-    protected const int MAX_STACK_COUNT = 3;
-
-
     /// 필드
     
-    public MinimiType minimiType;
-    public bool isInstalled;
+    protected MinimiType minimiType;
+    protected bool isInstalled;
 
 
     /// <summary>
@@ -30,15 +24,19 @@ public class Minimi : MonoBehaviour
 
     /// 프로퍼티
 
+
+    public MinimiType MinimiType { get => minimiType; }
+    public bool IsInstalled { get => IsInstalled; }
+
     /// <summary>
     /// 합쳐진 자식 미니미의 개수
     /// </summary>
-    public int childCount
+    public int ChildCount
     {
         get { return childMinimis.Count; }
     }
 
-    public bool isParent
+    public bool IsParent
     {
         get { return (parentMinimi == null && childMinimis.Count > 0); }
     }
@@ -132,12 +130,12 @@ public class Minimi : MonoBehaviour
                     continue;
                 }
 
-                if (curMinimi.childCount + childCount >= MAX_STACK_COUNT - 1)
+                if (curMinimi.ChildCount + ChildCount >= MinimiManager.MAX_STACK_COUNT - 1)
                 {
                     continue;
                 }
 
-                if (curMinimi.minimiType == checkType)
+                if (curMinimi.MinimiType == checkType)
                 {
                     float distanceSqr = (curMinimi.transform.position - origin).sqrMagnitude;
                     if(distanceSqr <= nearestDistanceSqr)

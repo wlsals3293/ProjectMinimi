@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
+        for(int i=0; i<3; i++)
+        {
+            MinimiManager._instance.CreateMinimi(MinimiType.Block);
+        }
+        
     }
 }

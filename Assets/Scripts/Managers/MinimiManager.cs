@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public class MinimiManager : MonoBehaviour
 {
+    
+    public const int MAX_STACK_COUNT = 3;
+    public const float MERGE_DISTANCE = 1.0f;
+
+
     public static MinimiManager _instance = null;
 
     private List<BlockMinimi> blockMinimis = new List<BlockMinimi>();
@@ -19,7 +25,8 @@ public class MinimiManager : MonoBehaviour
     /// <summary>
     /// 현재 설치하려고 준비중인 미니미의 개수
     /// </summary>
-    private int onHandMinimiCount = 0;
+    public int onHandMinimiCount = 0;
+
 
 
     private void Awake()
@@ -30,24 +37,28 @@ public class MinimiManager : MonoBehaviour
         }
     }
 
-
-    public void RegisterMinimi(Minimi minimi)
+    public void CreateMinimi(MinimiType minimiType)
     {
-        if (minimi == null)
-            return;
+        Minimi newMinimi = null;
 
-        if(minimi is BlockMinimi)
+        switch(minimiType)
         {
-            blockMinimis.Add(minimi as BlockMinimi);
+            case MinimiType.Block:
+                newMinimi = ResourceManager.Instance.CreatePrefab<BlockMinimi>(PrefabNames.Minimi_Dump);
+                blockMinimis.Add(newMinimi as BlockMinimi);
+                break;
+            case MinimiType.Fire:
+                //newMinimi = ResourceManager.Instance.CreatePrefab<FireMinimi>(PrefabNames.Minimi_Dump);
+                //fireMinimis.Add(newMinimi as FireMinimi);
+                break;
+            case MinimiType.Wind:
+                //newMinimi = ResourceManager.Instance.CreatePrefab<WindMinimi>(PrefabNames.Minimi_Dump);
+                //windMinimis.Add(newMinimi as WindMinimi);
+                break;
+            default:
+                break;
         }
-        else if(minimi is FireMinimi)
-        {
-            fireMinimis.Add(minimi as FireMinimi);
-        }
-        else if(minimi is WindMinimi)
-        {
-            windMinimis.Add(minimi as WindMinimi);
-        }
+
     }
 
     /// <summary>
@@ -56,17 +67,62 @@ public class MinimiManager : MonoBehaviour
     /// <param name="minimiType">꺼낸 미니미의 종류</param>
     public void TakeOutMinimi(MinimiType minimiType)
     {
-        if(onHandMinimiCount > 0)
+        if (minimiType != onHandMinimiType)
         {
+            onHandMinimiCount = 0;
+            onHandMinimiType = minimiType;
+        }
 
+        if (onHandMinimiCount < MAX_STACK_COUNT)
+        {
+            onHandMinimiCount++;
         }
     }
 
     /// <summary>
-    /// 현재 손에 들고 있는 미니미를 다시 가방에 집어넣음
+    /// 현재 손에 들고 있는 미니미를 모두 다시 가방에 집어넣음
     /// </summary>
-    public void TakeInMinimis()
+    public void PutInMinimis()
     {
+        onHandMinimiCount = 0;
+        onHandMinimiType = MinimiType.None;
+    }
+
+
+    public void InstallMinimi(Vector3 position)
+    {
+        if (onHandMinimiType == MinimiType.None || onHandMinimiCount <= 0)
+            return;
+
+        Minimi parent = null;
+        int targetCount = onHandMinimiCount;
+
+        onHandMinimiCount = 0;
+        onHandMinimiType = MinimiType.None;
+
+
+        for (int i=0; i<blockMinimis.Count; i++)
+        {
+            if(!blockMinimis[i].IsInstalled)
+            {
+                if(parent == null)
+                {
+                    parent = blockMinimis[i];
+                }
+                else
+                {
+                    parent.AddChild(blockMinimis[i]);
+                }
+
+                if(--targetCount <= 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        parent.Install(position, Quaternion.identity);
 
     }
+
 }

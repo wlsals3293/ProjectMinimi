@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5957087993434233748}
   m_Layer: 9
   m_Name: Object
-  m_TagString: Untagged
+  m_TagString: Minimi
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 7244846415227057673}
   m_Layer: 9
   m_Name: Minimi_dump
-  m_TagString: Untagged
+  m_TagString: Minimi
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
