@@ -25,7 +25,13 @@ public class PlayerManager : SimpleManager<PlayerManager>
     public void CreatePlayer()
     {
         playerCtrl = ResourceManager.Instance.CreatePrefab<PlayerController>(PrefabNames.Player);
-        playerCtrl.SetLocalPosition(new Vector3(40f, 0, 50f));
+        InitStagePlayer();
+    }
+
+    public void InitStagePlayer()
+    {
+        playerCtrl.SetLocalPosition(StageManager.Instance.StartPosition);
+        playerCtrl.Init();
     }
 
     public void AddBehaviour(PlayerState state, SimpleBehaviour behaviour)

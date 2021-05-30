@@ -58,6 +58,26 @@ public partial class PlayerController : MonoBehaviour
 
     private FSMController fsm = new FSMController();
 
+    private bool puase = false;
+    public bool Puase 
+    { 
+        get
+        {
+            return puase;
+        }
+        set
+        {
+            if(value)
+            {
+                input = Vector3.zero;
+            }
+
+            rb.isKinematic = value;
+            puase = value;
+        }
+    }
+    
+
     private void Awake()
     {
         playerCharacter = GetComponent<PlayerCharacter>();
@@ -68,13 +88,27 @@ public partial class PlayerController : MonoBehaviour
 
         Idle_SetState();
         Holding_SetState();
+    }
 
-        fsm.ChangeState(PlayerState.Idle);
+    public void Init()
+    {
+        ChangeState(PlayerState.Idle);
+        Puase = false;
+    }
+
+
+    public void ChangeState(PlayerState state)
+    {
+        fsm.ChangeState(state);
     }
 
     private void Update()
     {
-        fsm.Update();
+        // TODO 중력 생각 2가지 pause
+        if (Puase == false)
+        {
+            fsm.Update();
+        }
     }
 
     private void Move()

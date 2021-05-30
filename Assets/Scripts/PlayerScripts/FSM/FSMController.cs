@@ -7,6 +7,8 @@ public class FSMController
     private PlayerState curState = PlayerState.None;
 
     public PlayerState CurState { get => curState; }
+    private PlayerState prevState = PlayerState.None;
+    public PlayerState PrevState { get => curState; }
 
     private SimpleBehaviour curBehaviour = null;
 
@@ -32,15 +34,15 @@ public class FSMController
         // Update Stop
         curBehaviour = null;
 
-        PlayerState prev = curState;
+        prevState = curState;
         curState = nextState;
-        Debug.LogError(prev + " => " + nextState);
+        Debug.LogError(prevState + " => " + nextState);
 
         curBehaviour = PlayerManager.Instance.GetBehaviour(nextState);
 
         if (curBehaviour != null)
         {
-            curBehaviour.Enter(prev);
+            curBehaviour.Enter(prevState);
         }
     }
 

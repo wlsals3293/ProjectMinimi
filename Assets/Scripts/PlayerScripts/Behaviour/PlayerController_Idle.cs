@@ -21,6 +21,7 @@ public partial class PlayerController : MonoBehaviour
 
     private void Idle_Enter(PlayerState prev)
     {
+
     }
 
     private void Idle_Update()
@@ -49,7 +50,7 @@ public partial class PlayerController : MonoBehaviour
 
     private void Idle_GetInput()
     {
-        // 준비단계가 필요없으면 input e안으로
+        // TODO 준비단계가 필요없으면 input e안으로
         RaycastHit hit = Raycast(RAY_DISTANCE);
         useKeyType = UpdateUseKeyActionType(hit);
 
