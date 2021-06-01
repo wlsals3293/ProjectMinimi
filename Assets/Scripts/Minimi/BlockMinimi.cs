@@ -17,24 +17,16 @@ public class BlockMinimi : Minimi
 
     public override void Install(Vector3 targetPosition, Quaternion targetRotation)
     {
-        BlockMinimi foundMinimi = GetMergeableMinimi(targetPosition, MinimiManager.MERGE_DISTANCE, MinimiType.Block) as BlockMinimi;
-        if(foundMinimi != null)
-        {
-            Merge(foundMinimi);
-        }
-        else
-        {
-            transform.SetPositionAndRotation(targetPosition, targetRotation);
-        }
+        base.Install(targetPosition, targetRotation);
 
         col.enabled = true;
-        isInstalled = true;
     }
 
     public override void Uninstall()
     {
+        base.Uninstall();
+
         col.enabled = false;
-        isInstalled = false;
     }
 
     public override void UpdateStatus()
@@ -44,7 +36,7 @@ public class BlockMinimi : Minimi
         {
             Vector3 pos = transform.position + transform.up * (STACK_HEIGHT * i + 1);
             Quaternion rot = transform.rotation;
-            childMinimis[i].transform.SetPositionAndRotation(pos, rot);
+            childMinimis[i].Install(pos, rot);
         }
     }
 

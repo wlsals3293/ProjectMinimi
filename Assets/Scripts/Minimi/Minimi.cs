@@ -7,7 +7,7 @@ public class Minimi : MonoBehaviour
     /// 필드
     
     protected MinimiType minimiType;
-    protected bool isInstalled;
+    protected MinimiState minimiState = MinimiState.None;
 
 
     /// <summary>
@@ -24,9 +24,8 @@ public class Minimi : MonoBehaviour
 
     /// 프로퍼티
 
-
-    public MinimiType MinimiType { get => minimiType; }
-    public bool IsInstalled { get => IsInstalled; }
+    public MinimiType Type { get => minimiType; }
+    public MinimiState State { get => minimiState; }
 
     /// <summary>
     /// 합쳐진 자식 미니미의 개수
@@ -40,36 +39,8 @@ public class Minimi : MonoBehaviour
     {
         get { return (parentMinimi == null && childMinimis.Count > 0); }
     }
+    
 
-
-
-    /// <summary>
-    /// 미니미 설치
-    /// </summary>
-    /// <param name="targetPosition">설치될 위치</param>
-    /// <param name="targetRotation">설치될 방향</param>
-    public virtual void Install(Vector3 targetPosition, Quaternion targetRotation)
-    {
-        transform.position = targetPosition;
-        transform.rotation = targetRotation;
-        isInstalled = true;
-    }
-
-    /// <summary>
-    /// 미니미 설치 해제
-    /// </summary>
-    public virtual void Uninstall()
-    {
-        isInstalled = false;
-    }
-
-    /// <summary>
-    /// 현재 합쳐진 미니미의 개수를 기반으로 현재 상태 업데이트. (부모 미니미에서만 실행)
-    /// </summary>
-    public virtual void UpdateStatus()
-    {
-        Debug.LogWarning(gameObject.name + ": 현재 상태 업데이트. 오버라이딩 필요");
-    }
 
     public void SetParent(Minimi minimi)
     {
@@ -105,48 +76,60 @@ public class Minimi : MonoBehaviour
         parent.UpdateStatus();
     }
 
+
     /// <summary>
-    /// 지정한 위치에서 합치기가 가능한 가장 가까운 미니미를 반환합니다. 없을 경우 null
+    /// 미니미 설치
     /// </summary>
-    /// <param name="origin">찾는 위치</param>
-    /// <param name="radius">찾을 범위</param>
-    /// <param name="checkType">찾는 미니미의 종류</param>
-    /// <returns></returns>
-    protected Minimi GetMergeableMinimi(Vector3 origin, float radius, MinimiType checkType)
+    /// <param name="targetPosition">설치될 위치</param>
+    /// <param name="targetRotation">설치될 방향</param>
+    public virtual void Install(Vector3 targetPosition, Quaternion targetRotation)
     {
-        Collider[] minimis = Physics.OverlapSphere(origin, radius, Layers.minimi);
-        float nearestDistanceSqr = 99999.0f;
-        Minimi nearestMinimi = null;
+        // 임시로 애니메이션이나 이동과정 생략
+        transform.SetPositionAndRotation(targetPosition, targetRotation);
+        minimiState = MinimiState.Installed;
+    }
 
-        for (int i = 0; i < minimis.Length; i++)
+    /// <summary>
+    /// 미니미 설치 해제
+    /// </summary>
+    public virtual void Uninstall()
+    {
+        // 임시로 애니메이션이나 이동과정 생략
+
+        foreach(var child in childMinimis)
         {
-            if (minimis[i].gameObject.CompareTag(Tags.minimi))
-            {
-                Minimi curMinimi = minimis[i].gameObject.GetComponent<Minimi>();
-
-                if (curMinimi == null)
-                {
-                    Debug.LogWarning("Tag, Component 확인 필요: " + minimis[i].gameObject.name);
-                    continue;
-                }
-
-                if (curMinimi.ChildCount + ChildCount >= MinimiManager.MAX_STACK_COUNT - 1)
-                {
-                    continue;
-                }
-
-                if (curMinimi.MinimiType == checkType)
-                {
-                    float distanceSqr = (curMinimi.transform.position - origin).sqrMagnitude;
-                    if(distanceSqr <= nearestDistanceSqr)
-                    {
-                        nearestDistanceSqr = distanceSqr;
-                        nearestMinimi = curMinimi;
-                    }
-                }
-            }
+            child.Uninstall();
+            child.SetParent(null);
         }
+        childMinimis.Clear();
 
-        return nearestMinimi;
+
+        minimiState = MinimiState.InBag;
+    }
+
+    /// <summary>
+    /// 현재 합쳐진 미니미의 개수를 기반으로 현재 상태 업데이트. (부모 미니미에서만 실행)
+    /// </summary>
+    public virtual void UpdateStatus()
+    {
+        Debug.LogWarning(gameObject.name + ": 현재 상태 업데이트. 오버라이딩 필요");
+    }
+
+    /// <summary>
+    /// 가방에 있을 때 손으로 나옴
+    /// </summary>
+    public virtual void GoOut()
+    {
+        // 임시로 애니메이션이나 이동과정 생략
+        minimiState = MinimiState.OnHand;
+    }
+
+    /// <summary>
+    /// 손에 있을 때 가방으로 들어감
+    /// </summary>
+    public virtual void GoIn()
+    {
+        // 임시로 애니메이션이나 이동과정 생략
+        minimiState = MinimiState.InBag;
     }
 }

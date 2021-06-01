@@ -1,9 +1,28 @@
+/// <summary>
+/// 미니미의 종류
+/// </summary>
 public enum MinimiType
 {
     None,
     Block,
     Fire,
-    Wind
+    Wind,
+    Max
+}
+
+/// <summary>
+/// 미니미의 상태
+/// </summary>
+public enum MinimiState
+{
+    None,
+    Wait,
+    Move,
+    ToBag,
+    InBag,
+    ToHand,
+    OnHand,
+    Installed
 }
 
 
