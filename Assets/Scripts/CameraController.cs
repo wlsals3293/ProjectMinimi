@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     public bool lockCursor;
     public float mouseHorizontalSensitivity = 4;
     public float mouseVerticalSensitivity = 4;
-    public Vector3 offsetFromTarget = new Vector3(0, 1, 7.0f);
+    public Vector3 offsetFromTarget = new Vector3(0, 3.0f, 7.0f);
     public Vector2 pitchMinMax = new Vector2(-45, 85);
 
     public Transform target;

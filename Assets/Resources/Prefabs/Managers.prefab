@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 160a480adcd25734c8dbaaf786ffdc69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHandMinimiCount: 0
+  mergeDistance: 2.5
 --- !u!114 &8801364098190912461
 MonoBehaviour:
   m_ObjectHideFlags: 0

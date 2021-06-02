@@ -7,8 +7,7 @@ public partial class PlayerController : MonoBehaviour
 {
     private const float RAY_DISTANCE = 5f;
 
-    private const float INSTALL_RAY_HEIGHT = 1.1f;
-    private const float INSTALL_RAY_DISTANCE = 1.6f;
+    private static readonly Vector3 INSTALL_RAY_OFFSET = new Vector3(0.0f, 1.1f, 2.0f);
 
    
     private UseKeyActionType useKeyType = UseKeyActionType.None;
@@ -64,22 +63,30 @@ public partial class PlayerController : MonoBehaviour
             UseKeyAction(hit, useKeyType);
         }
 
-        // 미니미 관련 조작
-        // 블럭 미니미
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            MinimiManager._instance.TakeOutMinimi(MinimiType.Block);
-        }
+        
         // 좌클릭
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            MinimiInstall();
+            if (!MinimiManager._instance.IsEmpty)
+                MinimiInstall();
         }
         // 우클릭
         if (Input.GetMouseButtonDown(1))
         {
             MinimiManager._instance.PutInAllMinimis();
         }
+
+        // 블럭 미니미
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            MinimiManager._instance.TakeOutMinimi(MinimiType.Block);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            MinimiUninstall();
+        }
+
 
         input = new Vector3(
             Input.GetAxisRaw("Horizontal"),
@@ -147,7 +154,7 @@ public partial class PlayerController : MonoBehaviour
     private void UseKeyAction_Block(RaycastHit hit)
     {
         // TODO : 임시함수 매니져를 통해 함수호출로 변경 or state로 빼기
-        hit.collider.SendMessage(MinimiController.SEND_SETPIVOT, trans);
+        hit.collider.SendMessageUpwards(MinimiController.SEND_SETPIVOT, trans);
     }
     
 
@@ -180,19 +187,45 @@ public partial class PlayerController : MonoBehaviour
 
     private void MinimiInstall()
     {
-        if (MinimiManager._instance.IsEmpty)
-            return;
+        Vector3 rayOrigin = transform.position + transform.TransformDirection(INSTALL_RAY_OFFSET);
 
-        Vector3 rayOrigin = transform.position +
-            Vector3.up * INSTALL_RAY_HEIGHT +
-            transform.forward * INSTALL_RAY_DISTANCE;
-
-        Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, 4.0f,
+        bool result = Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, 4.0f,
             LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
 
+        if(!result)
+        {
+            return;
+        }
         
         MinimiManager._instance.InstallMinimi(hitInfo.point, transform.rotation);
 
         Debug.Log(hitInfo.point);
+    }
+
+    private void MinimiUninstall()
+    {
+        Ray camRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
+
+        if(Physics.Raycast(camRay, out RaycastHit hit, 999.0f, LayerMask.GetMask("Minimi"), QueryTriggerInteraction.Ignore))
+        {
+            Minimi curMinimi = hit.collider.GetComponentInParent<Minimi>();
+
+            if (curMinimi == null)
+                return;
+
+            if(curMinimi.Parent != null)
+            {
+                curMinimi.Parent.Uninstall();
+            }
+            else
+            {
+                curMinimi.Uninstall();
+            }
+            
+        }
+        else
+        {
+            Debug.Log("회수할 미니미 없음");
+        }
     }
 }

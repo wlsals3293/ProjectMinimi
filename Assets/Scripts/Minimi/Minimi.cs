@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Minimi : MonoBehaviour
 {
+    public const string SEND_SETPIVOT = "SetPivotPosition";
+
+
     /// 필드
     
+    [SerializeField] private Transform pivot = null;
+
     protected MinimiType minimiType;
     protected MinimiState minimiState = MinimiState.None;
 
@@ -26,6 +31,7 @@ public class Minimi : MonoBehaviour
 
     public MinimiType Type { get => minimiType; }
     public MinimiState State { get => minimiState; }
+    public Minimi Parent { get => parentMinimi; }
 
     /// <summary>
     /// 합쳐진 자식 미니미의 개수
@@ -110,8 +116,9 @@ public class Minimi : MonoBehaviour
         }
         childMinimis.Clear();
 
+        Debug.Log(gameObject.name + " 회수");
 
-        minimiState = MinimiState.InBag;
+        GoIn();
     }
 
     /// <summary>
@@ -140,5 +147,20 @@ public class Minimi : MonoBehaviour
         // 임시로 애니메이션이나 이동과정 생략
         gameObject.SetActive(false);
         minimiState = MinimiState.InBag;
+    }
+
+    // 임시
+    public void SetPivotPosition(Transform trans)
+    {
+        if(childMinimis.Count > 0)
+        {
+            childMinimis[childMinimis.Count - 1].SetPivotPosition(trans);
+            return;
+        }
+
+        if (pivot != null && trans != null)
+        {
+            trans.position = pivot.position;
+        }
     }
 }

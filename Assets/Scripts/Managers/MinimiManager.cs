@@ -6,18 +6,21 @@ using UnityEngine;
 
 public class MinimiManager : MonoBehaviour
 {
-    
-    public const int MAX_STACK_COUNT = 3;
-    public const float MERGE_DISTANCE = 4.0f;
-
-
     public static MinimiManager _instance = null;
+
+    /// <summary>
+    /// 한 번에 동시설치되는 최대 개수
+    /// </summary>
+    public const int MAX_STACK_COUNT = 3;
 
 
 
     public bool IsEmpty { get => onHandMinimiList.Count == 0; }
 
-
+    /// <summary>
+    /// 미니미가 합쳐지는 거리. 이 거리 안에 미니미를 설치하면 합쳐짐
+    /// </summary>
+    [SerializeField] private float mergeDistance = 2.0f;
 
     /// <summary>
     /// 맵상에 있는 모든 미니미의 리스트
@@ -73,10 +76,10 @@ public class MinimiManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 미니미를 스테이지 상에 생성
     /// </summary>
-    /// <param name="minimiType"></param>
-    /// <returns></returns>
+    /// <param name="minimiType">생성할 미니미 종류</param>
+    /// <returns>생성된 미니미</returns>
     public Minimi CreateMinimi(MinimiType minimiType)
     {
         Minimi newMinimi = null;
@@ -172,8 +175,9 @@ public class MinimiManager : MonoBehaviour
             return false;
 
 
-        Minimi parent = GetMergeableMinimi(position, MERGE_DISTANCE);
+        Minimi parent = GetMergeableMinimi(position, mergeDistance);
         
+        // 합쳐질 미니미가 없을 때
         if(parent == null)
         {
             if(CheckInstallArea(position, rotation))
@@ -190,6 +194,7 @@ public class MinimiManager : MonoBehaviour
 
             parent.Install(position, rotation);
         }
+        // 합쳐질 미니미가 있을 때
         else
         {
             for (int i = 0; i < onHandMinimiList.Count; i++)

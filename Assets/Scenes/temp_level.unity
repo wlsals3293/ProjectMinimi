@@ -1970,7 +1970,7 @@ MonoBehaviour:
   lockCursor: 1
   mouseHorizontalSensitivity: 4
   mouseVerticalSensitivity: 4
-  offsetFromTarget: {x: 0, y: 1, z: 7}
+  offsetFromTarget: {x: 0, y: 3, z: 7}
   pitchMinMax: {x: -45, y: 85}
   target: {fileID: 0}
   smoothMovement: 1
