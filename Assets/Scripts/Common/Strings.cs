@@ -4,14 +4,14 @@ using UnityEngine;
 
 public static class Tags
 {
-    public const string minimi = "minimi";
-    public const string enemy = "enemy";
+    public const string minimi = "Minimi";
+    public const string enemy = "Enemy";
     public const string player = "Player";
 }
 
 public static class Layers
 {
-    public static readonly int enemy = LayerMask.NameToLayer("enemy");
+    public static readonly int enemy = LayerMask.NameToLayer("Enemy");
     public static readonly int player = LayerMask.NameToLayer("Player");
 
     public static readonly int minimi = LayerMask.NameToLayer("Minimi");

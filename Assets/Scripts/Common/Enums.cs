@@ -43,6 +43,8 @@ public enum PlayerState
     Hold_Start,
     Holding,
     Hold_End,
+
+    Climb,
 }
 
 /// <summary>

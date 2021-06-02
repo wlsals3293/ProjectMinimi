@@ -41,6 +41,13 @@ public class Minimi : MonoBehaviour
     }
     
 
+    public virtual void Initialize()
+    {
+        // 임시로 생성하자마자 바로 가방으로
+        MinimiManager._instance.GainMinimi(this);
+        GoIn();
+    }
+
 
     public void SetParent(Minimi minimi)
     {
@@ -121,6 +128,7 @@ public class Minimi : MonoBehaviour
     public virtual void GoOut()
     {
         // 임시로 애니메이션이나 이동과정 생략
+        gameObject.SetActive(true);
         minimiState = MinimiState.OnHand;
     }
 
@@ -130,6 +138,7 @@ public class Minimi : MonoBehaviour
     public virtual void GoIn()
     {
         // 임시로 애니메이션이나 이동과정 생략
+        gameObject.SetActive(false);
         minimiState = MinimiState.InBag;
     }
 }

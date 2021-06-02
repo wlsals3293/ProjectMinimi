@@ -7,6 +7,9 @@ public partial class PlayerController : MonoBehaviour
 {
     private const float RAY_DISTANCE = 5f;
 
+    private const float INSTALL_RAY_HEIGHT = 1.1f;
+    private const float INSTALL_RAY_DISTANCE = 1.6f;
+
    
     private UseKeyActionType useKeyType = UseKeyActionType.None;
 
@@ -27,8 +30,9 @@ public partial class PlayerController : MonoBehaviour
     private void Idle_Update()
     {
         Idle_GetInput();
-        ApplyGravity();
         DetectGround();
+        if(!isOnGround)
+            ApplyGravity();
 
         if (jumpInput && canJump)
         {
@@ -59,11 +63,23 @@ public partial class PlayerController : MonoBehaviour
             Debug.LogError("Input E Key");
             UseKeyAction(hit, useKeyType);
         }
-        /*if(Input.GetKeyDown(KeyCode.Alpha1))
+
+        // 미니미 관련 조작
+        // 블럭 미니미
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             MinimiManager._instance.TakeOutMinimi(MinimiType.Block);
-            Debug.Log(MinimiManager._instance.onHandMinimiCount);
-        }*/
+        }
+        // 좌클릭
+        if(Input.GetMouseButtonDown(0))
+        {
+            MinimiInstall();
+        }
+        // 우클릭
+        if (Input.GetMouseButtonDown(1))
+        {
+            MinimiManager._instance.PutInAllMinimis();
+        }
 
         input = new Vector3(
             Input.GetAxisRaw("Horizontal"),
@@ -160,5 +176,23 @@ public partial class PlayerController : MonoBehaviour
         }
 
         return hit;
+    }
+
+    private void MinimiInstall()
+    {
+        if (MinimiManager._instance.IsEmpty)
+            return;
+
+        Vector3 rayOrigin = transform.position +
+            Vector3.up * INSTALL_RAY_HEIGHT +
+            transform.forward * INSTALL_RAY_DISTANCE;
+
+        Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, 4.0f,
+            LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
+
+        
+        MinimiManager._instance.InstallMinimi(hitInfo.point, transform.rotation);
+
+        Debug.Log(hitInfo.point);
     }
 }

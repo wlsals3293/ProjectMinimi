@@ -18,13 +18,4 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void Start()
-    {
-        for(int i=0; i<3; i++)
-        {
-            MinimiManager._instance.CreateMinimi(MinimiType.Block);
-        }
-        
-    }
 }

@@ -84,7 +84,7 @@ public partial class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cameraT = Camera.main.transform;
 
-        steppableMask = LayerMask.GetMask("Ground", "Object");
+        steppableMask = LayerMask.GetMask("Ground", "Object", "Minimi");
 
         Idle_SetState();
         Holding_SetState();
@@ -126,7 +126,9 @@ public partial class PlayerController : MonoBehaviour
     private void DetectGround()
     {
         RaycastHit hit;
-        bool isStepped = Physics.SphereCast(rb.position + (Vector3.up * 0.6f), 0.5f, Vector3.down, out hit, 0.11f, steppableMask);
+        bool isStepped = Physics.SphereCast(
+            rb.position + (Vector3.up * 0.6f), 0.5f, Vector3.down, out hit,
+            0.11f, steppableMask, QueryTriggerInteraction.Ignore);
 
         if (isStepped && verticalVelocity <= 0.0f)
         {

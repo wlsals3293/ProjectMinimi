@@ -19,14 +19,14 @@ public class BlockMinimi : Minimi
     {
         base.Install(targetPosition, targetRotation);
 
-        col.enabled = true;
+        //col.enabled = true;
     }
 
     public override void Uninstall()
     {
         base.Uninstall();
 
-        col.enabled = false;
+        //col.enabled = false;
     }
 
     public override void UpdateStatus()
@@ -34,7 +34,7 @@ public class BlockMinimi : Minimi
         // 자식 미니미 위치와 회전 조정
         for (int i = 0; i < childMinimis.Count; i++)
         {
-            Vector3 pos = transform.position + transform.up * (STACK_HEIGHT * i + 1);
+            Vector3 pos = transform.position + transform.up * (STACK_HEIGHT * (i + 1));
             Quaternion rot = transform.rotation;
             childMinimis[i].Install(pos, rot);
         }
