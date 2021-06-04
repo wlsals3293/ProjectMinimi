@@ -11,6 +11,10 @@ public class Minimi : MonoBehaviour
     
     [SerializeField] private Transform pivot = null;
 
+    [SerializeField] private GameObject bigMesh = null;
+    [SerializeField] private GameObject smallMesh = null;
+
+
     protected MinimiType minimiType;
     protected MinimiState minimiState = MinimiState.None;
 
@@ -98,6 +102,8 @@ public class Minimi : MonoBehaviour
     public virtual void Install(Vector3 targetPosition, Quaternion targetRotation)
     {
         // 임시로 애니메이션이나 이동과정 생략
+        gameObject.SetActive(true);
+        SetBigState();
         transform.SetPositionAndRotation(targetPosition, targetRotation);
         minimiState = MinimiState.Installed;
     }
@@ -115,6 +121,8 @@ public class Minimi : MonoBehaviour
             child.SetParent(null);
         }
         childMinimis.Clear();
+
+        SetSmallState();
 
         Debug.Log(gameObject.name + " 회수");
 
@@ -135,7 +143,7 @@ public class Minimi : MonoBehaviour
     public virtual void GoOut()
     {
         // 임시로 애니메이션이나 이동과정 생략
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
         minimiState = MinimiState.OnHand;
     }
 
@@ -147,6 +155,34 @@ public class Minimi : MonoBehaviour
         // 임시로 애니메이션이나 이동과정 생략
         gameObject.SetActive(false);
         minimiState = MinimiState.InBag;
+    }
+
+    /// <summary>
+    /// 미니미를 커짐 상태로 설정
+    /// </summary>
+    public virtual void SetBigState()
+    {
+        if(bigMesh == null || smallMesh == null)
+        {
+            Debug.LogError("메쉬 설정 안됨");
+            return;
+        }
+        smallMesh.SetActive(false);
+        bigMesh.SetActive(true);
+    }
+
+    /// <summary>
+    /// 미니미를 작아짐 상태로 설정
+    /// </summary>
+    public virtual void SetSmallState()
+    {
+        if (bigMesh == null || smallMesh == null)
+        {
+            Debug.LogError("메쉬 설정 안됨");
+            return;
+        }
+        bigMesh.SetActive(false);
+        smallMesh.SetActive(true);
     }
 
     // 임시

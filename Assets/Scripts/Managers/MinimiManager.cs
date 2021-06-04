@@ -6,13 +6,23 @@ using UnityEngine;
 
 public class MinimiManager : MonoBehaviour
 {
-    public static MinimiManager _instance = null;
+    private static readonly Vector3 INSTALL_RAY_OFFSET = new Vector3(0.0f, 1.1f, 2.0f);
+
+    /// <summary>
+    /// 설치 높이 오차 허용값
+    /// </summary>
+    private const float INSTALL_HEIGHT_TOLERANCE = 1.0f;
 
     /// <summary>
     /// 한 번에 동시설치되는 최대 개수
     /// </summary>
     public const int MAX_STACK_COUNT = 3;
 
+
+
+    public static MinimiManager _instance = null;
+
+    [SerializeField] private GameObject boxMinimiRef = null;
 
 
     public bool IsEmpty { get => onHandMinimiList.Count == 0; }
@@ -43,7 +53,8 @@ public class MinimiManager : MonoBehaviour
     private MinimiType onHandMinimiType = MinimiType.None;
 
 
-
+    private bool blueprintActive = false;
+    private GameObject[] blueprintObject = new GameObject[MAX_STACK_COUNT];
 
 
 
@@ -58,6 +69,19 @@ public class MinimiManager : MonoBehaviour
         {
             allMinimiLists.Add((MinimiType)i, new List<Minimi>());
             ownMinimiLists.Add((MinimiType)i, new List<Minimi>());
+        }
+
+        if (boxMinimiRef != null)
+        {
+            for (int i = 0; i < blueprintObject.Length; i++)
+            {
+                blueprintObject[i] = Instantiate(boxMinimiRef);
+                blueprintObject[i].SetActive(false);
+            }
+        }
+        else
+        {
+            Debug.LogError("박스 미니미 프리팹 등록 안됨");
         }
 
     }
@@ -147,7 +171,7 @@ public class MinimiManager : MonoBehaviour
             {
                 onHandMinimiList.Add(minimi);
                 minimi.GoOut();
-                Debug.Log(onHandMinimiList.Count + " " + minimi.name + " 꺼냄");
+                Debug.Log("Count:" + onHandMinimiList.Count + ", " + minimi.name + " 꺼냄");
                 return true;
             }
         }
@@ -175,12 +199,19 @@ public class MinimiManager : MonoBehaviour
             return false;
 
 
-        Minimi parent = GetMergeableMinimi(position, mergeDistance);
+        Vector3 installPos;
+
+        if (!FindGroundPos(position, out installPos))
+        {
+            return false;
+        }
+
+        Minimi parent = GetMergeableMinimi(installPos, mergeDistance);
         
         // 합쳐질 미니미가 없을 때
         if(parent == null)
         {
-            if(CheckInstallArea(position, rotation))
+            if(CheckInstallArea(installPos, rotation))
             {
                 return false;
             }
@@ -192,7 +223,7 @@ public class MinimiManager : MonoBehaviour
                 parent.AddChild(onHandMinimiList[i]);
             }
 
-            parent.Install(position, rotation);
+            parent.Install(installPos, rotation);
         }
         // 합쳐질 미니미가 있을 때
         else
@@ -208,11 +239,37 @@ public class MinimiManager : MonoBehaviour
         onHandMinimiList.Clear();
         onHandMinimiType = MinimiType.None;
 
-        Debug.Log(onHandMinimiList.Count);
-
         return true;
     }
 
+    public bool UninstallMinimi()
+    {
+        Ray camRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
+
+        if (Physics.Raycast(camRay, out RaycastHit hit, 999.0f, LayerMask.GetMask("Minimi"), QueryTriggerInteraction.Ignore))
+        {
+            Minimi curMinimi = hit.collider.GetComponent<Minimi>();
+
+            if (curMinimi == null)
+                return false;
+
+            if (curMinimi.Parent != null)
+            {
+                curMinimi.Parent.Uninstall();
+            }
+            else
+            {
+                curMinimi.Uninstall();
+            }
+
+            return true;
+        }
+        else
+        {
+            Debug.Log("회수할 미니미 없음");
+            return false;
+        }
+    }
 
     /// <summary>
     /// 지정한 위치에서 합치기가 가능한 가장 가까운 미니미를 반환합니다. 없을 경우 null
@@ -258,22 +315,76 @@ public class MinimiManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 미니미가 설치될 곳이 비어 있는지 검사. 아무것도 없으면 false 반환
     /// </summary>
-    /// <param name="targetPosition"></param>
-    /// <param name="targetRotation"></param>
-    /// <returns></returns>
-    private bool CheckInstallArea(Vector3 targetPosition, Quaternion targetRotation)
+    /// <param name="targetPosition">검사할 위치</param>
+    /// <param name="targetRotation">박스의 회전값</param>
+    /// <returns>물체 존재 여부</returns>
+    public bool CheckInstallArea(Vector3 targetPosition, Quaternion targetRotation)
     {
-        Vector3 center = targetPosition + Vector3.up * 1.1f;
         Vector3 halfExt = new Vector3(1.0f, 1.0f, 1.0f);
+        Vector3 center = targetPosition + Vector3.up * halfExt.y;
 
+        return Physics.CheckBox(center, halfExt, targetRotation,
+            LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
+    }
 
-        bool result = Physics.CheckBox(center, halfExt, targetRotation,
-            LayerMask.GetMask("Ground", "Object"),
-            QueryTriggerInteraction.Ignore);
+    public bool FindGroundPos(Vector3 targetPosition, out Vector3 foundPosition)
+    {
+        Vector3 origin = targetPosition + Vector3.up * (INSTALL_HEIGHT_TOLERANCE * 0.5f);
+        RaycastHit hit;
 
-        
+        bool result = Physics.SphereCast(origin, 0.1f, Vector3.down, out hit, INSTALL_HEIGHT_TOLERANCE,
+            LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
+
+        if(result)
+            foundPosition = origin + Vector3.down * hit.distance;
+        else
+            foundPosition = targetPosition;
+
         return result;
+    }
+
+    public void DrawBlueprintObject(Vector3 targetPosition, Quaternion targetRotation)
+    {
+        blueprintActive = true;
+
+        Vector3 groundPos;
+
+        if (FindGroundPos(targetPosition, out groundPos))
+        {
+            bool possibility = !CheckInstallArea(groundPos, targetRotation);
+
+            for (int i = 0; i < onHandMinimiList.Count; i++)
+            {
+                if (!blueprintObject[i].activeSelf)
+                {
+                    blueprintObject[i].SetActive(true);
+                }
+
+                blueprintObject[i].transform.position = groundPos + Vector3.up * (2.0f * i);
+                blueprintObject[i].transform.rotation = targetRotation;
+
+                // TODO: 설치 가능 여부에 따라 머티리얼을 바꿔 플레이어에게 표시
+            }
+
+        }
+        else
+        {
+            UnDrawBlueprintObject();
+        }
+    }
+
+    public void UnDrawBlueprintObject()
+    {
+        if (!blueprintActive)
+            return;
+
+        blueprintActive = false;
+
+        for (int i = 0; i < blueprintObject.Length; i++)
+        {
+            blueprintObject[i].SetActive(false);
+        }
     }
 }

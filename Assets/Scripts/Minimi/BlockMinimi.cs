@@ -19,14 +19,12 @@ public class BlockMinimi : Minimi
     {
         base.Install(targetPosition, targetRotation);
 
-        //col.enabled = true;
     }
 
     public override void Uninstall()
     {
         base.Uninstall();
 
-        //col.enabled = false;
     }
 
     public override void UpdateStatus()
@@ -40,4 +38,15 @@ public class BlockMinimi : Minimi
         }
     }
 
+    public override void SetBigState()
+    {
+        base.SetBigState();
+        col.enabled = true;
+    }
+
+    public override void SetSmallState()
+    {
+        base.SetSmallState();
+        col.enabled = false;
+    }
 }

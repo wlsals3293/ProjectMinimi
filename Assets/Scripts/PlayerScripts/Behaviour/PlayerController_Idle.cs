@@ -7,10 +7,13 @@ public partial class PlayerController : MonoBehaviour
 {
     private const float RAY_DISTANCE = 5f;
 
-    private static readonly Vector3 INSTALL_RAY_OFFSET = new Vector3(0.0f, 1.1f, 2.0f);
+    private static readonly Vector3 INSTALL_OFFSET = new Vector3(0.0f, 0.0f, 2.0f);
 
    
     private UseKeyActionType useKeyType = UseKeyActionType.None;
+
+
+    private bool blueprintActive = false;
 
 
     #region <행동 추가시 디폴트 작업>
@@ -42,6 +45,14 @@ public partial class PlayerController : MonoBehaviour
         Turn();
 
         rb.velocity = moveVelocity + (Vector3.up * verticalVelocity);
+
+
+        if(blueprintActive)
+        {
+            MinimiManager._instance.DrawBlueprintObject(
+                transform.position + transform.TransformDirection(INSTALL_OFFSET),
+                transform.rotation);
+        }
     }
 
     
@@ -68,23 +79,44 @@ public partial class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (!MinimiManager._instance.IsEmpty)
-                MinimiInstall();
+            {
+                Vector3 installPos = transform.position + transform.TransformDirection(INSTALL_OFFSET);
+
+                if(MinimiManager._instance.InstallMinimi(installPos, transform.rotation))
+                {
+                    blueprintActive = false;
+                    MinimiManager._instance.UnDrawBlueprintObject();
+                }
+            }
+                
         }
         // 우클릭
         if (Input.GetMouseButtonDown(1))
         {
             MinimiManager._instance.PutInAllMinimis();
+            blueprintActive = false;
+            MinimiManager._instance.UnDrawBlueprintObject();
         }
 
         // 블럭 미니미
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            MinimiManager._instance.TakeOutMinimi(MinimiType.Block);
+            if(MinimiManager._instance.TakeOutMinimi(MinimiType.Block))
+            {
+                blueprintActive = true;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            MinimiUninstall();
+            MinimiManager._instance.UninstallMinimi();
+
+            if (MinimiManager._instance.IsEmpty)
+            {
+                blueprintActive = false;
+                MinimiManager._instance.UnDrawBlueprintObject();
+            }
+                
         }
 
 
@@ -154,7 +186,7 @@ public partial class PlayerController : MonoBehaviour
     private void UseKeyAction_Block(RaycastHit hit)
     {
         // TODO : 임시함수 매니져를 통해 함수호출로 변경 or state로 빼기
-        hit.collider.SendMessageUpwards(MinimiController.SEND_SETPIVOT, trans);
+        hit.collider.SendMessage(MinimiController.SEND_SETPIVOT, trans);
     }
     
 
@@ -185,47 +217,4 @@ public partial class PlayerController : MonoBehaviour
         return hit;
     }
 
-    private void MinimiInstall()
-    {
-        Vector3 rayOrigin = transform.position + transform.TransformDirection(INSTALL_RAY_OFFSET);
-
-        bool result = Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, 4.0f,
-            LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
-
-        if(!result)
-        {
-            return;
-        }
-        
-        MinimiManager._instance.InstallMinimi(hitInfo.point, transform.rotation);
-
-        Debug.Log(hitInfo.point);
-    }
-
-    private void MinimiUninstall()
-    {
-        Ray camRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
-
-        if(Physics.Raycast(camRay, out RaycastHit hit, 999.0f, LayerMask.GetMask("Minimi"), QueryTriggerInteraction.Ignore))
-        {
-            Minimi curMinimi = hit.collider.GetComponentInParent<Minimi>();
-
-            if (curMinimi == null)
-                return;
-
-            if(curMinimi.Parent != null)
-            {
-                curMinimi.Parent.Uninstall();
-            }
-            else
-            {
-                curMinimi.Uninstall();
-            }
-            
-        }
-        else
-        {
-            Debug.Log("회수할 미니미 없음");
-        }
-    }
 }
