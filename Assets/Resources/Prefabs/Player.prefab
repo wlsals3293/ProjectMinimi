@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edda8bfb4c748cc40a2ef9e6fc47d478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  climbSpeed: 5
   pivotObjHolding: {fileID: 6800537864608850124}
   runSpeed: 10
   speedSmoothTime: 0.1
@@ -270,7 +271,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f2a650b432646ce4d8f7799fceb9e823, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

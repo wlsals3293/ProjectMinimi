@@ -128,7 +128,14 @@ public partial class PlayerController : MonoBehaviour
         inputDir = input.normalized;
         jumpInput = Input.GetButton("Jump");
 
-        moveDirection = (input.z * Vector3.Scale(cameraT.forward, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+        if (CameraManager.Instance.CurrentCameraCtrl != null && CameraManager.Instance.CurrentCameraCtrl.IsMainCamera)
+        {
+            moveDirection = (input.z * Vector3.Scale(cameraT.forward, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+        }
+        else
+        {
+            moveDirection = (input.z * Vector3.Scale(cameraT.up, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+        }
     }
 
     public void UseKeyAction(RaycastHit hit, UseKeyActionType keyType)

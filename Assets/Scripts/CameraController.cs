@@ -30,6 +30,14 @@ public class CameraController : MonoBehaviour
     private float pitch;
 
     private Transform trans = null;
+
+    [SerializeField] private bool isTargetPlayerCamera = true;
+    [SerializeField] private bool isMainCamera = true;
+    private Camera camera = null;
+
+    [Header("0번은 메인, 1번은 플레이어 머리에 임시달아놨어요.")]
+    [SerializeField] [Range(1,10)] private int cameraIdx = 1;
+
     public new Transform transform
     {
         get
@@ -42,6 +50,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public bool IsTargetPlayerCamera { get => isTargetPlayerCamera; }
+    public bool IsMainCamera { get => isMainCamera; }
+
 
     // Start is called before the first frame update
     void Start()
@@ -52,19 +63,40 @@ public class CameraController : MonoBehaviour
             Cursor.visible = false;
         }
 
-        if (target == null)
+        camera = GetComponent<Camera>();
+
+        if (isMainCamera)
+        {
+            CameraManager.Instance.SetMainCamera(this);
+        }
+        else
+        {
+            CameraManager.Instance.AddCamera(cameraIdx, this);
+        }
+
+        if(IsTargetPlayerCamera)
+        {
             target = PlayerManager.Instance.PlayerCtrl.transform;
+        }
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        CameraRotate();
-        FollowTarget();
+        CameraCtrl();
+    }
+
+    public void CameraCtrl()
+    {
+        if (IsTargetPlayerCamera || isMainCamera)
+            FollowTarget();
+
+        if(isMainCamera)
+            CameraRotate();
     }
 
     // 카메라 회전
-    private void CameraRotate()
+    public void CameraRotate()
     {
         yaw += Input.GetAxis("Mouse X") * mouseHorizontalSensitivity;
         pitch -= Input.GetAxis("Mouse Y") * mouseVerticalSensitivity;

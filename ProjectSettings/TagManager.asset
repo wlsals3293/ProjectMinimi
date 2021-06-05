@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Minimi
+  - SubCamera
   layers:
   - Default
   - TransparentFX

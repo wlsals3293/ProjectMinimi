@@ -33,7 +33,13 @@ public partial class PlayerController : MonoBehaviour
     private LayerMask steppableMask;
 
     private Rigidbody rb;
-    private Transform cameraT;
+    private Transform cameraT
+    {
+        get
+        {
+            return CameraManager.Instance.GetMoveDirCamera();
+        }
+    }
 
     private Transform trans = null;
     public new Transform transform 
@@ -82,7 +88,6 @@ public partial class PlayerController : MonoBehaviour
     {
         playerCharacter = GetComponent<PlayerCharacter>();
         rb = GetComponent<Rigidbody>();
-        cameraT = Camera.main.transform;
 
         steppableMask = LayerMask.GetMask("Ground", "Object", "Minimi");
 
@@ -119,9 +124,6 @@ public partial class PlayerController : MonoBehaviour
         moveVelocity = moveDirection * currentSpeed;
     }
 
-    
-
-    
 
     private void DetectGround()
     {
