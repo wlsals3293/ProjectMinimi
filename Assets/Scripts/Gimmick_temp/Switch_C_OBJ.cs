@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+/// <summary>
+/// 스위치랑 연결되는 오브젝트는 이 클래스를 상속받음 (문, 발판)
+/// </summary>
+
+public class Switch_C_OBJ : MonoBehaviour
+{
+
+    public List<Switchs_Ctrl> _switchs;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public virtual void Activate() //문이 열리는 행동 혹은 발판의 움직임
+    {
+
+    }
+
+    public virtual void SwitchCheck() //연결된 스위치가 전부 켜져있는지 체크
+    {
+
+    }
+}
