@@ -109,13 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c469cb4f948a40a44849fdab4c22557c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 1
   _connetObj: {fileID: 0}
   isActivate: 0
-  collisionCount: 0
-  _color:
+  _color_DontTouch:
   - {fileID: 2100000, guid: bd2a324c31bd4604ea0181e680306fb3, type: 2}
   - {fileID: 2100000, guid: 0649ee7ec68180543ad4b0ea0a7cb816, type: 2}
-  _thisColor: {fileID: 0}
-  layers:
-    serializedVersion: 2
-    m_Bits: 0
