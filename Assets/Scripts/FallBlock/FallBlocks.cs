@@ -9,7 +9,7 @@ public class FallBlocks : MonoBehaviour
     [SerializeField] private bool nonUpdateEditor = false;
 
     [Space]
-    [Header("Off:여기 값만처리, On: 각각 오브젝트값 처리")]
+    [Header("On : 오브젝트 개별 처리, Off : 여기 값만처리, ")]
     [SerializeField] private bool isSingleBlock = false;
 
     [Space]
