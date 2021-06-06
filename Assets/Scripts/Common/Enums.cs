@@ -56,3 +56,13 @@ public enum UseKeyActionType
     Block,
     Hold,
 }
+
+
+[System.Serializable]
+public enum DirectionType
+{
+    X,
+    Y,
+    Z,
+    All,
+}

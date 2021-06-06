@@ -1,0 +1,279 @@
+﻿using UnityEditor;
+using UnityEngine;
+
+[System.Serializable]
+public class SingleBlock : MonoBehaviour
+{
+    private Transform trans = null;
+    public new Transform transform
+    {
+        get
+        {
+            if (trans == null)
+            {
+                trans = GetComponent<Transform>();
+            }
+            return trans;
+        }
+    }
+    private Vector3 dir = Vector3.zero;
+    private DirectionType dirType = DirectionType.Y;
+
+    [Space]
+    [SerializeField] private float minHigh = 0f;
+    [SerializeField] private float minHighTime = 1f;
+    [Space]
+    [SerializeField] private float maxHigh = 5f;
+    [SerializeField] private float maxHighTime = 1f;
+
+    [Space]
+    [SerializeField] private float blockDirChangeDelay = 0.5f;
+    [SerializeField] private float nextBlockDelay = 0.5f;
+
+
+    private float _minHigh = 0f;
+    private float _minHighTime = 0f;
+    
+    private float _maxHigh = 0f;
+    private float _maxHighTime = 0f;
+
+    private float _blockDirChangeDelay = 0f;
+    private float _nextBlockDelay = 0f;
+
+
+    private bool use = false;
+
+    private bool down = false;
+    private bool stop = false;
+
+    private float timer = 0f;
+    private float endTimer = 9999f;
+
+    public void Init(
+        Vector3 dir
+        , float minHigh, float minHighTime, float maxHigh, float maxHighTime
+        , float dirChangeDelay
+        , float nextBlockDelay
+        , bool single
+        )
+    {
+
+        this.dir = dir;
+
+        if (single == false)
+        {
+            //_minHigh = this.minHigh + minHigh;
+            //_minHighTime = this.minHighTime + minHighTime;
+            //_maxHigh = this.maxHigh + maxHigh;
+            //_maxHighTime = this.maxHighTime + maxHighTime;
+            //_blockDirChangeDelay = this.blockDirChangeDelay + dirChangeDelay;
+            //_nextBlockDelay = this.nextBlockDelay + nextBlockDelay;
+
+            _minHigh = minHigh;
+            _minHighTime = minHighTime;
+            _maxHigh = maxHigh;
+            _maxHighTime = maxHighTime;
+            _blockDirChangeDelay = dirChangeDelay;
+            _nextBlockDelay = nextBlockDelay;
+
+            SetUse(false);
+            ChangeEndTimer(_minHighTime);
+        }
+        else
+        {
+            _minHigh = this.minHigh;
+            _minHighTime = this.minHighTime;
+            _maxHigh = this.maxHigh;
+            _maxHighTime = this.maxHighTime;
+            _blockDirChangeDelay = this.blockDirChangeDelay;
+            _nextBlockDelay = this.nextBlockDelay;
+
+            ChangeEndTimer(_nextBlockDelay);
+            SetUse(true);
+        }
+    }
+
+    public GameObject GetGameObject()
+    {
+        if (transform == null)
+            return null;
+
+        return transform.gameObject;
+    }
+
+    public void ChangeEndTimer(float time)
+    {
+        timer = 0f;
+        endTimer = time;
+    }
+
+    public void SetUse(bool active)
+    {
+        use = active;
+
+        timer = 0f;
+        down = false;
+        stop = false;
+    }
+
+    public void OnStop()
+    {
+        stop = true;
+        ChangeEndTimer(_blockDirChangeDelay);
+    }
+
+    public void Update()
+    {
+        if (use)
+        {
+            Vector3 movePos = transform.localPosition;
+            if (down)
+            {
+                if (CheckOverEndTimer())
+                {
+                    if (stop)
+                    {
+                        down = !down;
+                        stop = false;
+                        ChangeEndTimer(_maxHighTime);
+                    }
+                    else
+                    {
+                        OnStop();
+                    }
+                }
+                else
+                {
+                    movePos = dir * Mathf.Lerp(_maxHigh, _minHigh, timer / _minHighTime);
+
+                    if (GetLocalPosition(movePos, dirType) < GetLocalPosition(transform.localPosition, dirType))
+                    {
+                        switch (dirType)
+                        {
+                            case DirectionType.X:
+                                movePos.x = GetLocalPosition(transform.localPosition, dirType);
+                                break;
+                            case DirectionType.Y:
+                                movePos.y = GetLocalPosition(transform.localPosition, dirType);
+                                break;
+                            case DirectionType.Z:
+                                movePos.z = GetLocalPosition(transform.localPosition, dirType);
+                                break;
+                            case DirectionType.All:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    SetLocalPosition(movePos, dirType);
+                }
+            }
+            else
+            {
+                if (CheckOverEndTimer())
+                {
+                    if (stop)
+                    {
+                        down = !down;
+                        stop = false;
+                        ChangeEndTimer(_minHighTime);
+                    }
+                    else
+                    {
+                        OnStop();
+                    }
+                }
+                else
+                {
+                    movePos = dir * Mathf.Lerp(_minHigh, _maxHigh, timer / _maxHighTime);
+                    if (GetLocalPosition(movePos, dirType) > GetLocalPosition(transform.localPosition, dirType))
+                    {
+                        switch (dirType)
+                        {
+                            case DirectionType.X:
+                                movePos.x = GetLocalPosition(transform.localPosition, dirType);
+                                break;
+                            case DirectionType.Y:
+                                movePos.y = GetLocalPosition(transform.localPosition, dirType);
+                                break;
+                            case DirectionType.Z:
+                                movePos.z = GetLocalPosition(transform.localPosition, dirType);
+                                break;
+                            case DirectionType.All:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    SetLocalPosition(movePos, dirType);
+                }
+            }
+        }
+    }
+
+    public float GetLocalPosition(Vector3 pos, DirectionType type = DirectionType.All)
+    {
+        switch (type)
+        {
+            case DirectionType.X:
+                return pos.x;
+            case DirectionType.Y:
+                return pos.y;
+            case DirectionType.Z:
+                return pos.z;
+            case DirectionType.All:
+            default:
+                break;
+        }
+
+        return 0f;
+    }
+
+    
+
+    public void SetLocalPosition(Vector3 pos, DirectionType type = DirectionType.All)
+    {
+        if (stop == false)
+        {
+            switch (type)
+            {
+                case DirectionType.X:
+                    transform.localPosition = new Vector3(pos.x, transform.localPosition.y, transform.localPosition.z);
+                    break;
+                case DirectionType.Y:
+                    transform.localPosition = new Vector3(transform.localPosition.x, pos.y, transform.localPosition.z);
+                    break;
+                case DirectionType.Z:
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, pos.z);
+                    break;
+                case DirectionType.All:
+                    transform.localPosition = pos;
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.tag == Tags.minimi)
+        {
+            SetTimerEnd();
+        }
+    }
+
+    private void SetTimerEnd()
+    {
+        timer = endTimer;
+    }
+
+    public bool CheckOverEndTimer()
+    {
+        timer += Time.deltaTime;
+
+        return endTimer <= timer;
+    }
+}
