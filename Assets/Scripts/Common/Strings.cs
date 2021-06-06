@@ -11,6 +11,7 @@ public static class Tags
 
 public static class Layers
 {
+    public const int none = -1;
     public static readonly int enemy = LayerMask.NameToLayer("Enemy");
     public static readonly int player = LayerMask.NameToLayer("Player");
 

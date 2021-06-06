@@ -141,7 +141,9 @@ public partial class PlayerController : MonoBehaviour
     public void UseKeyAction(RaycastHit hit, UseKeyActionType keyType)
     {
         switch (keyType)
-        {
+        { 
+            case UseKeyActionType.None:
+                break;
             case UseKeyActionType.Block:
                 UseKeyAction_Block(hit);
                 break;
@@ -154,10 +156,12 @@ public partial class PlayerController : MonoBehaviour
 
     private UseKeyActionType UpdateUseKeyActionType(RaycastHit hit)
     {
-        if (hit.collider == null)
-            return UseKeyActionType.None;
+        int layer = -1;
 
-        int layer = hit.collider.gameObject.layer;
+        if (hit.collider != null)
+        {
+            layer = hit.collider.gameObject.layer;
+        }
 
         if (layer == Layers.minimi)
         {
@@ -167,10 +171,17 @@ public partial class PlayerController : MonoBehaviour
         else if (layer == Layers.obj)
         {
             Debug.Log("Did Hit Obejct");
-            if (hold_target == null)
+            if (fsm.CurState == PlayerState.Idle)
             {
                 hold_target = hit.transform;
+
+                return UseKeyActionType.Hold;
             }
+        }
+
+        if (fsm.CurState == PlayerState.Holding && hold_target != null)
+        {
+            // OnOff Hold
             return UseKeyActionType.Hold;
         }
 
