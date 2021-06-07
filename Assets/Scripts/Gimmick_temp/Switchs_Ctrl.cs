@@ -16,13 +16,18 @@ public class Switchs_Ctrl : MonoBehaviour
     public Material[] _color_DontTouch;
     Renderer _thisColor;
     LayerMask layers;
+    Transform box;
+
 
     // Start is called before the first frame update
     void Start()
     {
         _thisColor = GetComponent<Renderer>();
         layers = LayerMask.GetMask("Player", "Object", "Minimi");
-        
+        if (transform.GetChild(0) != null)
+        {
+            box = transform.GetChild(0).GetComponent<Transform>();
+        }
     }
 
     public void Connecting(Switch_C_OBJ connectingObj)
@@ -34,28 +39,29 @@ public class Switchs_Ctrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (box != null)
+        {
 
-        if ((_type == SwitchType.Maintain && !isActivate) || _type == SwitchType.OnOff)
+            if ((_type == SwitchType.Maintain && !isActivate) || _type == SwitchType.OnOff)
             {
 
-            RaycastHit hit;
+                RaycastHit hit;
 
-            isActivate = Physics.BoxCast(
-                new Vector3(transform.position.x, transform.position.y - (transform.lossyScale.y / 2), transform.position.z),
-                transform.lossyScale / 2, 
-                Vector3.up,
-                out hit, 
-                transform.rotation,
-                (transform.lossyScale.y/2) + 0.5f,
-                layers, 
-                QueryTriggerInteraction.Ignore);
-            
+                isActivate = Physics.BoxCast(
+                    new Vector3(transform.position.x, transform.position.y - (box.transform.lossyScale.y / 2), transform.position.z),
+                    box.transform.lossyScale / 2,
+                    Vector3.up,
+                    out hit,
+                    transform.rotation,
+                    box.transform.lossyScale.y + 0.5f,
+                    layers,
+                    QueryTriggerInteraction.Ignore);
+
             }
 
-        
 
 
+        }
         if (isActivate)
         {
             
