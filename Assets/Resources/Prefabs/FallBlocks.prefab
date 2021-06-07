@@ -62,7 +62,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 115678104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 77308031}
@@ -148,7 +148,7 @@ MonoBehaviour:
   maxHigh: 5
   maxHighTime: 1
   blockDirChangeDelay: 1
-  nextBlockDelay: 0.5
+  startDelay: 0.5
 --- !u!54 &115678106
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828986967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalPosition: {x: 0, y: 5, z: 1.5}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 77308031}
@@ -280,7 +280,7 @@ MonoBehaviour:
   maxHigh: 5
   maxHighTime: 1
   blockDirChangeDelay: 1
-  nextBlockDelay: 1
+  startDelay: 0.5
 --- !u!54 &1828986969
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -326,7 +326,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927982459}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalPosition: {x: 0, y: 5, z: 3}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 77308031}
@@ -412,7 +412,7 @@ MonoBehaviour:
   maxHigh: 5
   maxHighTime: 1
   blockDirChangeDelay: 1
-  nextBlockDelay: 1.5
+  startDelay: 0.5
 --- !u!54 &1927982461
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -438,7 +438,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3611196103691836961}
-  - component: {fileID: 1173380163}
   m_Layer: 0
   m_Name: FallBlocks
   m_TagString: Untagged
@@ -461,33 +460,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1173380163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1728843666719314604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d1be59b22851944af8174857ca2335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nonUpdateEditor: 1
-  isSingleBlock: 1
-  prefab_block: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
-  blockPivot: {fileID: 77308031}
-  blockList:
-  - {fileID: 115678105}
-  - {fileID: 1828986968}
-  - {fileID: 1927982460}
-  blockCount: 3
-  pivotPos: {x: 0, y: 0, z: 0}
-  offset: {x: 0, y: 0, z: 1.5}
-  fallDirection: {x: -0, y: -1, z: -0}
-  minHigh: 0
-  minHighTime: 1
-  maxHigh: 5
-  maxHighTime: 1
-  blockDirChangeDelay: 0.5
-  nextBlockDelay: 0.5

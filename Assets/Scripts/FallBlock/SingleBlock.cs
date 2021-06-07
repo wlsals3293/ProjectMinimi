@@ -17,7 +17,6 @@ public class SingleBlock : MonoBehaviour
         }
     }
     private Vector3 dir = Vector3.zero;
-    private DirectionType dirType = DirectionType.Y;
 
     [Space]
     [SerializeField] private float minHigh = 0f;
@@ -28,8 +27,10 @@ public class SingleBlock : MonoBehaviour
 
     [Space]
     [SerializeField] private float blockDirChangeDelay = 0.5f;
-    [SerializeField] private float nextBlockDelay = 0.5f;
+    [SerializeField] private float startDelay = 0.5f;
 
+    private DirectionType dirType = DirectionType.Y;
+    private Vector3 fallDirection = Vector3.up;
 
     private float _minHigh = 0f;
     private float _minHighTime = 0f;
@@ -49,6 +50,12 @@ public class SingleBlock : MonoBehaviour
 
     private float timer = 0f;
     private float endTimer = 9999f;
+
+    private void Awake()
+    {
+        // 일괄처리시 빼야됨 그냥이렇게..
+        Init(fallDirection, 0f, 0f, 0f, 0f, 0f, 0f, true);
+    }
 
     public void Init(
         Vector3 dir
@@ -78,7 +85,7 @@ public class SingleBlock : MonoBehaviour
 
             SetLocalPosition(dir * _maxHigh, dirType);
             SetUse(false);
-            ChangeEndTimer(_minHighTime);
+            ChangeEndTimer(_maxHighTime);
         }
         else
         {
@@ -87,10 +94,10 @@ public class SingleBlock : MonoBehaviour
             _maxHigh = this.maxHigh;
             _maxHighTime = this.maxHighTime;
             _blockDirChangeDelay = this.blockDirChangeDelay;
-            _nextBlockDelay = this.nextBlockDelay;
+            _nextBlockDelay = this.startDelay;
 
             SetLocalPosition(dir * _maxHigh, dirType);
-            ChangeEndTimer(_minHighTime);
+            ChangeEndTimer(_maxHighTime);
             Invoke("WaitBlockActive", _nextBlockDelay);
         }
     }
@@ -163,7 +170,7 @@ public class SingleBlock : MonoBehaviour
 
                     movePos = dir * Mathf.Lerp(_maxHigh, _minHigh, timer / _minHighTime);
 
-                    if (GetLocalPosition(movePos, dirType) < GetLocalPosition(transform.localPosition, dirType))
+                    if (GetLocalPosition(movePos, dirType) > GetLocalPosition(transform.localPosition, dirType))
                     {
                         switch (dirType)
                         {
@@ -209,7 +216,7 @@ public class SingleBlock : MonoBehaviour
                         return;
 
                     movePos = dir * Mathf.Lerp(_minHigh, _maxHigh, timer / _maxHighTime);
-                    if (GetLocalPosition(movePos, dirType) > GetLocalPosition(transform.localPosition, dirType))
+                    if (GetLocalPosition(movePos, dirType) < GetLocalPosition(transform.localPosition, dirType))
                     {
                         switch (dirType)
                         {
@@ -285,6 +292,10 @@ public class SingleBlock : MonoBehaviour
         { 
             OnHit();
         }
+        //else if (collision.collider.tag == Tags.obj)
+        //{
+        //    OnHit();
+        //}
     }
 
     private void SetTimerEnd()
