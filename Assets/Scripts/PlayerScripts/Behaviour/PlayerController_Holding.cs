@@ -22,6 +22,7 @@ public partial class PlayerController : MonoBehaviour
         {
             hold_target.parent = pivotObjHolding;
             hold_target.localPosition = Vector3.zero;
+            hold_target.GetComponent<Rigidbody>().isKinematic = true;
         }
     }
 
@@ -39,6 +40,7 @@ public partial class PlayerController : MonoBehaviour
             Vector3 pos = hold_target.localPosition;
             pos.y = 1f;
             hold_target.localPosition = pos;
+            hold_target.GetComponent<Rigidbody>().isKinematic = false;
 
             hold_target = null;
         }
