@@ -210,7 +210,7 @@ public partial class PlayerController : MonoBehaviour
     private RaycastHit Raycast(float distance)
     {
         RaycastHit hit;
-        Vector3 pos = trans.position + Vector3.up;
+        Vector3 pos = trans.position + (Vector3.up * 0.5f);
 
         if (Physics.Raycast(pos, trans.TransformDirection(Vector3.forward), out hit, RAY_DISTANCE))
         {
