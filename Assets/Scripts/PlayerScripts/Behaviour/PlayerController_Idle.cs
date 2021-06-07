@@ -13,7 +13,8 @@ public partial class PlayerController : MonoBehaviour
     private UseKeyActionType useKeyType = UseKeyActionType.None;
 
 
-    private bool blueprintActive = false;
+    private StateUpdateDelegate IdleUpdateDelegate;
+
 
 
     #region <행동 추가시 디폴트 작업>
@@ -47,17 +48,18 @@ public partial class PlayerController : MonoBehaviour
         rb.velocity = moveVelocity + (Vector3.up * verticalVelocity);
 
 
-        if(blueprintActive)
+        if(IdleUpdateDelegate != null)
         {
-            MinimiManager._instance.DrawBlueprintObject(
-                transform.position + transform.TransformDirection(INSTALL_OFFSET),
-                transform.rotation);
+            IdleUpdateDelegate();
         }
     }
 
     
     private void Idle_Exit(PlayerState next)
     {
+        MinimiManager._instance.UnDrawBlueprintObject();
+
+        IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
     }
     #endregion
 
@@ -74,28 +76,20 @@ public partial class PlayerController : MonoBehaviour
             UseKeyAction(hit, useKeyType);
         }
 
-        
+
         // 좌클릭
         if (Input.GetMouseButtonDown(0))
         {
-            if (!MinimiManager._instance.IsEmpty)
+            if (MinimiManager._instance.InstallMinimi())
             {
-                Vector3 installPos = transform.position + transform.TransformDirection(INSTALL_OFFSET);
-
-                if(MinimiManager._instance.InstallMinimi(installPos, transform.rotation))
-                {
-                    blueprintActive = false;
-                    MinimiManager._instance.UnDrawBlueprintObject();
-                }
+                IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
             }
-                
         }
         // 우클릭
         if (Input.GetMouseButtonDown(1))
         {
             MinimiManager._instance.PutInAllMinimis();
-            blueprintActive = false;
-            MinimiManager._instance.UnDrawBlueprintObject();
+            IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
         }
 
         // 블럭 미니미
@@ -103,20 +97,13 @@ public partial class PlayerController : MonoBehaviour
         {
             if(MinimiManager._instance.TakeOutMinimi(MinimiType.Block))
             {
-                blueprintActive = true;
+                IdleUpdateDelegate += MinimiManager._instance.DrawBlueprintObject;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
             MinimiManager._instance.UninstallMinimi();
-
-            if (MinimiManager._instance.IsEmpty)
-            {
-                blueprintActive = false;
-                MinimiManager._instance.UnDrawBlueprintObject();
-            }
-                
         }
 
 

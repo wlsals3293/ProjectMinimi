@@ -82,7 +82,10 @@ public partial class PlayerController : MonoBehaviour
             puase = value;
         }
     }
-    
+
+
+    private delegate void StateUpdateDelegate();
+
 
     private void Awake()
     {
@@ -93,6 +96,11 @@ public partial class PlayerController : MonoBehaviour
 
         Idle_SetState();
         Holding_SetState();
+    }
+
+    private void Start()
+    {
+        MinimiManager._instance.playerTrans = trans;
     }
 
     public void Init()

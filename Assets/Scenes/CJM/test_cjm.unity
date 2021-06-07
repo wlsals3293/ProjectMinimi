@@ -446,6 +446,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0563a33ec43f4b4b977e5450bd158d6, type: 3}
+--- !u!1 &1279763919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1279763920}
+  m_Layer: 0
+  m_Name: StartPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1279763920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279763919}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 66.016266, y: 4.5847397, z: 52.768467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1888072696
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,6 +582,9 @@ MonoBehaviour:
   movementSmoothTime: 0.05
   smoothRotation: 1
   rotationSmoothTime: 0.05
+  isTargetPlayerCamera: 1
+  isMainCamera: 1
+  cameraIdx: 1
 --- !u!1001 &8505380948436151993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -559,6 +592,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1135954480, guid: 888f07bedaf3db749942f592d1cd5e3a, type: 3}
+      propertyPath: startPos
+      value: 
+      objectReference: {fileID: 1279763920}
     - target: {fileID: 8505380948136242161, guid: 888f07bedaf3db749942f592d1cd5e3a, type: 3}
       propertyPath: m_Name
       value: Managers

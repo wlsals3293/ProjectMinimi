@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class MinimiManager : MonoBehaviour
 {
-    private static readonly Vector3 INSTALL_RAY_OFFSET = new Vector3(0.0f, 1.1f, 2.0f);
-
     /// <summary>
     /// 설치 높이 오차 허용값
     /// </summary>
@@ -17,6 +15,8 @@ public class MinimiManager : MonoBehaviour
     /// 한 번에 동시설치되는 최대 개수
     /// </summary>
     public const int MAX_STACK_COUNT = 3;
+
+    private static readonly Vector3 INSTALL_OFFSET = new Vector3(0.0f, 0.0f, 2.0f);
 
 
 
@@ -55,6 +55,8 @@ public class MinimiManager : MonoBehaviour
 
     private bool blueprintActive = false;
     private GameObject[] blueprintObject = new GameObject[MAX_STACK_COUNT];
+
+    public Transform playerTrans = null;
 
 
 
@@ -190,28 +192,30 @@ public class MinimiManager : MonoBehaviour
         }
         onHandMinimiList.Clear();
         onHandMinimiType = MinimiType.None;
+
+        UnDrawBlueprintObject();
     }
 
 
-    public bool InstallMinimi(Vector3 position, Quaternion rotation)
+    public bool InstallMinimi()
     {
-        if (onHandMinimiType == MinimiType.None || onHandMinimiList.Count < 1)
+        if (onHandMinimiType == MinimiType.None || onHandMinimiList.Count < 1 || playerTrans == null)
             return false;
 
 
-        Vector3 installPos;
+        Vector3 targetPos = playerTrans.position + playerTrans.TransformDirection(INSTALL_OFFSET);
 
-        if (!FindGroundPos(position, out installPos))
+        if (!FindGroundPos(ref targetPos))
         {
             return false;
         }
 
-        Minimi parent = GetMergeableMinimi(installPos, mergeDistance);
+        Minimi parent = GetMergeableMinimi(targetPos, mergeDistance);
         
         // 합쳐질 미니미가 없을 때
         if(parent == null)
         {
-            if(CheckInstallArea(installPos, rotation))
+            if(CheckInstallArea(targetPos, playerTrans.rotation))
             {
                 return false;
             }
@@ -223,7 +227,7 @@ public class MinimiManager : MonoBehaviour
                 parent.AddChild(onHandMinimiList[i]);
             }
 
-            parent.Install(installPos, rotation);
+            parent.Install(targetPos, playerTrans.rotation);
         }
         // 합쳐질 미니미가 있을 때
         else
@@ -238,6 +242,8 @@ public class MinimiManager : MonoBehaviour
 
         onHandMinimiList.Clear();
         onHandMinimiType = MinimiType.None;
+
+        UnDrawBlueprintObject();
 
         return true;
     }
@@ -329,7 +335,7 @@ public class MinimiManager : MonoBehaviour
             LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
     }
 
-    public bool FindGroundPos(Vector3 targetPosition, out Vector3 foundPosition)
+    public bool FindGroundPos(ref Vector3 targetPosition)
     {
         Vector3 origin = targetPosition + Vector3.up * (INSTALL_HEIGHT_TOLERANCE * 0.5f);
         RaycastHit hit;
@@ -338,22 +344,23 @@ public class MinimiManager : MonoBehaviour
             LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
 
         if(result)
-            foundPosition = origin + Vector3.down * hit.distance;
-        else
-            foundPosition = targetPosition;
+            targetPosition = origin + Vector3.down * hit.distance;
 
         return result;
     }
 
-    public void DrawBlueprintObject(Vector3 targetPosition, Quaternion targetRotation)
+    public void DrawBlueprintObject()
     {
+        if (playerTrans == null)
+            return;
+
         blueprintActive = true;
 
-        Vector3 groundPos;
+        Vector3 targetPos = playerTrans.position + playerTrans.TransformDirection(INSTALL_OFFSET);
 
-        if (FindGroundPos(targetPosition, out groundPos))
+        if (FindGroundPos(ref targetPos))
         {
-            bool possibility = !CheckInstallArea(groundPos, targetRotation);
+            bool possibility = !CheckInstallArea(targetPos, playerTrans.rotation);
 
             for (int i = 0; i < onHandMinimiList.Count; i++)
             {
@@ -362,8 +369,8 @@ public class MinimiManager : MonoBehaviour
                     blueprintObject[i].SetActive(true);
                 }
 
-                blueprintObject[i].transform.position = groundPos + Vector3.up * (2.0f * i);
-                blueprintObject[i].transform.rotation = targetRotation;
+                blueprintObject[i].transform.SetPositionAndRotation(
+                    targetPos + Vector3.up * (2.0f * i), playerTrans.rotation);
 
                 // TODO: 설치 가능 여부에 따라 머티리얼을 바꿔 플레이어에게 표시
             }

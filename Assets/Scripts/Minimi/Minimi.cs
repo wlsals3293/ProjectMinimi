@@ -153,8 +153,9 @@ public class Minimi : MonoBehaviour
     public virtual void GoIn()
     {
         // 임시로 애니메이션이나 이동과정 생략
-        gameObject.SetActive(false);
+        transform.position = Vector3.zero;
         minimiState = MinimiState.InBag;
+        gameObject.SetActive(false);
     }
 
     /// <summary>
