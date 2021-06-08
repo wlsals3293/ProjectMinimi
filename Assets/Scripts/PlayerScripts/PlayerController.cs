@@ -1,38 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ECM.Controllers;
 
 
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : BaseCharacterController
 {
-    [Header("Default Status")]
-    // Move
-    [SerializeField] private float runSpeed = 10;
-    [SerializeField] private float speedSmoothTime = 0.1f;
-    private float speedSmoothVelocity;
-    private float currentSpeed;
-    //public float maxGroundAngle = 120;
-    //public float maxStepHeight = 0.1f;
-    private bool isOnGround = true;
-    private float verticalVelocity = 0;
-    private Vector3 moveDirection;
-    private Vector3 moveVelocity = Vector3.zero;
 
-    // Turn
-    public float turnSmoothTime = 0.1f;
-    private float turnSmoothVelocity;
+    
+    private bool leftClick;
+    private bool rightClick;
 
-    // jump
-    [SerializeField] private float jumpPower = 18;
-    private bool canJump = true;
-
-    // air
-    [SerializeField] private float gravity = -42f;
+    private bool key_alpha1, key_alpha2, key_alpha3;    // 1, 2, 3
+    private bool key_interact;  // E
+    private bool key_f;         // F
 
 
-    private LayerMask steppableMask;
 
-    private Rigidbody rb;
     private Transform cameraT
     {
         get
@@ -57,42 +41,18 @@ public partial class PlayerController : MonoBehaviour
     private PlayerCharacter playerCharacter = null;
     public PlayerCharacter PlayerCharacter { get => playerCharacter; }
 
-    // input
-    private Vector3 input;
-    private Vector3 inputDir;
-    private bool jumpInput;
-
     private FSMController fsm = new FSMController();
-
-    private bool puase = false;
-    public bool Puase 
-    { 
-        get
-        {
-            return puase;
-        }
-        set
-        {
-            if(value)
-            {
-                input = Vector3.zero;
-            }
-
-            rb.isKinematic = value;
-            puase = value;
-        }
-    }
 
 
     private delegate void StateUpdateDelegate();
 
 
-    private void Awake()
-    {
-        playerCharacter = GetComponent<PlayerCharacter>();
-        rb = GetComponent<Rigidbody>();
 
-        steppableMask = LayerMask.GetMask("Ground", "Object", "Minimi");
+    public override void Awake()
+    {
+        base.Awake();
+
+        playerCharacter = GetComponent<PlayerCharacter>();
 
         Idle_SetState();
         Holding_SetState();
@@ -106,78 +66,62 @@ public partial class PlayerController : MonoBehaviour
     public void Init()
     {
         ChangeState(PlayerState.Idle);
-        Puase = false;
     }
-
 
     public void ChangeState(PlayerState state)
     {
         fsm.ChangeState(state);
     }
 
-    private void Update()
+    public override void Update()
     {
+        HandleInput();
+
         // TODO 중력 생각 2가지 pause
-        if (Puase == false)
+        if (isPaused)
+            return;
+
+        fsm.Update();
+    }
+
+    protected override void FixedUpdate()
+    {
+        Pause();
+
+        if (isPaused)
+            return;
+
+        fsm.FixedUpdate();
+    }
+
+    protected override void HandleInput()
+    {
+        // Toggle pause / resume.
+        // By default, will restore character's velocity on resume (eg: restoreVelocityOnResume = true)
+
+        if (Input.GetKeyDown(KeyCode.P))
+            pause = !pause;
+
+        // Handle user input
+
+        moveDirection = new Vector3
         {
-            fsm.Update();
-        }
+            x = Input.GetAxisRaw("Horizontal"),
+            y = 0.0f,
+            z = Input.GetAxisRaw("Vertical")
+        };
+
+        leftClick = Input.GetMouseButtonDown(0);
+        rightClick = Input.GetMouseButtonDown(1);
+
+        jump = Input.GetButton("Jump");
+        key_interact = Input.GetKeyDown(KeyCode.E);
+        key_f = Input.GetKeyDown(KeyCode.F);
+        key_alpha1 = Input.GetKeyDown(KeyCode.Alpha1);
+
     }
 
-    private void Move()
-    {
-        float targetSpeed = input.sqrMagnitude > 0.01f ? runSpeed : 0.0f;
 
-        currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedSmoothVelocity, speedSmoothTime);
-        moveVelocity = moveDirection * currentSpeed;
-    }
-
-
-    private void DetectGround()
-    {
-        RaycastHit hit;
-        bool isStepped = Physics.SphereCast(
-            rb.position + (Vector3.up * 0.6f), 0.5f, Vector3.down, out hit,
-            0.11f, steppableMask, QueryTriggerInteraction.Ignore);
-
-        if (isStepped && verticalVelocity <= 0.0f)
-        {
-            verticalVelocity = 0.0f;
-
-            if (!isOnGround)
-            {
-                isOnGround = true;
-                canJump = true;
-            }
-        }
-        else if (!isStepped && isOnGround)
-        {
-            isOnGround = false;
-        }
-    }
-
-    private void Turn()
-    {
-        if (input != Vector3.zero)
-        {
-            float targetRotation = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
-            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, turnSmoothTime);
-
-            // 회전의 기본이 되는 코드
-            //transform.eulerAngles = Vector3.up * Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg;
-        }
-    }
-
-    private void Jump()
-    {
-        verticalVelocity = jumpPower;
-        canJump = false;
-    }
-
-    private void ApplyGravity()
-    {
-        verticalVelocity += gravity * Time.deltaTime;
-    }
 
     private string GetHitTag()
     {

@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using ECM.Controllers;
 
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : BaseCharacterController
 {
     [Header("Behaviour Holding")]
     [SerializeField] private Transform pivotObjHolding = null;
@@ -13,7 +14,7 @@ public partial class PlayerController : MonoBehaviour
     {
         PlayerManager.Instance.AddBehaviour(
             PlayerState.Holding
-            , new SimpleBehaviour(Holding_Enter, Holding_Update, Holding_Exit));
+            , new SimpleBehaviour(Holding_Enter, Holding_Update, Holding_FixedUpdate, Holding_Exit));
     }
 
     private void Holding_Enter(PlayerState prev)
@@ -31,6 +32,11 @@ public partial class PlayerController : MonoBehaviour
     private void Holding_Update()
     {
         Idle_Update();
+    }
+
+    private void Holding_FixedUpdate()
+    {
+
     }
 
     private void Holding_Exit(PlayerState next)

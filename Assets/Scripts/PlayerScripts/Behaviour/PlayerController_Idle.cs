@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ECM.Controllers;
+using ECM.Common;
 
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : BaseCharacterController
 {
     private const float RAY_DISTANCE = 5f;
-
-    private static readonly Vector3 INSTALL_OFFSET = new Vector3(0.0f, 0.0f, 2.0f);
 
    
     private UseKeyActionType useKeyType = UseKeyActionType.None;
@@ -22,7 +22,7 @@ public partial class PlayerController : MonoBehaviour
     {
         PlayerManager.Instance.AddBehaviour(
             PlayerState.Idle
-            , new SimpleBehaviour(Idle_Enter, Idle_Update, Idle_Exit));
+            , new SimpleBehaviour(Idle_Enter, Idle_Update, Idle_FixedUpdate, Idle_Exit));
     }
 
     private void Idle_Enter(PlayerState prev)
@@ -33,27 +33,19 @@ public partial class PlayerController : MonoBehaviour
     private void Idle_Update()
     {
         Idle_GetInput();
-        DetectGround();
-        if(!isOnGround)
-            ApplyGravity();
+        UpdateRotation();
+        //Animate();
 
-        if (jumpInput && canJump)
-        {
-            Jump();
-        }
-
-        Move();
-        Turn();
-
-        rb.velocity = moveVelocity + (Vector3.up * verticalVelocity);
-
-
-        if(IdleUpdateDelegate != null)
+        if (IdleUpdateDelegate != null)
         {
             IdleUpdateDelegate();
         }
     }
 
+    private void Idle_FixedUpdate()
+    {
+        Move();
+    }
     
     private void Idle_Exit(PlayerState next)
     {
@@ -70,7 +62,7 @@ public partial class PlayerController : MonoBehaviour
         RaycastHit hit = Raycast(RAY_DISTANCE);
         useKeyType = UpdateUseKeyActionType(hit);
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (key_interact)
         {
             Debug.LogError("Input E Key");
             UseKeyAction(hit, useKeyType);
@@ -78,7 +70,7 @@ public partial class PlayerController : MonoBehaviour
 
 
         // 좌클릭
-        if (Input.GetMouseButtonDown(0))
+        if (leftClick)
         {
             if (MinimiManager._instance.InstallMinimi())
             {
@@ -86,14 +78,14 @@ public partial class PlayerController : MonoBehaviour
             }
         }
         // 우클릭
-        if (Input.GetMouseButtonDown(1))
+        if (rightClick)
         {
             MinimiManager._instance.PutInAllMinimis();
             IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
         }
 
         // 블럭 미니미
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (key_alpha1)
         {
             if(MinimiManager._instance.TakeOutMinimi(MinimiType.Block))
             {
@@ -101,27 +93,22 @@ public partial class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        // F Key
+        if (key_f)
         {
             MinimiManager._instance.UninstallMinimi();
         }
 
 
-        input = new Vector3(
-            Input.GetAxisRaw("Horizontal"),
-            0.0f,
-            Input.GetAxisRaw("Vertical")
-            );
-        inputDir = input.normalized;
-        jumpInput = Input.GetButton("Jump");
 
         if (CameraManager.Instance.CurrentCameraCtrl != null && CameraManager.Instance.CurrentCameraCtrl.IsMainCamera)
         {
-            moveDirection = (input.z * Vector3.Scale(cameraT.forward, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+            //moveDirection = (input.z * Vector3.Scale(cameraT.forward, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+            moveDirection = moveDirection.relativeTo(cameraT);
         }
         else
         {
-            moveDirection = (input.z * Vector3.Scale(cameraT.up, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
+            //moveDirection = (input.z * Vector3.Scale(cameraT.up, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
         }
     }
 

@@ -21,6 +21,14 @@ public class FSMController
         }
     }
 
+    public void FixedUpdate()
+    {
+        if(curBehaviour != null)
+        {
+            curBehaviour.FixedUpdate();
+        }
+    }
+
     public void ChangeState(PlayerState nextState)
     {
         if (CurState == nextState)

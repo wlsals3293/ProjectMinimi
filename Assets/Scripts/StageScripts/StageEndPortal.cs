@@ -16,7 +16,7 @@ public class StageEndPortal : MonoBehaviour
 
     private void StageEndProcess()
     {
-        PlayerManager.Instance.PlayerCtrl.Puase = true;
+        PlayerManager.Instance.PlayerCtrl.pause = true;
         UIManager.Instance.OpenUI_EndStage();
     }
 

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ECM.Controllers;
 
-public partial class PlayerController : MonoBehaviour
+public partial class PlayerController : BaseCharacterController
 {
     [Header("Climb")]
     [SerializeField] private float climbSpeed = 5.0f;
@@ -13,7 +14,7 @@ public partial class PlayerController : MonoBehaviour
     {
         PlayerManager.Instance.AddBehaviour(
             PlayerState.Climb,
-            new SimpleBehaviour(Climb_Enter, Climb_Update, Climb_Exit)
+            new SimpleBehaviour(Climb_Enter, Climb_Update, Climb_FixedUpdate, Climb_Exit)
             );
     }
 
@@ -25,6 +26,11 @@ public partial class PlayerController : MonoBehaviour
     private void Climb_Update()
     {
         
+    }
+
+    private void Climb_FixedUpdate()
+    {
+
     }
 
     private void Climb_Exit(PlayerState next)

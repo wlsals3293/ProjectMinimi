@@ -20,7 +20,7 @@ public class UIManager : SimpleManager<UIManager>
 
 
         endPanel.SetActive(true);
-        PlayerManager.Instance.PlayerCtrl.Puase = true;
+        PlayerManager.Instance.PlayerCtrl.pause = true;
     }
 
     // TODO 이것도 임시 UI Panel별로 스크립트 별도 생성하고 넣기

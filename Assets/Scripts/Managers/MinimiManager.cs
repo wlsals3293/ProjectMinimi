@@ -18,12 +18,14 @@ public class MinimiManager : MonoBehaviour
 
     private static readonly Vector3 INSTALL_OFFSET = new Vector3(0.0f, 0.0f, 2.0f);
 
+    private static readonly Color COLOR_VALID = new Color(0.4f, 0.67f, 0.97f, 0.5f);
+    private static readonly Color COLOR_INVALID = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+
 
 
     public static MinimiManager _instance = null;
 
-    [SerializeField] private GameObject boxMinimiRef = null;
-
+    
 
     public bool IsEmpty { get => onHandMinimiList.Count == 0; }
 
@@ -53,10 +55,14 @@ public class MinimiManager : MonoBehaviour
     private MinimiType onHandMinimiType = MinimiType.None;
 
 
-    private bool blueprintActive = false;
-    private GameObject[] blueprintObject = new GameObject[MAX_STACK_COUNT];
+    [SerializeField] private GameObject boxMinimiRef = null;
 
-    public Transform playerTrans = null;
+    private bool blueprintActive = false;
+    private bool wasValid = false;
+    private GameObject[] blueprintObject = new GameObject[MAX_STACK_COUNT];
+    private Renderer[] blueprintObjectRenderers = new Renderer[MAX_STACK_COUNT];
+
+    [HideInInspector] public Transform playerTrans = null;
 
 
 
@@ -78,6 +84,7 @@ public class MinimiManager : MonoBehaviour
             for (int i = 0; i < blueprintObject.Length; i++)
             {
                 blueprintObject[i] = Instantiate(boxMinimiRef);
+                blueprintObjectRenderers[i] = blueprintObject[i].GetComponentInChildren<Renderer>();
                 blueprintObject[i].SetActive(false);
             }
         }
@@ -277,13 +284,74 @@ public class MinimiManager : MonoBehaviour
         }
     }
 
+    public void DrawBlueprintObject()
+    {
+        if (playerTrans == null)
+            return;
+
+        blueprintActive = true;
+
+        Vector3 targetPos = playerTrans.position + playerTrans.TransformDirection(INSTALL_OFFSET);
+
+        if (FindGroundPos(ref targetPos))
+        {
+            bool validation = !CheckInstallArea(targetPos, playerTrans.rotation);
+            bool colorChange = validation != wasValid;
+
+            for (int i = 0; i < onHandMinimiList.Count; i++)
+            {
+                if (!blueprintObject[i].activeSelf)
+                {
+                    blueprintObject[i].SetActive(true);
+                }
+
+                blueprintObject[i].transform.SetPositionAndRotation(
+                    targetPos + Vector3.up * (2.0f * i), playerTrans.rotation);
+
+
+                // 설치 가능 여부에 따라 머티리얼을 바꿔 플레이어에게 표시
+                if (colorChange && blueprintObjectRenderers[i] != null)
+                {
+                    if (validation)
+                    {
+                        blueprintObjectRenderers[i].material.color = COLOR_VALID;
+                    }
+                    else
+                    {
+                        blueprintObjectRenderers[i].material.color = COLOR_INVALID;
+                    }
+                }
+
+            }
+
+            wasValid = validation;
+        }
+        else
+        {
+            UnDrawBlueprintObject();
+        }
+    }
+
+    public void UnDrawBlueprintObject()
+    {
+        if (!blueprintActive)
+            return;
+
+        blueprintActive = false;
+
+        for (int i = 0; i < blueprintObject.Length; i++)
+        {
+            blueprintObject[i].SetActive(false);
+        }
+    }
+
     /// <summary>
     /// 지정한 위치에서 합치기가 가능한 가장 가까운 미니미를 반환합니다. 없을 경우 null
     /// </summary>
     /// <param name="origin">찾는 위치</param>
     /// <param name="radius">찾을 범위</param>
     /// <returns>찾은 미니미</returns>
-    public Minimi GetMergeableMinimi(Vector3 origin, float radius)
+    private Minimi GetMergeableMinimi(Vector3 origin, float radius)
     {
         Collider[] minimis = Physics.OverlapSphere(origin, radius, LayerMask.GetMask("Minimi"));
         float nearestDistanceSqr = 99999.0f;
@@ -326,16 +394,16 @@ public class MinimiManager : MonoBehaviour
     /// <param name="targetPosition">검사할 위치</param>
     /// <param name="targetRotation">박스의 회전값</param>
     /// <returns>물체 존재 여부</returns>
-    public bool CheckInstallArea(Vector3 targetPosition, Quaternion targetRotation)
+    private bool CheckInstallArea(Vector3 targetPosition, Quaternion targetRotation)
     {
-        Vector3 halfExt = new Vector3(1.0f, 1.0f, 1.0f);
+        Vector3 halfExt = new Vector3(0.95f, 0.95f, 0.95f);
         Vector3 center = targetPosition + Vector3.up * halfExt.y;
 
         return Physics.CheckBox(center, halfExt, targetRotation,
             LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
     }
 
-    public bool FindGroundPos(ref Vector3 targetPosition)
+    private bool FindGroundPos(ref Vector3 targetPosition)
     {
         Vector3 origin = targetPosition + Vector3.up * (INSTALL_HEIGHT_TOLERANCE * 0.5f);
         RaycastHit hit;
@@ -349,49 +417,5 @@ public class MinimiManager : MonoBehaviour
         return result;
     }
 
-    public void DrawBlueprintObject()
-    {
-        if (playerTrans == null)
-            return;
-
-        blueprintActive = true;
-
-        Vector3 targetPos = playerTrans.position + playerTrans.TransformDirection(INSTALL_OFFSET);
-
-        if (FindGroundPos(ref targetPos))
-        {
-            bool possibility = !CheckInstallArea(targetPos, playerTrans.rotation);
-
-            for (int i = 0; i < onHandMinimiList.Count; i++)
-            {
-                if (!blueprintObject[i].activeSelf)
-                {
-                    blueprintObject[i].SetActive(true);
-                }
-
-                blueprintObject[i].transform.SetPositionAndRotation(
-                    targetPos + Vector3.up * (2.0f * i), playerTrans.rotation);
-
-                // TODO: 설치 가능 여부에 따라 머티리얼을 바꿔 플레이어에게 표시
-            }
-
-        }
-        else
-        {
-            UnDrawBlueprintObject();
-        }
-    }
-
-    public void UnDrawBlueprintObject()
-    {
-        if (!blueprintActive)
-            return;
-
-        blueprintActive = false;
-
-        for (int i = 0; i < blueprintObject.Length; i++)
-        {
-            blueprintObject[i].SetActive(false);
-        }
-    }
+    
 }
