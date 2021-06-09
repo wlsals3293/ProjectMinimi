@@ -34,7 +34,7 @@ public partial class PlayerController : BaseCharacterController
     {
         Idle_GetInput();
         UpdateRotation();
-        //Animate();
+        Animate();
 
         if (IdleUpdateDelegate != null)
         {

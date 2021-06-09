@@ -16,6 +16,8 @@ public partial class PlayerController : BaseCharacterController
     private bool key_f;         // F
 
 
+    private Rigidbody rb = null;
+
 
     private Transform cameraT
     {
@@ -52,7 +54,9 @@ public partial class PlayerController : BaseCharacterController
     {
         base.Awake();
 
+        rb = GetComponent<Rigidbody>();
         playerCharacter = GetComponent<PlayerCharacter>();
+        animator = GetComponentInChildren<Animator>();
 
         Idle_SetState();
         Holding_SetState();
@@ -119,6 +123,16 @@ public partial class PlayerController : BaseCharacterController
         key_f = Input.GetKeyDown(KeyCode.F);
         key_alpha1 = Input.GetKeyDown(KeyCode.Alpha1);
 
+    }
+
+    protected override void Animate()
+    {
+        if (animator == null)
+            return;
+
+        bool isRun = movement.velocity.sqrMagnitude > 9.0f;
+
+        animator.SetBool("Run", isRun);
     }
 
 
