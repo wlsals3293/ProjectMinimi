@@ -36,7 +36,7 @@ public partial class PlayerController : BaseCharacterController
 
     private void Holding_FixedUpdate()
     {
-
+        Move();
     }
 
     private void Holding_Exit(PlayerState next)
@@ -46,7 +46,7 @@ public partial class PlayerController : BaseCharacterController
             hold_target.parent = null;
             // TODO : 좌표지정 수정필요
             Vector3 pos = hold_target.localPosition;
-            pos.y = 1f;
+            //pos.y = 1f;
             hold_target.localPosition = pos;
             Rigidbody rig = hold_target.GetComponent<Rigidbody>();
             if(rig != null)
