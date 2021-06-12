@@ -63,6 +63,7 @@ MonoBehaviour:
   pivot: {fileID: 2547849016792863477}
   bigMesh: {fileID: 3218983918127714758}
   smallMesh: {fileID: 3218983918373039453}
+  mass: 2
 --- !u!1 &3218983918127714758
 GameObject:
   m_ObjectHideFlags: 0
