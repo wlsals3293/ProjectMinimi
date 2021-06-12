@@ -8,7 +8,7 @@ public class Minimi : MonoBehaviour
 
 
     /// 필드
-    
+
     [SerializeField] private Transform pivot = null;
 
     [SerializeField] private GameObject bigMesh = null;
@@ -31,7 +31,7 @@ public class Minimi : MonoBehaviour
     /// </summary>
     protected Minimi parentMinimi = null;
 
-    
+
 
 
     /// 프로퍼티
@@ -52,6 +52,20 @@ public class Minimi : MonoBehaviour
     {
         get { return (parentMinimi == null && childMinimis.Count > 0); }
     }
+
+    private Transform trans = null;
+
+    public new Transform transform
+    {
+        get 
+        {
+            if (trans == null)
+                trans = GetComponent<Transform>();
+
+            return trans;
+        }
+    }   
+
     
 
     public virtual void Initialize()

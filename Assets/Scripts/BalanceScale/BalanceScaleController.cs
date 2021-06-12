@@ -14,4 +14,5 @@ public class BalanceScaleController : MonoBehaviour
             balanceScale.AddMinimi(other, isLeft);
         }
     }
+
 }

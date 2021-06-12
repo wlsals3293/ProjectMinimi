@@ -347,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxMass: 5
   moveHigh: 6
-  moveSpeed: 0.3
+  moveSpeed: 0.5
   leftMoveTarget: {fileID: 3934459681453036296}
   leftDefaultMass: 3
   rightMoveTarget: {fileID: 1531448597384843417}

@@ -29,9 +29,11 @@ public class BalanceScale : MonoBehaviour
     private float prevLeftMass = 0f;
     private float prevRightMass = 0f;
 
-    private float halfHigh = 0f;
     private float highPerMass = 0f;
     private float timer = 0f;
+
+    private float startLeftY = 0f;
+    private float startRightY = 0f;
 
     private void Awake()
     {
@@ -47,7 +49,6 @@ public class BalanceScale : MonoBehaviour
 
     private void Init()
     {
-        halfHigh = moveHigh * 0.5f;
         highPerMass = moveHigh / maxMass;
 
         UpdateMass(true);
@@ -73,6 +74,24 @@ public class BalanceScale : MonoBehaviour
         }
     }
 
+    public void RemoveMinimi(Collider minimi, bool left)
+    {
+        if (minimi == null)
+            return;
+
+        int key = minimi.GetHashCode();
+        Dictionary<int, Minimi> dic = null;
+        if (left)
+            dic = leftMinimiDic;
+        else
+            dic = rightMinimiDic;
+
+        if (dic.ContainsKey(key))
+        {
+            dic.Remove(key);
+        }
+    }
+
     private void Update()
     {
         UpdateMass();
@@ -83,17 +102,25 @@ public class BalanceScale : MonoBehaviour
         float curLeftMass = CalcTotalMass(leftMinimiDic, leftDefaultMass);
         float curRightMass = CalcTotalMass(rightMinimiDic, rightDefaultMass);
 
-        //if (prevLeftMass != curLeftMass || prevRightMass != curRightMass)
-        //{
-        //    prevLeftMass = curLeftMass;
-        //    prevRightMass = curRightMass;
-        //}
-
-        if (prevLeftMass == curLeftMass && prevRightMass == curRightMass)
+        if (prevLeftMass != curLeftMass || prevRightMass != curRightMass)
         {
+            prevLeftMass = curLeftMass;
+            prevRightMass = curRightMass;
+
+            startLeftY = leftMoveTarget.localPosition.y;
+            startRightY = rightMoveTarget.localPosition.y;
+
             timer = 0f;
-            return;
         }
+        else
+        {
+            if (timer >= 1f)
+            {
+                return;
+            }
+        }
+
+
 
         bool leftDown = false;
         if (curLeftMass > curRightMass)         // Left Down
@@ -108,43 +135,49 @@ public class BalanceScale : MonoBehaviour
         float mass = Mathf.Abs(curLeftMass - curRightMass);
         mass = Mathf.Min(mass, maxMass);
         Transform lowT, highT;
+        Dictionary<int, Minimi> lowDic, highDic;
+
+        float lowY, highY = 0f;
 
         if (leftDown)
         {
             lowT = leftMoveTarget;
             highT = rightMoveTarget;
+
+            lowY = startLeftY;
+            highY = startRightY;
+
+            lowDic = leftMinimiDic;
+            highDic = rightMinimiDic;
         }
         else
         {
             lowT = rightMoveTarget;
             highT = leftMoveTarget;
-        }
 
-        float lowY = 0f;
-        float highY = 0f;
+            lowY = startRightY;
+            highY = startLeftY;
+
+            lowDic = rightMinimiDic;
+            highDic = leftMinimiDic;
+        }
 
         if (quick == true)
             timer = 1f;
 
-        lowY = Mathf.Lerp(lowT.localPosition.y, -(mass * highPerMass), timer);
-        lowT.localPosition = GetChangeLocalPosY(lowT, lowY);
+        timer += Time.deltaTime * moveSpeed;
 
-        highY = Mathf.Lerp(highT.localPosition.y, mass * highPerMass, timer);
-        highT.localPosition = GetChangeLocalPosY(highT, highY);
+        float y = Mathf.Lerp(lowY, -(mass * highPerMass), timer);
+        float ry = lowT.localPosition.y - y;
 
-        // 그냥하면 mass == 0 일때 infinity 에러
-        timer += moveSpeed * Time.deltaTime / (mass + 1) * 0.01f;
+        lowT.localPosition = GetChangeLocalPosY(lowT, y);
+        MoveMinimi(lowDic, -ry);
 
-        if (timer >= 1f)
-        {
-            prevLeftMass = curLeftMass;
-            prevRightMass = curRightMass;
+        y = Mathf.Lerp(highY, mass * highPerMass, timer);
+        ry = highT.localPosition.y - y;
 
-            lowT.localPosition = GetChangeLocalPosY(lowT, (-highPerMass * mass));
-            highT.localPosition = GetChangeLocalPosY(highT, (highPerMass * mass));
-
-            timer = 0f;
-        }
+        highT.localPosition = GetChangeLocalPosY(highT, y);
+        MoveMinimi(highDic, ry);
     }
 
     private Vector3 GetChangeLocalPosY(Transform trans, float y)
@@ -152,16 +185,47 @@ public class BalanceScale : MonoBehaviour
         return new Vector3(trans.localPosition.x, y, trans.localPosition.z);
     }
 
+    private void MoveMinimi(Dictionary<int, Minimi> dic, float y)
+    {
+        foreach (var item in dic.Values)
+        {
+            if (item.Type == MinimiType.Block)
+            {
+                if (item.gameObject.activeInHierarchy)
+                {
+                    item.transform.localPosition 
+                        = GetChangeLocalPosY(item.transform, item.transform.localPosition.y + y);
+                }               
+            }
+        }
+
+    }
+
     private float CalcTotalMass(Dictionary<int, Minimi> dic, float defaultMass)
     {
         float totalMass = defaultMass;
 
-        foreach (var item in dic.Values)
+        List<int> removeKeys = new List<int>();
+
+
+        foreach (var item in dic)
         {
-            if(item.Type == MinimiType.Block)
+            if (item.Value.gameObject.activeInHierarchy)
             {
-                totalMass += item.Mass;
+                if (item.Value.Type == MinimiType.Block)
+                {
+                    totalMass += item.Value.Mass;
+                }
             }
+            else
+            {
+                removeKeys.Add(item.Key);
+            }
+        }
+
+        for (int i = 0; i < removeKeys.Count; i++)
+        {
+            dic.Remove(removeKeys[i]);
         }
 
         return totalMass;
