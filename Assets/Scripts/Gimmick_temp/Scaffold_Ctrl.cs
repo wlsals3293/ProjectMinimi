@@ -107,7 +107,6 @@ public class Scaffold_Ctrl : Switch_C_OBJ
             if (switchs.isActivate)
             {
                 i++;
-                Debug.Log("dd");
             }
         }
 
