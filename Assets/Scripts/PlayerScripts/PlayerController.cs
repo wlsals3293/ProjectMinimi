@@ -59,7 +59,8 @@ public partial class PlayerController : BaseCharacterController
         animator = GetComponentInChildren<Animator>();
 
         Idle_SetState();
-        Holding_SetState();
+        Hold_SetState();
+        Dead_SetState();
     }
 
     private void Start()

@@ -153,7 +153,7 @@ public partial class PlayerController : BaseCharacterController
             }
         }
 
-        if (fsm.CurState == PlayerState.Holding && hold_target != null)
+        if (fsm.CurState == PlayerState.Hold && hold_target != null)
         {
             // OnOff Hold
             return UseKeyActionType.Hold;
@@ -168,9 +168,9 @@ public partial class PlayerController : BaseCharacterController
         switch (fsm.CurState)
         {
             case PlayerState.Idle:
-                fsm.ChangeState(PlayerState.Holding);
+                fsm.ChangeState(PlayerState.Hold);
                 break;
-            case PlayerState.Holding:
+            case PlayerState.Hold:
                 fsm.ChangeState(PlayerState.Idle);
                 break;
         }

@@ -4,20 +4,20 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
-    [Header("Behaviour Holding")]
+    [Header("Behaviour Hold")]
     [SerializeField] private Transform pivotObjHolding = null;
 
     private Transform hold_target = null;
 
     #region <행동 추가시 디폴트 작업>
-    private void Holding_SetState()
+    private void Hold_SetState()
     {
         PlayerManager.Instance.AddBehaviour(
-            PlayerState.Holding
-            , new SimpleBehaviour(Holding_Enter, Holding_Update, Holding_FixedUpdate, Holding_Exit));
+            PlayerState.Hold
+            , new SimpleBehaviour(Hold_Enter, Hold_Update, Hold_FixedUpdate, Hold_Exit));
     }
 
-    private void Holding_Enter(PlayerState prev)
+    private void Hold_Enter(PlayerState prev)
     {
         if (hold_target != null)
         {
@@ -29,17 +29,17 @@ public partial class PlayerController : BaseCharacterController
         }
     }
 
-    private void Holding_Update()
+    private void Hold_Update()
     {
         Idle_Update();
     }
 
-    private void Holding_FixedUpdate()
+    private void Hold_FixedUpdate()
     {
         Move();
     }
 
-    private void Holding_Exit(PlayerState next)
+    private void Hold_Exit(PlayerState next)
     {
         if (hold_target != null)
         {
