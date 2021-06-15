@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class PlayerManager : SimpleManager<PlayerManager>
 {
+    /// <summary>
+    /// 플레이어가 이 높이보다 낮아지면 사망함
+    /// </summary>
+    [SerializeField] private float killY = 10.0f;
+
     private PlayerController playerCtrl = null;
 
     public PlayerController PlayerCtrl { get => playerCtrl; }
@@ -19,6 +24,14 @@ public class PlayerManager : SimpleManager<PlayerManager>
         base.Awake();
 
         CreatePlayer();
+    }
+
+    private void Update()
+    {
+        /*if(PlayerCtrl.movement.cachedRigidbody.position.y < killY)
+        {
+            PlayerCtrl.ChangeState(PlayerState.Dead);
+        }*/
     }
 
 

@@ -33,16 +33,9 @@ public enum PlayerState
 {
     None,
     Idle,
-    Run,
-
-    Jump_Start,
-    Air,
-    Jump_End,
     Dead,
 
-    Hold_Start,
-    Holding,
-    Hold_End,
+    Hold,
 
     Climb,
 }

@@ -8,12 +8,14 @@ public class Minimi : MonoBehaviour
 
 
     /// 필드
-    
+
     [SerializeField] private Transform pivot = null;
 
     [SerializeField] private GameObject bigMesh = null;
     [SerializeField] private GameObject smallMesh = null;
 
+    [Space]
+    [SerializeField] private float mass = 2f;
 
     protected MinimiType minimiType;
     protected MinimiState minimiState = MinimiState.None;
@@ -31,12 +33,13 @@ public class Minimi : MonoBehaviour
 
 
 
+
     /// 프로퍼티
 
     public MinimiType Type { get => minimiType; }
     public MinimiState State { get => minimiState; }
     public Minimi Parent { get => parentMinimi; }
-
+    public float Mass { get => mass; }
     /// <summary>
     /// 합쳐진 자식 미니미의 개수
     /// </summary>
@@ -49,6 +52,20 @@ public class Minimi : MonoBehaviour
     {
         get { return (parentMinimi == null && childMinimis.Count > 0); }
     }
+
+    private Transform trans = null;
+
+    public new Transform transform
+    {
+        get 
+        {
+            if (trans == null)
+                trans = GetComponent<Transform>();
+
+            return trans;
+        }
+    }   
+
     
 
     public virtual void Initialize()
