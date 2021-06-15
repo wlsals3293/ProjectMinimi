@@ -17,7 +17,10 @@ public partial class PlayerController : BaseCharacterController
 
     private void Dead_Enter(PlayerState prev)
     {
+        pause = true;
         PlayerCharacter.SetHP(0);
+
+        UIManager.Instance.OpenUI_Death();
     }
 
     private void Dead_Update()

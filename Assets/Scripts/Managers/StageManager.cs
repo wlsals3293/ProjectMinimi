@@ -34,7 +34,7 @@ public class StageManager : SimpleManager<StageManager>
     {
         checkpoints = inCheckpoints;
 
-        if (inCheckpoints == null)
+        if (inCheckpoints == null || inCheckpoints.Count <= 0)
         {
             currentCheckpoint = -1;
             return;
@@ -61,7 +61,8 @@ public class StageManager : SimpleManager<StageManager>
 
     public Transform GetCurrentCheckpoint()
     {
-        if (checkpoints == null || currentCheckpoint >= checkpoints.Count)
+        if (checkpoints == null || currentCheckpoint < 0 ||
+            currentCheckpoint >= checkpoints.Count)
             return null;
 
         return checkpoints[currentCheckpoint].transform;

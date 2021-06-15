@@ -9,7 +9,7 @@ public class MinimiManager : MonoBehaviour
     /// <summary>
     /// 설치 높이 오차 허용값
     /// </summary>
-    private const float INSTALL_HEIGHT_TOLERANCE = 1.0f;
+    private const float INSTALL_HEIGHT_TOLERANCE = 2.0f;
 
     /// <summary>
     /// 한 번에 동시설치되는 최대 개수
@@ -149,6 +149,8 @@ public class MinimiManager : MonoBehaviour
             return;
 
         ownMinimiLists[minimi.Type].Add(minimi);
+
+        minimi.GoIn();
     }
 
     /// <summary>

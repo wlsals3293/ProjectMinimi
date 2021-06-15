@@ -6,8 +6,13 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
+    [Header("Config")]
+    /// <summary>
+    /// 플레이어가 이 높이보다 낮아지면 사망함
+    /// </summary>
+    [SerializeField] private float killY = 10.0f;
 
-    
+
     private bool leftClick;
     private bool rightClick;
 
@@ -15,8 +20,6 @@ public partial class PlayerController : BaseCharacterController
     private bool key_interact;  // E
     private bool key_f;         // F
 
-
-    private Rigidbody rb = null;
 
 
     private Transform cameraT
@@ -54,7 +57,6 @@ public partial class PlayerController : BaseCharacterController
     {
         base.Awake();
 
-        rb = GetComponent<Rigidbody>();
         playerCharacter = GetComponent<PlayerCharacter>();
         animator = GetComponentInChildren<Animator>();
 
@@ -71,6 +73,8 @@ public partial class PlayerController : BaseCharacterController
     public void Init()
     {
         ChangeState(PlayerState.Idle);
+        pause = false;
+        
     }
 
     public void ChangeState(PlayerState state)
@@ -87,6 +91,14 @@ public partial class PlayerController : BaseCharacterController
             return;
 
         fsm.Update();
+
+        if(fsm.CurState != PlayerState.None && fsm.CurState != PlayerState.Dead)
+        {
+            if(movement.cachedRigidbody.position.y < killY)
+            {
+                ChangeState(PlayerState.Dead);
+            }
+        }
     }
 
     protected override void FixedUpdate()
