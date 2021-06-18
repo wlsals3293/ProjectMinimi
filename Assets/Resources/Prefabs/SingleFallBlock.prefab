@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9cd74072ccda2d54fad8edd83d751c42, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   maxHigh: 5
   maxHighTime: 1
   blockDirChangeDelay: 0.5
-  nextBlockDelay: 0.5
+  startDelay: 0.5
 --- !u!54 &9174263047515047657
 Rigidbody:
   m_ObjectHideFlags: 0
