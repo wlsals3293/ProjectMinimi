@@ -275,7 +275,7 @@ MonoBehaviour:
   _maxMidAirJumps: 0
   _useRootMotion: 0
   _rootMotionRotation: 0
-  climbSpeed: 5
+  climbingSpeed: 5
   pivotObjHolding: {fileID: 6800537864608850124}
   killY: 10
 --- !u!114 &-2934540213511727234
