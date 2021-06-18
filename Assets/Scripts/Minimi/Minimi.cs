@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Minimi : MonoBehaviour
 {
-    public const string SEND_SETPIVOT = "SetPivotPosition";
-
 
     /// 필드
-
-    [SerializeField] private Transform pivot = null;
 
     [SerializeField] private GameObject bigMesh = null;
     [SerializeField] private GameObject smallMesh = null;
@@ -202,18 +198,4 @@ public class Minimi : MonoBehaviour
         smallMesh.SetActive(true);
     }
 
-    // 임시
-    public void SetPivotPosition(Transform trans)
-    {
-        if(childMinimis.Count > 0)
-        {
-            childMinimis[childMinimis.Count - 1].SetPivotPosition(trans);
-            return;
-        }
-
-        if (pivot != null && trans != null)
-        {
-            trans.position = pivot.position;
-        }
-    }
 }

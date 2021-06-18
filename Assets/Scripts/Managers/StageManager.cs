@@ -57,6 +57,8 @@ public class StageManager : SimpleManager<StageManager>
             return;
 
         currentCheckpoint = index;
+
+        Debug.Log("체크포인트 업데이트");
     }
 
     public Transform GetCurrentCheckpoint()

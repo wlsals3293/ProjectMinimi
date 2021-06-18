@@ -178,7 +178,9 @@ public partial class PlayerController : BaseCharacterController
     private void UseKeyAction_Block(RaycastHit hit)
     {
         // TODO : 임시함수 매니져를 통해 함수호출로 변경 or state로 빼기
-        hit.collider.SendMessage(MinimiController.SEND_SETPIVOT, trans);
+        //hit.collider.SendMessage(MinimiController.SEND_SETPIVOT, trans);
+        climbFaceNormal = hit.normal;
+        ChangeState(PlayerState.Climb);
     }
     
 

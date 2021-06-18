@@ -16,9 +16,19 @@ public class MinimiManager : MonoBehaviour
     /// </summary>
     public const int MAX_STACK_COUNT = 3;
 
+    /// <summary>
+    /// 캐릭터로 부터 미니미가 설치되는 위치
+    /// </summary>
     private static readonly Vector3 INSTALL_OFFSET = new Vector3(0.0f, 0.0f, 2.0f);
 
+    /// <summary>
+    /// 미니미 설치가 가능할 때 색상
+    /// </summary>
     private static readonly Color COLOR_VALID = new Color(0.4f, 0.67f, 0.97f, 0.5f);
+
+    /// <summary>
+    /// 미니미 설치가 불가능할 때 색상
+    /// </summary>
     private static readonly Color COLOR_INVALID = new Color(1.0f, 0.0f, 0.0f, 0.5f);
 
 

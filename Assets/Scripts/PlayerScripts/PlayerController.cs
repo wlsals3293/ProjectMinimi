@@ -63,6 +63,7 @@ public partial class PlayerController : BaseCharacterController
         Idle_SetState();
         Hold_SetState();
         Dead_SetState();
+        Climb_SetState();
     }
 
     private void Start()
