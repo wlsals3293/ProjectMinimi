@@ -177,7 +177,7 @@ public class BalanceScale : MonoBehaviour
         ry = highT.localPosition.y - y;
 
         highT.localPosition = GetChangeLocalPosY(highT, y);
-        MoveMinimi(highDic, ry);
+        MoveMinimi(highDic, -ry);
     }
 
     private Vector3 GetChangeLocalPosY(Transform trans, float y)
