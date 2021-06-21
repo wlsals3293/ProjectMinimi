@@ -139,12 +139,12 @@ public partial class PlayerController : BaseCharacterController
 
         if (layer == Layers.minimi)
         {
-            Debug.Log("Did Hit Minimi");
+            //Debug.Log("Did Hit Minimi");
             return UseKeyActionType.Block;
         }
         else if (layer == Layers.obj)
         {
-            Debug.Log("Did Hit Obejct");
+            //Debug.Log("Did Hit Obejct");
             if (fsm.CurState == PlayerState.Idle)
             {
                 hold_target = hit.transform;
