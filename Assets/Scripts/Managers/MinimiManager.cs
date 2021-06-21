@@ -296,6 +296,21 @@ public class MinimiManager : MonoBehaviour
         }
     }
 
+    public void UnInstallAllMinimis()
+    {
+        for (int i = 1; i < (int)MinimiType.Max; i++)
+        {
+            foreach (var minimi in ownMinimiLists[(MinimiType)i])
+            {
+                if (minimi.State == MinimiState.Installed)
+                {
+                    minimi.Uninstall();
+                }
+            }
+        }
+
+    }
+
     public void DrawBlueprintObject()
     {
         if (playerTrans == null)

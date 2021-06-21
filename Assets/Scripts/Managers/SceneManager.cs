@@ -14,4 +14,10 @@ public class SceneManager : SimpleManager<SceneManager>
     {
         UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
     }
+
+
+    public void ReloadScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
 }
