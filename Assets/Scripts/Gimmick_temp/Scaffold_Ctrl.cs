@@ -19,6 +19,8 @@ public class Scaffold_Ctrl : Switch_C_OBJ
     public Vector3 direction;
 
     public float Speed = 4.0f;
+
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +48,7 @@ public class Scaffold_Ctrl : Switch_C_OBJ
             ReciprocateMoving();
         }
 
-        else if (isConnect)
+        else
         {
             if(MoveType == ScaffoldType.Return)
             {
@@ -67,7 +69,8 @@ public class Scaffold_Ctrl : Switch_C_OBJ
             direction = _end.position - scaffold_trfm.position;
             scaffold_rgd.MovePosition(scaffold_trfm.position + direction.normalized * Speed * Time.deltaTime);
         }
-        if (GoToStart)
+
+        else
         {
             direction = _start.position - scaffold_trfm.position;
             scaffold_rgd.MovePosition(scaffold_trfm.position + direction.normalized * Speed * Time.deltaTime);
@@ -80,29 +83,39 @@ public class Scaffold_Ctrl : Switch_C_OBJ
     {
         if (SwitchOn)
         {
-            direction = _end.position - scaffold_trfm.position;
-            scaffold_rgd.MovePosition(scaffold_trfm.position + direction.normalized * Speed * Time.deltaTime);
+            if (Vector3.Distance(scaffold_trfm.position, _end.transform.position) > 0.3f)
+            {
+                direction = _end.position - scaffold_trfm.position;
+                scaffold_rgd.MovePosition(scaffold_trfm.position + direction.normalized * Speed * Time.deltaTime);
+            }
         }
 
-        if (!SwitchOn)
+        else
         {
-            direction = _start.position - scaffold_trfm.position;
-            scaffold_rgd.MovePosition(scaffold_trfm.position + direction.normalized * Speed * Time.deltaTime);
+            if (Vector3.Distance(scaffold_trfm.position, _start.transform.position) > 0.3f)
+            {
+                direction = _start.position - scaffold_trfm.position;
+                scaffold_rgd.MovePosition(scaffold_trfm.position + direction.normalized * Speed * Time.deltaTime);
+            }
         }
     }
 
     public void DirectionSwitching()
     {
-        if(GoToEnd && Vector3.Distance(scaffold_trfm.position, _end.transform.position) < 0.3f)
-        {
-            GoToEnd = false;
-            GoToStart = true;
-        }
-        if (GoToStart && Vector3.Distance(scaffold_trfm.position, _start.transform.position) < 0.3f)
-        {
-            GoToStart = false;
-            GoToEnd = true;
-        }
+        
+            if (GoToEnd && Vector3.Distance(scaffold_trfm.position, _end.transform.position) < 0.3f)
+            {
+                Debug.Log("GoStart");
+                GoToEnd = false;
+                GoToStart = true;
+            }
+            if (GoToStart && Vector3.Distance(scaffold_trfm.position, _start.transform.position) < 0.3f)
+            {
+                Debug.Log("GoEnd");
+                GoToStart = false;
+                GoToEnd = true;
+            }
+        
     }
 
 
