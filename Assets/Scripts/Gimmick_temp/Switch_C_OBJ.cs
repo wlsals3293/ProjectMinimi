@@ -11,6 +11,7 @@ public class Switch_C_OBJ : MonoBehaviour
 {
 
     public List<Switchs_Ctrl> _switchs;
+    public bool AllSwitchOn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +30,25 @@ public class Switch_C_OBJ : MonoBehaviour
 
     }
 
-    public virtual void SwitchCheck() //연결된 스위치가 전부 켜져있는지 체크
+    public void SwitchCheck() //연결된 스위치가 전부 켜져있는지 체크
     {
+        int i = 0;
+        foreach (Switchs_Ctrl switchs in _switchs)
+        {
+            if (switchs.isActivate)
+            {
+                i++;
+            }
+        }
 
+        if (i >= _switchs.Count)
+        {
+            AllSwitchOn = true;
+        }
+
+        if (i < _switchs.Count)
+        {
+            AllSwitchOn = false;
+        }
     }
 }

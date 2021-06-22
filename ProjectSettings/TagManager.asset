@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Minimi
   - SubCamera
+  - Object
   layers:
   - Default
   - TransparentFX

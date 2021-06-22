@@ -7,6 +7,7 @@ public static class Tags
     public const string minimi = "Minimi";
     public const string enemy = "Enemy";
     public const string player = "Player";
+    public const string _object = "Object";
 }
 
 public static class Layers
