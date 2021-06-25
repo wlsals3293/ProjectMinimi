@@ -6,11 +6,10 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
-    [Header("Config")]
     /// <summary>
     /// 플레이어가 이 높이보다 낮아지면 사망함
     /// </summary>
-    [SerializeField] private float killY = 10.0f;
+    private float killY;
 
 
     private bool leftClick;
@@ -20,6 +19,12 @@ public partial class PlayerController : BaseCharacterController
     private bool key_interact;  // E
     private bool key_f;         // F
 
+
+    private bool rotationChanging;
+    private Quaternion startRotation;
+    private Quaternion targetRotation;
+    private float elapsedChangingTime;
+    private float changingTime;
 
 
     private Transform cameraT
@@ -64,6 +69,7 @@ public partial class PlayerController : BaseCharacterController
         Hold_SetState();
         Dead_SetState();
         Climb_SetState();
+        Sliding_SetState();
     }
 
     private void Start()
@@ -73,6 +79,7 @@ public partial class PlayerController : BaseCharacterController
 
     public void Init()
     {
+        killY = StageManager.Instance.globalKillY;
         ChangeState(PlayerState.Idle);
         pause = false;
         
@@ -161,5 +168,35 @@ public partial class PlayerController : BaseCharacterController
         transform.position = pos;
     }
 
+    private void ChangeRotation(Quaternion inTargetRotation, float inChangingTime)
+    {
+        startRotation = trans.rotation;
+        targetRotation = inTargetRotation;
 
+        elapsedChangingTime = 0.0f;
+        changingTime = inChangingTime;
+        rotationChanging = true;
+
+    }
+
+    private void UpdateRotationChanging()
+    {
+        if(!rotationChanging)
+        {
+            return;
+        }
+
+        elapsedChangingTime += Time.deltaTime;
+
+        if(elapsedChangingTime <= changingTime)
+        {
+            movement.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedChangingTime / changingTime);
+        }
+        else
+        {
+            elapsedChangingTime = 0.0f;
+
+            rotationChanging = false;
+        }
+    }
 }

@@ -36,8 +36,8 @@ public enum PlayerState
     Dead,
 
     Hold,
-
     Climb,
+    Sliding
 }
 
 /// <summary>

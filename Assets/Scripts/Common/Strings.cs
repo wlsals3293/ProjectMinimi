@@ -8,6 +8,7 @@ public static class Tags
     public const string enemy = "Enemy";
     public const string player = "Player";
     public const string _object = "Object";
+    public const string stageInfo = "StageInfo";
 }
 
 public static class Layers

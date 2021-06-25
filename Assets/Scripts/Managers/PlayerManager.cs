@@ -23,11 +23,15 @@ public class PlayerManager : SimpleManager<PlayerManager>
         CreatePlayer();
     }
 
+    private void Start()
+    {
+        InitStagePlayer();
+    }
+
 
     public void CreatePlayer()
     {
         playerCtrl = ResourceManager.Instance.CreatePrefab<PlayerController>(PrefabNames.Player);
-        InitStagePlayer();
     }
 
     public void InitStagePlayer()

@@ -7,14 +7,32 @@ public class StageManager : SimpleManager<StageManager>
     // TODO 임시변수
     [SerializeField] private Transform startPos = null;
 
-    private int currentCheckpoint = -1;
-    private List<Checkpoint> checkpoints = null;
+    /// <summary>
+    /// 스테이지 정보
+    /// </summary>
+    private StageInfo stageInfo = null;
 
+    /// <summary>
+    /// 현재 체크포인트에 해당하는 리스트 번호
+    /// </summary>
+    private int currentCheckpoint = -1;
+
+    /// <summary>
+    /// 체크포인트 리스트
+    /// </summary>
+    private List<Checkpoint> checkpoints = null;
+    
 
     public Vector3 StartPosition
     {
         get => startPos.position;
     }
+
+    public float globalKillY
+    {
+        get => stageInfo.globalKillY;
+    }
+
 
     protected override void Awake()
     {
@@ -22,15 +40,37 @@ public class StageManager : SimpleManager<StageManager>
 
     }
 
+    private void Start()
+    {
+        StageInitialize();
+    }
+
     public void RestartStage()
     {
         PlayerManager.Instance.InitStagePlayer();
 
-        if(checkpoints != null)
-            currentCheckpoint = checkpoints.Count - 1;
+        currentCheckpoint = -1;
     }
 
-    public void InitializeCheckpoints(List<Checkpoint> inCheckpoints)
+    public void StageInitialize()
+    {
+        if(stageInfo == null)
+        {
+            GameObject obj = GameObject.FindGameObjectWithTag(Tags.stageInfo);
+            if (obj == null)
+                return;
+
+            StageInfo info = obj.GetComponent<StageInfo>();
+            if (info == null)
+                return;
+
+            stageInfo = info;
+        }
+
+        InitializeCheckpoints(stageInfo.checkpoints);
+    }
+
+    private void InitializeCheckpoints(List<Checkpoint> inCheckpoints)
     {
         checkpoints = inCheckpoints;
 
