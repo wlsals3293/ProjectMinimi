@@ -74,7 +74,7 @@ public partial class PlayerController : BaseCharacterController
 
     private void Start()
     {
-        MinimiManager._instance.playerTrans = trans;
+        MinimiManager._instance.playerTrans = transform;
     }
 
     public void Init()
