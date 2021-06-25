@@ -40,11 +40,6 @@ public class StageManager : SimpleManager<StageManager>
 
     }
 
-    private void Start()
-    {
-        StageInitialize();
-    }
-
     public void RestartStage()
     {
         PlayerManager.Instance.InitStagePlayer();

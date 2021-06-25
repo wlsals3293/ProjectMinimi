@@ -18,4 +18,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void Start()
+    {
+        StageManager.Instance.StageInitialize();
+        PlayerManager.Instance.InitStagePlayer();
+    }
 }

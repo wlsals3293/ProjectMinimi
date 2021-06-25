@@ -23,11 +23,6 @@ public class PlayerManager : SimpleManager<PlayerManager>
         CreatePlayer();
     }
 
-    private void Start()
-    {
-        InitStagePlayer();
-    }
-
 
     public void CreatePlayer()
     {

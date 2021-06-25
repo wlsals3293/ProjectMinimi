@@ -5429,7 +5429,7 @@ GameObject:
   - component: {fileID: 1739306676}
   m_Layer: 0
   m_Name: StageInfo
-  m_TagString: Untagged
+  m_TagString: StageInfo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5468,6 +5468,7 @@ MonoBehaviour:
   - {fileID: 1903561761}
   - {fileID: 170396545}
   - {fileID: 1933209330}
+  globalKillY: 0
 --- !u!4 &1751081593 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7c6d92eef8d7fee47b5df0992c94c72a, type: 3}
