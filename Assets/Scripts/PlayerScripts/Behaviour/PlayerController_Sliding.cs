@@ -9,7 +9,10 @@ public partial class PlayerController : BaseCharacterController
     [Header("Sliding")]
 
     [SerializeField] private float slidingSpeed = 20.0f;
+    [SerializeField] private float crashPower = 20.0f;
     private float slidingEnterTime = 0.2f;
+
+    private float crashSpeedFactor = 1.0f;
 
     private SlidingSlope slidingSlope = null;
 
@@ -33,12 +36,21 @@ public partial class PlayerController : BaseCharacterController
     private void Sliding_Update()
     {
         UpdateRotationChanging();
+
+        if(crashSpeedFactor < slidingSpeed)
+        {
+            crashSpeedFactor += 0.01f;
+        }
+        else
+        {
+            crashSpeedFactor = 1.0f;
+        }
     }
 
     private void Sliding_FixedUpdate()
     {
         Vector3 desiredVelocity = 
-            (slidingForward + slidingRight * moveDirection.x).normalized * slidingSpeed;
+            (slidingForward + slidingRight * moveDirection.x).normalized * slidingSpeed * crashSpeedFactor;
 
         movement.Move(desiredVelocity, slidingSpeed, !allowVerticalMovement);
 
@@ -59,11 +71,19 @@ public partial class PlayerController : BaseCharacterController
             return;
 
         slidingSlope = inSlope;
-        slidingForward = Vector3.ProjectOnPlane(slidingSlope.transform.forward, Vector3.up).normalized;
+        slidingForward = slidingSlope.transform.forward;
         slidingRight = slidingSlope.transform.right;
 
-        ChangeRotation(Quaternion.LookRotation(slidingForward), slidingEnterTime);
+        Vector3 lookDirection = Vector3.ProjectOnPlane(slidingForward, Vector3.up);
+        ChangeRotation(Quaternion.LookRotation(lookDirection), slidingEnterTime);
+
         ChangeState(PlayerState.Sliding);
     }
 
+    public void CrashObstacle(int damage)
+    {
+        playerCharacter.TakeDamage(damage);
+
+        crashSpeedFactor = 0.0f;
+    }
 }

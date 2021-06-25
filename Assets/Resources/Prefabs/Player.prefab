@@ -278,8 +278,7 @@ MonoBehaviour:
   climbingSpeed: 5
   pivotObjHolding: {fileID: 6800537864608850124}
   slidingSpeed: 20
-  slidingVelocity: {x: 0, y: 0, z: 0}
-  killY: 10
+  crashPower: 1000
 --- !u!114 &-2934540213511727234
 MonoBehaviour:
   m_ObjectHideFlags: 0
