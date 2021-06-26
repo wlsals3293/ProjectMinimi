@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ECM.Controllers;
-
+using ECM.Common;
 
 public partial class PlayerController : BaseCharacterController
 {
@@ -31,7 +31,7 @@ public partial class PlayerController : BaseCharacterController
     private void Sliding_Enter(PlayerState prev)
     {
         RotationChanging = false;
-        CameraManager.Instance.CurrentCameraCtrl.UseRotation = false;
+       
     }
 
     private void Sliding_Update()
@@ -77,9 +77,13 @@ public partial class PlayerController : BaseCharacterController
         slidingForward = slidingSlope.transform.forward;
         slidingRight = slidingSlope.transform.right;
 
-
+        CameraManager.Instance.CurrentCameraCtrl.UseRotation = false;
         Vector3 lookDirection = Vector3.ProjectOnPlane(slidingForward, Vector3.up);
         ChangeRotation(Quaternion.LookRotation(lookDirection), slidingEnterTime);
+
+        lookDirection -= Vector3.up * 0.5f;
+        CameraManager.Instance.GetMoveDirCamera().rotation = Quaternion.LookRotation(lookDirection);
+
 
         ChangeState(PlayerState.Sliding);
     }
