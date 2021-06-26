@@ -30,7 +30,8 @@ public partial class PlayerController : BaseCharacterController
 
     private void Sliding_Enter(PlayerState prev)
     {
-
+        RotationChanging = false;
+        CameraManager.Instance.CurrentCameraCtrl.UseRotation = false;
     }
 
     private void Sliding_Update()
@@ -61,6 +62,8 @@ public partial class PlayerController : BaseCharacterController
     {
         slidingSlope = null;
         rotationChanging = false;
+        RotationChanging = true;
+        CameraManager.Instance.CurrentCameraCtrl.UseRotation = true;
     }
     #endregion
 
@@ -73,6 +76,7 @@ public partial class PlayerController : BaseCharacterController
         slidingSlope = inSlope;
         slidingForward = slidingSlope.transform.forward;
         slidingRight = slidingSlope.transform.right;
+
 
         Vector3 lookDirection = Vector3.ProjectOnPlane(slidingForward, Vector3.up);
         ChangeRotation(Quaternion.LookRotation(lookDirection), slidingEnterTime);

@@ -33,6 +33,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] private bool isTargetPlayerCamera = true;
     [SerializeField] private bool isMainCamera = true;
+    [SerializeField] private bool useRotation = true;
     private Camera camera = null;
 
     [Header("0번은 메인, 1번은 플레이어 머리에 임시달아놨어요.")]
@@ -52,6 +53,7 @@ public class CameraController : MonoBehaviour
 
     public bool IsTargetPlayerCamera { get => isTargetPlayerCamera; }
     public bool IsMainCamera { get => isMainCamera; }
+    public bool UseRotation { get => useRotation; set => useRotation = value; }
 
 
     // Start is called before the first frame update
@@ -91,7 +93,7 @@ public class CameraController : MonoBehaviour
         if (IsTargetPlayerCamera || isMainCamera)
             FollowTarget();
 
-        if(isMainCamera)
+        if(isMainCamera && UseRotation)
             CameraRotate();
     }
 

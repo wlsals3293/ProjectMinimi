@@ -30,7 +30,7 @@ public class StageManager : SimpleManager<StageManager>
 
     public float globalKillY
     {
-        get => stageInfo.globalKillY;
+        get => stageInfo == null ? 5f : stageInfo.globalKillY;
     }
 
 

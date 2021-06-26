@@ -43,7 +43,7 @@ public enum PlayerState
 /// <summary>
 /// 활용키(E) 에 따른 행동
 /// </summary>
-public enum UseKeyActionType
+public enum InteractType
 {
     None,
     Block,

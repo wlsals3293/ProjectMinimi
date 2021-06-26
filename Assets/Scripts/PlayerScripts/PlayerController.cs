@@ -26,6 +26,18 @@ public partial class PlayerController : BaseCharacterController
     private float elapsedChangingTime;
     private float changingTime;
 
+    private bool RotationChanging
+    {
+        get
+        {
+            return rotationChanging;
+        }
+        set
+        {
+            rotationChanging = value;
+        }
+    }
+
 
     private Transform cameraT
     {
@@ -128,7 +140,6 @@ public partial class PlayerController : BaseCharacterController
             pause = !pause;
 
         // Handle user input
-
         moveDirection = new Vector3
         {
             x = Input.GetAxisRaw("Horizontal"),

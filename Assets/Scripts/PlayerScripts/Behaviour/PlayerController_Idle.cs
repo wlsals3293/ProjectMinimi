@@ -10,7 +10,7 @@ public partial class PlayerController : BaseCharacterController
     private const float RAY_DISTANCE = 5f;
 
    
-    private UseKeyActionType useKeyType = UseKeyActionType.None;
+    private InteractType interactType = InteractType.None;
 
 
     private StateUpdateDelegate IdleUpdateDelegate;
@@ -60,12 +60,12 @@ public partial class PlayerController : BaseCharacterController
     {
         // TODO 준비단계가 필요없으면 input e안으로
         RaycastHit hit = Raycast(RAY_DISTANCE);
-        useKeyType = UpdateUseKeyActionType(hit);
+        interactType = UpdateInteractActionType(hit);
 
         if (key_interact)
         {
             Debug.LogError("Input E Key");
-            UseKeyAction(hit, useKeyType);
+            Interact_Action(hit, interactType);
         }
 
 
@@ -112,23 +112,23 @@ public partial class PlayerController : BaseCharacterController
         }
     }
 
-    public void UseKeyAction(RaycastHit hit, UseKeyActionType keyType)
+    public void Interact_Action(RaycastHit hit, InteractType keyType)
     {
         switch (keyType)
         { 
-            case UseKeyActionType.None:
+            case InteractType.None:
                 break;
-            case UseKeyActionType.Block:
-                UseKeyAction_Block(hit);
+            case InteractType.Block:
+                Interact_Action_Block(hit);
                 break;
-            case UseKeyActionType.Hold:
-                UseKeyAction_Hold();
+            case InteractType.Hold:
+                Interact_Action_Hold();
                 break;
         }
         
     }
 
-    private UseKeyActionType UpdateUseKeyActionType(RaycastHit hit)
+    private InteractType UpdateInteractActionType(RaycastHit hit)
     {
         int layer = -1;
 
@@ -140,7 +140,7 @@ public partial class PlayerController : BaseCharacterController
         if (layer == Layers.minimi)
         {
             //Debug.Log("Did Hit Minimi");
-            return UseKeyActionType.Block;
+            return InteractType.Block;
         }
         else if (layer == Layers.obj)
         {
@@ -149,21 +149,21 @@ public partial class PlayerController : BaseCharacterController
             {
                 hold_target = hit.transform;
 
-                return UseKeyActionType.Hold;
+                return InteractType.Hold;
             }
         }
 
         if (fsm.CurState == PlayerState.Hold && hold_target != null)
         {
             // OnOff Hold
-            return UseKeyActionType.Hold;
+            return InteractType.Hold;
         }
 
-        return UseKeyActionType.None;
+        return InteractType.None;
     }
 
 
-    private void UseKeyAction_Hold()
+    private void Interact_Action_Hold()
     {
         switch (fsm.CurState)
         {
@@ -175,7 +175,7 @@ public partial class PlayerController : BaseCharacterController
                 break;
         }
     }
-    private void UseKeyAction_Block(RaycastHit hit)
+    private void Interact_Action_Block(RaycastHit hit)
     {
         // TODO : 임시함수 매니져를 통해 함수호출로 변경 or state로 빼기
         //hit.collider.SendMessage(MinimiController.SEND_SETPIVOT, trans);
