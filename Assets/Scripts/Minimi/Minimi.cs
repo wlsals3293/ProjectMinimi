@@ -67,7 +67,7 @@ public class Minimi : MonoBehaviour
     public virtual void Initialize()
     {
         // 임시로 생성하자마자 바로 가방으로
-        MinimiManager._instance.GainMinimi(this);
+        MinimiManager.Instance.GainMinimi(this);
     }
 
 

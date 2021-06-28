@@ -49,9 +49,9 @@ public partial class PlayerController : BaseCharacterController
     
     private void Idle_Exit(PlayerState next)
     {
-        MinimiManager._instance.UnDrawBlueprintObject();
+        MinimiManager.Instance.UnDrawBlueprintObject();
 
-        IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
+        IdleUpdateDelegate -= MinimiManager.Instance.DrawBlueprintObject;
     }
     #endregion
 
@@ -72,31 +72,31 @@ public partial class PlayerController : BaseCharacterController
         // 좌클릭
         if (leftClick)
         {
-            if (MinimiManager._instance.InstallMinimi())
+            if (MinimiManager.Instance.InstallMinimi())
             {
-                IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
+                IdleUpdateDelegate -= MinimiManager.Instance.DrawBlueprintObject;
             }
         }
         // 우클릭
         if (rightClick)
         {
-            MinimiManager._instance.PutInAllMinimis();
-            IdleUpdateDelegate -= MinimiManager._instance.DrawBlueprintObject;
+            MinimiManager.Instance.PutInAllMinimis();
+            IdleUpdateDelegate -= MinimiManager.Instance.DrawBlueprintObject;
         }
 
         // 블럭 미니미
         if (key_alpha1)
         {
-            if(MinimiManager._instance.TakeOutMinimi(MinimiType.Block))
+            if(MinimiManager.Instance.TakeOutMinimi(MinimiType.Block))
             {
-                IdleUpdateDelegate += MinimiManager._instance.DrawBlueprintObject;
+                IdleUpdateDelegate += MinimiManager.Instance.DrawBlueprintObject;
             }
         }
 
         // F Key
         if (key_f)
         {
-            MinimiManager._instance.UninstallMinimi();
+            MinimiManager.Instance.UninstallMinimi();
         }
 
 

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-public class MinimiManager : MonoBehaviour
+public class MinimiManager : SimpleManager<MinimiManager>
 {
     /// <summary>
     /// 설치 높이 오차 허용값
@@ -32,10 +31,6 @@ public class MinimiManager : MonoBehaviour
     private static readonly Color COLOR_INVALID = new Color(1.0f, 0.0f, 0.0f, 0.5f);
 
 
-
-    public static MinimiManager _instance = null;
-
-    
 
     public bool IsEmpty { get => onHandMinimiList.Count == 0; }
 
@@ -76,12 +71,8 @@ public class MinimiManager : MonoBehaviour
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        if(_instance == null)
-        {
-            _instance = this;
-        }
 
         for(int i=1; i<(int)MinimiType.Max; i++)
         {

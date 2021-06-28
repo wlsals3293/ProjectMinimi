@@ -93,7 +93,7 @@ public class StageManager : SimpleManager<StageManager>
 
         currentCheckpoint = index;
 
-        MinimiManager._instance.UnInstallAllMinimis();
+        MinimiManager.Instance.UnInstallAllMinimis();
 
         Debug.Log("체크포인트 업데이트");
     }
