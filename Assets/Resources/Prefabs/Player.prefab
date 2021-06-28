@@ -277,7 +277,7 @@ MonoBehaviour:
   _rootMotionRotation: 0
   climbingSpeed: 5
   pivotObjHolding: {fileID: 6800537864608850124}
-  slidingSpeed: 50
+  slidingSpeed: 1000
   crashPower: 1000
 --- !u!114 &-2934540213511727234
 MonoBehaviour:

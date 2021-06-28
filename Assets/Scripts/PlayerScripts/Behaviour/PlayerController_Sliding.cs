@@ -9,7 +9,7 @@ public partial class PlayerController : BaseCharacterController
     [Header("Sliding")]
 
     [SerializeField] private float slidingSpeed = 20.0f;
-    [SerializeField] private float crashPower = 20.0f;
+    //[SerializeField] private float crashPower = 20.0f;
     private float slidingEnterTime = 0.2f;
 
     private float crashSpeedFactor = 1.0f;
@@ -30,7 +30,6 @@ public partial class PlayerController : BaseCharacterController
 
     private void Sliding_Enter(PlayerState prev)
     {
-        RotationChanging = false;
        
     }
 
@@ -62,7 +61,6 @@ public partial class PlayerController : BaseCharacterController
     {
         slidingSlope = null;
         rotationChanging = false;
-        RotationChanging = true;
         CameraManager.Instance.CurrentCameraCtrl.UseRotation = true;
     }
     #endregion
