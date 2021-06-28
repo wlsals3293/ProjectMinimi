@@ -73,6 +73,7 @@ public class MinimiManager : SimpleManager<MinimiManager>
 
     protected override void Awake()
     {
+        base.Awake();
 
         for(int i=1; i<(int)MinimiType.Max; i++)
         {
