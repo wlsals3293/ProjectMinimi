@@ -52,7 +52,7 @@ public partial class PlayerController : BaseCharacterController
         Vector3 desiredVelocity = 
             (slidingForward + slidingRight * moveDirection.x).normalized * slidingSpeed * crashSpeedFactor;
 
-        movement.Move(desiredVelocity, slidingSpeed, !allowVerticalMovement);
+        movement.Move(desiredVelocity, slidingSpeed, true);
 
         Jump();
     }
