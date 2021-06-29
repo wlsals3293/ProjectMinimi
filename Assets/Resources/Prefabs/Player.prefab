@@ -233,9 +233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eae04a4fe514bf4789aec1bdb93100b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxLateralSpeed: 12
-  _maxRiseSpeed: 20
-  _maxFallSpeed: 20
+  _maxLateralSpeed: 30
+  _maxRiseSpeed: 30
+  _maxFallSpeed: 30
   _useGravity: 1
   _gravity: {x: 0, y: -50, z: 0}
   _slideOnSteepSlope: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edda8bfb4c748cc40a2ef9e6fc47d478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 20
+  _speed: 12
   _angularSpeed: 540
   _acceleration: 50
   _deceleration: 20
@@ -277,8 +277,8 @@ MonoBehaviour:
   _rootMotionRotation: 0
   climbingSpeed: 5
   pivotObjHolding: {fileID: 6800537864608850124}
-  slidingSpeed: 1000
-  crashPower: 1000
+  slidingSpeed: 30
+  currentSpeed: 0
 --- !u!114 &-2934540213511727234
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,6 +6,10 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
+    // 현재속도 확인용. 디버그 전용
+    [SerializeField, ReadOnly]
+    private float currentSpeed;
+
     /// <summary>
     /// 플레이어가 이 높이보다 낮아지면 사망함
     /// </summary>
@@ -119,6 +123,8 @@ public partial class PlayerController : BaseCharacterController
                 ChangeState(PlayerState.Dead);
             }
         }
+
+        currentSpeed = movement.velocity.magnitude;
     }
 
     protected override void FixedUpdate()
