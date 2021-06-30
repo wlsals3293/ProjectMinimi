@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class GameManager : SimpleManager<GameManager>
+public class GameManager : BaseManager<GameManager>
 {
 
 
     private void Start()
     {
-        StageManager.Instance.StageInitialize();
-        PlayerManager.Instance.InitStagePlayer();
+        StageManager.Instance.Initialize();
+        PlayerManager.Instance.Initialize();
     }
 }

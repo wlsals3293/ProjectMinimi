@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : SimpleManager<PlayerManager>
+public class PlayerManager : BaseManager<PlayerManager>
 {
     
 
@@ -16,13 +16,11 @@ public class PlayerManager : SimpleManager<PlayerManager>
     private Dictionary<PlayerState, SimpleBehaviour> playerBehaviours = new Dictionary<PlayerState, SimpleBehaviour>();
 
 
-    protected override void Awake()
+    public void Initialize()
     {
-        base.Awake();
-
         CreatePlayer();
+        InitStagePlayer();
     }
-
 
     public void CreatePlayer()
     {
@@ -31,21 +29,21 @@ public class PlayerManager : SimpleManager<PlayerManager>
 
     public void InitStagePlayer()
     {
-        playerCtrl.SetLocalPosition(StageManager.Instance.StartPosition);
+        playerCtrl.transform.position = StageManager.Instance.StartPosition;
         playerCtrl.Init();
     }
 
     public void RespawnPlayer()
     {
-        Transform checkpoint = StageManager.Instance.GetCurrentCheckpoint();
+        Transform checkpoint = StageManager.Instance.GetLastCheckpoint();
 
         if(checkpoint != null)
         {
-            playerCtrl.SetLocalPosition(checkpoint.position);
+            playerCtrl.transform.position = checkpoint.position;
         }
         else
         {
-            playerCtrl.SetLocalPosition(StageManager.Instance.StartPosition);
+            playerCtrl.transform.position = StageManager.Instance.StartPosition;
         }
         
         playerCtrl.Init();

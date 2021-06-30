@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : SimpleManager<StageManager>
+public class StageManager : BaseManager<StageManager>
 {
     // TODO 임시변수
     [SerializeField] private Transform startPos = null;
@@ -28,7 +28,7 @@ public class StageManager : SimpleManager<StageManager>
         get => startPos.position;
     }
 
-    public float globalKillY
+    public float GlobalKillY
     {
         get => stageInfo == null ? 5f : stageInfo.globalKillY;
     }
@@ -47,7 +47,7 @@ public class StageManager : SimpleManager<StageManager>
         currentCheckpoint = -1;
     }
 
-    public void StageInitialize()
+    public void Initialize()
     {
         if(stageInfo == null)
         {
@@ -95,10 +95,10 @@ public class StageManager : SimpleManager<StageManager>
 
         MinimiManager.Instance.UnInstallAllMinimis();
 
-        Debug.Log("체크포인트 업데이트");
+        Debug.Log($"체크포인트 업데이트. index:{index}");
     }
 
-    public Transform GetCurrentCheckpoint()
+    public Transform GetLastCheckpoint()
     {
         if (checkpoints == null || currentCheckpoint < 0 ||
             currentCheckpoint >= checkpoints.Count)

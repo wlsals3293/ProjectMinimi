@@ -95,7 +95,7 @@ public partial class PlayerController : BaseCharacterController
 
     public void Init()
     {
-        killY = StageManager.Instance.globalKillY;
+        killY = StageManager.Instance.GlobalKillY;
         ChangeState(PlayerState.Idle);
         pause = false;
         
@@ -173,17 +173,6 @@ public partial class PlayerController : BaseCharacterController
         animator.SetBool("Run", isRun);
     }
 
-
-
-    private string GetHitTag()
-    {
-        return null;
-    }
-
-    public void SetLocalPosition(Vector3 pos)
-    {
-        transform.position = pos;
-    }
 
     private void ChangeRotation(Quaternion inTargetRotation, float inChangingTime)
     {

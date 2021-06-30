@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneManager : SimpleManager<SceneManager>
+public class SceneManager : BaseManager<SceneManager>
 {
     protected override void Awake()
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ResourceManager : SimpleManager<ResourceManager>
+public class ResourceManager : BaseManager<ResourceManager>
 {
     protected override void Awake()
     {

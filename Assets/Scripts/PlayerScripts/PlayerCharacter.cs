@@ -41,9 +41,9 @@ public class PlayerCharacter : MonoBehaviour
         // 현재 체력 나타내는 UI는 여기서 업데이트
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int amount)
     {
-        int newHP = curHP - damage;
+        int newHP = curHP - amount;
 
         SetHP(newHP);
 

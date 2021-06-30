@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class CameraManager : SimpleManager<CameraManager>
+public class CameraManager : BaseManager<CameraManager>
 {
 
     private CameraController mainCamCtrl = null;

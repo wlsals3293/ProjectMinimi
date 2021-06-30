@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : SimpleManager<UIManager>
+public class UIManager : BaseManager<UIManager>
 {
     // TODO 귀찮아서 일단 이렇게 나중에 프리팹에서 꺼내쓰기
     [SerializeField] private GameObject endPanel = null;
