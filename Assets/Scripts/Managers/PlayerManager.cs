@@ -25,6 +25,7 @@ public class PlayerManager : BaseManager<PlayerManager>
     public void CreatePlayer()
     {
         playerCtrl = ResourceManager.Instance.CreatePrefab<PlayerController>(PrefabNames.Player);
+        playerChar = playerCtrl.PlayerCharacter;
     }
 
     public void InitStagePlayer()
@@ -47,6 +48,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         }
         
         playerCtrl.Init();
+        PlayerChar.SetHP(playerChar.MaxHP);
     }
 
     public void AddBehaviour(PlayerState state, SimpleBehaviour behaviour)

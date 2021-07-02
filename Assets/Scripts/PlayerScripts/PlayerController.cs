@@ -88,11 +88,6 @@ public partial class PlayerController : BaseCharacterController
         Sliding_SetState();
     }
 
-    private void Start()
-    {
-        MinimiManager.Instance.playerTrans = transform;
-    }
-
     public void Init()
     {
         killY = StageManager.Instance.GlobalKillY;

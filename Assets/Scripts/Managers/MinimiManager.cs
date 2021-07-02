@@ -97,17 +97,18 @@ public class MinimiManager : BaseManager<MinimiManager>
 
     }
 
-    private void Start()
+    public void Initialize()
     {
+        playerTrans = PlayerManager.Instance.PlayerCtrl.transform;
+
         // 임시로 여기서 미니미 생성
         // 나중에 스테이지 생성 과정에서 다루어야 할듯
         for (int i = 0; i < 3; i++)
         {
             Minimi curMinimi = CreateMinimi(MinimiType.Block);
-            if(curMinimi != null)
+            if (curMinimi != null)
                 curMinimi.Initialize();
         }
-
     }
 
     /// <summary>

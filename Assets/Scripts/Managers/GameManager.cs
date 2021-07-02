@@ -11,5 +11,6 @@ public class GameManager : BaseManager<GameManager>
     {
         StageManager.Instance.Initialize();
         PlayerManager.Instance.Initialize();
+        MinimiManager.Instance.Initialize();
     }
 }

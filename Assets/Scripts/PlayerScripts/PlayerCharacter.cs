@@ -13,6 +13,11 @@ public class PlayerCharacter : MonoBehaviour
 
     private PlayerController controller = null;
 
+
+    public int MaxHP { get => maxHP; }
+    public int CurHP { get => curHP; }
+
+
     private void Awake()
     {
         curHP = maxHP;
