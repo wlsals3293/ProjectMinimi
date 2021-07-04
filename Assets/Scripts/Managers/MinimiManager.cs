@@ -323,6 +323,7 @@ public class MinimiManager : BaseManager<MinimiManager>
                 if (!blueprintObject[i].activeSelf)
                 {
                     blueprintObject[i].SetActive(true);
+                    colorChange = true;
                 }
 
                 blueprintObject[i].transform.SetPositionAndRotation(
