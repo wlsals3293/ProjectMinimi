@@ -9,7 +9,9 @@ public partial class PlayerController : BaseCharacterController
     [Header("Sliding")]
 
     [SerializeField] private float slidingSpeed = 20.0f;
-    //[SerializeField] private float crashPower = 20.0f;
+
+    [SerializeField] private float slidingSideSpeed = 15.0f;
+
     private float slidingEnterTime = 0.2f;
 
     private float crashSpeedFactor = 1.0f;
@@ -39,7 +41,7 @@ public partial class PlayerController : BaseCharacterController
 
         if(crashSpeedFactor < slidingSpeed)
         {
-            crashSpeedFactor += 0.01f;
+            crashSpeedFactor += 1.0f * Time.deltaTime;
         }
         else
         {
@@ -49,10 +51,13 @@ public partial class PlayerController : BaseCharacterController
 
     private void Sliding_FixedUpdate()
     {
-        Vector3 desiredVelocity = 
-            (slidingForward + slidingRight * moveDirection.x).normalized * slidingSpeed * crashSpeedFactor;
+        float sideSpeed = moveDirectionRaw.x * slidingSideSpeed;
 
-        movement.Move(desiredVelocity, slidingSpeed, true);
+        Vector3 desiredVelocity = 
+            (slidingForward * slidingSpeed + slidingRight * sideSpeed)
+            * crashSpeedFactor;
+
+        movement.Move(desiredVelocity, slidingSpeed + Mathf.Abs(sideSpeed), true);
 
         Jump();
     }

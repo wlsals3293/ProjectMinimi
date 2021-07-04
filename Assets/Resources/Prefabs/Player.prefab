@@ -264,7 +264,7 @@ MonoBehaviour:
   _brakingFriction: 8
   _airFriction: 0
   _airControl: 0.2
-  _canCrouch: 1
+  _canCrouch: 0
   _standingHeight: 2
   _crouchingHeight: 1
   _baseJumpHeight: 2
@@ -277,7 +277,8 @@ MonoBehaviour:
   _rootMotionRotation: 0
   climbingSpeed: 5
   pivotObjHolding: {fileID: 6800537864608850124}
-  slidingSpeed: 30
+  slidingSpeed: 27
+  slidingSideSpeed: 15
   currentSpeed: 0
 --- !u!114 &-2934540213511727234
 MonoBehaviour:

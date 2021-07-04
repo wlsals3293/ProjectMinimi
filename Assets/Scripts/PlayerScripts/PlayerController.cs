@@ -10,6 +10,8 @@ public partial class PlayerController : BaseCharacterController
     [SerializeField, ReadOnly]
     private float currentSpeed;
 
+    private Vector3 moveDirectionRaw;
+
     /// <summary>
     /// 플레이어가 이 높이보다 낮아지면 사망함
     /// </summary>
@@ -141,12 +143,13 @@ public partial class PlayerController : BaseCharacterController
             pause = !pause;
 
         // Handle user input
-        moveDirection = new Vector3
+        moveDirectionRaw = new Vector3
         {
             x = Input.GetAxisRaw("Horizontal"),
             y = 0.0f,
             z = Input.GetAxisRaw("Vertical")
         };
+        moveDirection = moveDirectionRaw;
 
         leftClick = Input.GetMouseButtonDown(0);
         rightClick = Input.GetMouseButtonDown(1);
