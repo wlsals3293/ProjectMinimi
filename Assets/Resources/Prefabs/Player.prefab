@@ -263,7 +263,7 @@ MonoBehaviour:
   _useBrakingFriction: 0
   _brakingFriction: 8
   _airFriction: 0
-  _airControl: 0.2
+  _airControl: 0.5
   _canCrouch: 0
   _standingHeight: 2
   _crouchingHeight: 1
