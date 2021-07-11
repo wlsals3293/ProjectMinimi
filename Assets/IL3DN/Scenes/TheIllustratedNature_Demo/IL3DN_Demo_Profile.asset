@@ -16,15 +16,15 @@ MonoBehaviour:
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 1
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 3.5
     min: 0
   scatter:
     m_OverrideState: 0
-    m_Value: 0.7
+    m_Value: 0.629
     min: 0
     max: 1
   clamp:
@@ -32,14 +32,19 @@ MonoBehaviour:
     m_Value: 65472
     min: 0
   tint:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.6105251, g: 0.4828231, b: 0.6603774, a: 1}
     hdr: 0
     showAlpha: 0
     showEyeDropper: 1
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 0
+  skipIterations:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+    max: 16
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -63,13 +68,13 @@ MonoBehaviour:
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.9326627, y: 0.41099405, z: 1, w: 0.050370183}
+    m_Value: {x: 0.6724454, y: 0.37277222, z: 1, w: 0.050370183}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0.8963789, z: 0.98546135, w: 0.025125628}
+    m_Value: {x: 1, y: 0.84826374, z: 0.9734194, w: 0.11843823}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 0.92668223, y: 0.92603624, z: 1, w: 0.02512563}
+    m_Value: {x: 1, y: 0.88918155, z: 0.60465634, w: 0.15552102}
   shadowsStart:
     m_OverrideState: 0
     m_Value: 0
@@ -105,6 +110,66 @@ MonoBehaviour:
   - {fileID: 6268441571287902684}
   - {fileID: -5798593614144767106}
   - {fileID: 3540053158585561239}
+  - {fileID: 1246013933556238294}
+--- !u!114 &1246013933556238294
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdfbdbb87d3286943a057f7791b43141, type: 3}
+  m_Name: ChannelMixer
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  redOutRedIn:
+    m_OverrideState: 1
+    m_Value: 98
+    min: -200
+    max: 200
+  redOutGreenIn:
+    m_OverrideState: 1
+    m_Value: 0
+    min: -200
+    max: 200
+  redOutBlueIn:
+    m_OverrideState: 1
+    m_Value: 6
+    min: -200
+    max: 200
+  greenOutRedIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  greenOutGreenIn:
+    m_OverrideState: 0
+    m_Value: 100
+    min: -200
+    max: 200
+  greenOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  blueOutRedIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  blueOutGreenIn:
+    m_OverrideState: 0
+    m_Value: 0
+    min: -200
+    max: 200
+  blueOutBlueIn:
+    m_OverrideState: 0
+    m_Value: 100
+    min: -200
+    max: 200
 --- !u!114 &3532237499778147201
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -121,7 +186,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   postExposure:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 1.31
   contrast:
     m_OverrideState: 1
     m_Value: 1
@@ -159,7 +224,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.15052827, g: 0.11480952, b: 0.18867922, a: 1}
     hdr: 0
     showAlpha: 0
     showEyeDropper: 1
@@ -168,11 +233,11 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.454
     min: 0
     max: 1
   smoothness:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.2
     min: 0.01
     max: 1
@@ -195,7 +260,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
 --- !u!114 &6268441571287902684
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -223,7 +288,7 @@ MonoBehaviour:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
+          inSlope: 0
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -233,7 +298,7 @@ MonoBehaviour:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
