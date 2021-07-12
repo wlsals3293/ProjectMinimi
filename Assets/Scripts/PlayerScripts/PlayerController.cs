@@ -72,8 +72,6 @@ public partial class PlayerController : BaseCharacterController
     private FSMController fsm = new FSMController();
 
 
-    private delegate void StateUpdateDelegate();
-
 
 
     public override void Awake()

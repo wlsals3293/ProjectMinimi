@@ -9,6 +9,10 @@ public class SceneManager : BaseManager<SceneManager>
     private bool isLoading = false;
 
 
+    public delegate void LoadCompleteDelegate();
+    public LoadCompleteDelegate onLoadComplete;
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,6 +45,10 @@ public class SceneManager : BaseManager<SceneManager>
         }
 
         isLoading = false;
+
+        if (onLoadComplete != null)
+            onLoadComplete();
+
         Debug.Log("Load Complete!");
     }
 

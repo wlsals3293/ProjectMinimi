@@ -12,8 +12,8 @@ public partial class PlayerController : BaseCharacterController
    
     private InteractType interactType = InteractType.None;
 
-
-    private StateUpdateDelegate IdleUpdateDelegate;
+    private delegate void IdleUpdateDelegate();
+    private IdleUpdateDelegate onIdleUpdate;
 
 
 
@@ -36,10 +36,8 @@ public partial class PlayerController : BaseCharacterController
         UpdateRotation();
         Animate();
 
-        if (IdleUpdateDelegate != null)
-        {
-            IdleUpdateDelegate();
-        }
+        if (onIdleUpdate != null)
+            onIdleUpdate();
     }
 
     private void Idle_FixedUpdate()
@@ -51,7 +49,7 @@ public partial class PlayerController : BaseCharacterController
     {
         MinimiManager.Instance.UnDrawBlueprintObject();
 
-        IdleUpdateDelegate -= MinimiManager.Instance.DrawBlueprintObject;
+        onIdleUpdate -= MinimiManager.Instance.DrawBlueprintObject;
     }
     #endregion
 
@@ -74,14 +72,14 @@ public partial class PlayerController : BaseCharacterController
         {
             if (MinimiManager.Instance.InstallMinimi())
             {
-                IdleUpdateDelegate -= MinimiManager.Instance.DrawBlueprintObject;
+                onIdleUpdate -= MinimiManager.Instance.DrawBlueprintObject;
             }
         }
         // 우클릭
         if (rightClick)
         {
             MinimiManager.Instance.PutInAllMinimis();
-            IdleUpdateDelegate -= MinimiManager.Instance.DrawBlueprintObject;
+            onIdleUpdate -= MinimiManager.Instance.DrawBlueprintObject;
         }
 
         // 블럭 미니미
@@ -89,7 +87,7 @@ public partial class PlayerController : BaseCharacterController
         {
             if(MinimiManager.Instance.TakeOutMinimi(MinimiType.Block))
             {
-                IdleUpdateDelegate += MinimiManager.Instance.DrawBlueprintObject;
+                onIdleUpdate += MinimiManager.Instance.DrawBlueprintObject;
             }
         }
 
