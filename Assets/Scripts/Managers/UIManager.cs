@@ -6,8 +6,6 @@ public class UIManager : BaseManager<UIManager>
 {
     public enum EUIView
     {
-        Title,
-        LoadingScreen,
         StageEnd,
         Death
     }
@@ -19,11 +17,21 @@ public class UIManager : BaseManager<UIManager>
 
     private Transform mainCanvas = null;
 
+    private UI_LoadingScreen loadingScreen = null;
+
+
+    public delegate void TransitionDelegate();
+
+    public TransitionDelegate onScreenCoverComplete;
+    public TransitionDelegate onScreenRevealComplete;
+
 
     protected override void Awake()
     {
         base.Awake();
 
+        onScreenCoverComplete += OnScreenCovered;
+        SceneManager.Instance.onLoadComplete += OnSceneLoadComplete;
     }
 
     private void Start()
@@ -33,17 +41,35 @@ public class UIManager : BaseManager<UIManager>
 
     private void SceneInit()
     {
-        // Event System 존재 확인
-        GameObject eventSystem = GameObject.Find("EventSystem");
-        if (eventSystem == null)
+        // Event System 확인
+        if (GameObject.Find("EventSystem") == null)
         {
-            //ResourceManager.Instance.CreatePrefab<Transform>("EventSystem", null, PrefabPath.UI, true);
+            ResourceManager.Instance.CreatePrefab("EventSystem", null, PrefabPath.UI, true);
         }
 
+        // Main Canvas 확인
         if (mainCanvas == null)
         {
-            mainCanvas = GameObject.Find("Canvas").transform;
+            GameObject canvas = GameObject.Find("MainCanvas");
+
+            if (canvas != null)
+            {
+                mainCanvas = canvas.transform;
+            }
+            else
+            {
+                mainCanvas = ResourceManager.Instance.CreatePrefab("MainCanvas", null, PrefabPath.UI, true).transform;
+            }
+
+            DontDestroyOnLoad(mainCanvas.gameObject);
         }
+
+        // 로딩스크린 확인
+        if(loadingScreen == null)
+        {
+            loadingScreen = ResourceManager.Instance.CreatePrefab<UI_LoadingScreen>("Panel_LoadingScreen", mainCanvas, PrefabPath.UI, false);
+        }
+
     }
 
     public void InGameInit()
@@ -51,6 +77,23 @@ public class UIManager : BaseManager<UIManager>
         viewList.Add(EUIView.StageEnd, CreateView(EUIView.StageEnd));
         viewList.Add(EUIView.Death, CreateView(EUIView.Death));
     }
+
+
+    public void StartTransition()
+    {
+        loadingScreen.Show();
+    }
+
+    private void OnScreenCovered()
+    {
+        SceneManager.Instance.transitionReady = true;
+    }
+
+    private void OnSceneLoadComplete()
+    {
+        loadingScreen.Hide();
+    }
+
 
     public void OpenView(EUIView view)
     {
@@ -81,12 +124,6 @@ public class UIManager : BaseManager<UIManager>
 
         switch (view)
         {
-            case EUIView.Title:
-                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_Title", mainCanvas, PrefabPath.UI, true);
-                break;
-            case EUIView.LoadingScreen:
-                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_LoadingScreen", mainCanvas, PrefabPath.UI, false);
-                break;
             case EUIView.StageEnd:
                 newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_EndStage", mainCanvas, PrefabPath.UI, false);
                 break;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameManager : BaseManager<GameManager>
 {
-    [SerializeField] private bool inGameStart = false;
+    public bool inGameStart = false;
 
     protected override void Awake()
     {
@@ -21,11 +21,21 @@ public class GameManager : BaseManager<GameManager>
     }
 
 
+    // юс╫ц
+    public void StartGame(ref string stageName)
+    {
+        SceneManager.Instance.onLoadComplete += InGameInit;
+        SceneManager.Instance.LoadStage(ref stageName);
+    }
+
     public void InGameInit()
     {
         StageManager.Instance.Initialize();
         PlayerManager.Instance.Initialize();
         MinimiManager.Instance.Initialize();
         UIManager.Instance.InGameInit();
+        CameraManager.Instance.CurrentCameraCtrl.Initialize();
     }
+
+
 }

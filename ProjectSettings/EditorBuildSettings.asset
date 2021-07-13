@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main/temp_title.unity
+    guid: 8c19378f5e97f134b89db33534b817eb
+  - enabled: 1
     path: Assets/Scenes/NMJ/temp.unity
     guid: e3fea5bc21542a2458b1586eb609e265
   - enabled: 1

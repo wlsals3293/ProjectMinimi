@@ -17,5 +17,10 @@ public abstract class BaseManager<T> : MonoBehaviour where T : class
         {
             _Instance = gameObject.GetComponent<T>(); 
         }
+        else
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
     }
 }

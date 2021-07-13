@@ -56,15 +56,8 @@ public class CameraController : MonoBehaviour
     public bool UseRotation { get => useRotation; set => useRotation = value; }
 
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        if (lockCursor)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
         camera = GetComponent<Camera>();
 
         if (isMainCamera)
@@ -75,17 +68,26 @@ public class CameraController : MonoBehaviour
         {
             CameraManager.Instance.AddCamera(cameraIdx, this);
         }
-
-        if(IsTargetPlayerCamera)
-        {
-            target = PlayerManager.Instance.PlayerCtrl.transform;
-        }
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
         CameraCtrl();
+    }
+
+    public void Initialize()
+    {
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        if (IsTargetPlayerCamera)
+        {
+            target = PlayerManager.Instance.PlayerCtrl.transform;
+        }
     }
 
     public void CameraCtrl()

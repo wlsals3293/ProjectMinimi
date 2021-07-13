@@ -6,10 +6,6 @@ public class UI_LoadingScreen : UIView
 {
     private Animator anim;
 
-    public delegate void VisibleChangeCompleteDelegate();
-
-    public VisibleChangeCompleteDelegate onShowComplete;
-    public VisibleChangeCompleteDelegate onHideComplete;
 
     public enum AnimationType
     {
@@ -26,27 +22,27 @@ public class UI_LoadingScreen : UIView
     {
         base.Show();
 
-        anim.SetBool(0, true);
+        anim.SetBool("Visibility", true);
     }
 
     public override void Hide()
     {
-        base.Hide();
-
-        anim.SetBool(0, false);
+        anim.SetBool("Visibility", false);
     }
 
     public void AnimtationCompleteEvent(AnimationType type)
     {
         if (type == AnimationType.Show)
         {
-            if (onShowComplete != null)
-                onShowComplete();
+            if (UIManager.Instance.onScreenCoverComplete != null)
+                UIManager.Instance.onScreenCoverComplete();
         }
         else if (type == AnimationType.Hide)
         {
-            if (onHideComplete != null)
-                onHideComplete();
+            if (UIManager.Instance.onScreenRevealComplete != null)
+                UIManager.Instance.onScreenRevealComplete();
+
+            gameObject.SetActive(false);
         }
     }
 }
