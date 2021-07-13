@@ -4,49 +4,95 @@ using UnityEngine;
 
 public class UIManager : BaseManager<UIManager>
 {
-    // TODO 귀찮아서 일단 이렇게 나중에 프리팹에서 꺼내쓰기
-    [SerializeField] private GameObject endPanel = null;
-    [SerializeField] private GameObject deathPanel = null;
+    public enum EUIView
+    {
+        Title,
+        LoadingScreen,
+        StageEnd,
+        Death
+    }
+
+
+    private UIView currentView = null;
+
+    private Dictionary<EUIView, UIView> viewList = new Dictionary<EUIView, UIView>();
+
+    private Transform mainCanvas = null;
+
 
     protected override void Awake()
     {
         base.Awake();
+
     }
 
-    // TODO 범용성 있게 수정
-    public void OpenUI_EndStage()
+    private void Start()
     {
-        // TODO 함수화
-        Cursor.visible = true;                   
-        Cursor.lockState = CursorLockMode.None;
-
-
-        endPanel.SetActive(true);
-        PlayerManager.Instance.PlayerCtrl.pause = true;
+        SceneInit();
     }
 
-    public void OpenUI_Death()
+    private void SceneInit()
     {
+        if()
+
+        if (mainCanvas == null)
+        {
+            mainCanvas = GameObject.Find("Canvas").transform;
+        }
+    }
+
+    public void InGameInit()
+    {
+        viewList.Add(EUIView.StageEnd, CreateView(EUIView.StageEnd));
+        viewList.Add(EUIView.Death, CreateView(EUIView.Death));
+    }
+
+    public void OpenView(EUIView view)
+    {
+        if (currentView != null)
+        {
+            currentView.Hide();
+        }
+
+        currentView = viewList[view];
+        currentView.Show();
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-
-        deathPanel.SetActive(true);
     }
 
-    // TODO 이것도 임시 UI Panel별로 스크립트 별도 생성하고 넣기
-    public void Restart()
+    public void CloseView()
     {
+        currentView.Hide();
+        currentView = null;
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-        endPanel.SetActive(false);
-        StageManager.Instance.RestartStage();
     }
 
-    public void GameEnd()
+    private UIView CreateView(EUIView view)
     {
-        Application.Quit();
+        UIView newView;
+
+        switch (view)
+        {
+            case EUIView.Title:
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_Title", mainCanvas, PrefabPath.UI, true);
+                break;
+            case EUIView.LoadingScreen:
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_LoadingScreen", mainCanvas, PrefabPath.UI, false);
+                break;
+            case EUIView.StageEnd:
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_EndStage", mainCanvas, PrefabPath.UI, false);
+                break;
+            case EUIView.Death:
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_Death", mainCanvas, PrefabPath.UI, false);
+                break;
+            default:
+                return null;
+        }
+
+        return newView;
     }
 
-   
 }

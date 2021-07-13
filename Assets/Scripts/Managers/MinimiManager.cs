@@ -80,21 +80,6 @@ public class MinimiManager : BaseManager<MinimiManager>
             allMinimiLists.Add((MinimiType)i, new List<Minimi>());
             ownMinimiLists.Add((MinimiType)i, new List<Minimi>());
         }
-
-        if (boxMinimiRef != null)
-        {
-            for (int i = 0; i < blueprintObject.Length; i++)
-            {
-                blueprintObject[i] = Instantiate(boxMinimiRef);
-                blueprintObjectRenderers[i] = blueprintObject[i].GetComponentInChildren<Renderer>();
-                blueprintObject[i].SetActive(false);
-            }
-        }
-        else
-        {
-            Debug.LogError("박스 미니미 프리팹 등록 안됨");
-        }
-
     }
 
     public void Initialize()
@@ -121,6 +106,28 @@ public class MinimiManager : BaseManager<MinimiManager>
             Minimi curMinimi = CreateMinimi(MinimiType.Block);
             if (curMinimi != null)
                 curMinimi.Initialize();
+        }
+
+        CreateBlueprintMinimi();
+    }
+
+    private void CreateBlueprintMinimi()
+    {
+        if (blueprintObject[0] != null)
+            return;
+
+        if (boxMinimiRef != null)
+        {
+            for (int i = 0; i < blueprintObject.Length; i++)
+            {
+                blueprintObject[i] = Instantiate(boxMinimiRef);
+                blueprintObjectRenderers[i] = blueprintObject[i].GetComponentInChildren<Renderer>();
+                blueprintObject[i].SetActive(false);
+            }
+        }
+        else
+        {
+            Debug.LogError("박스 미니미 프리팹 등록 안됨");
         }
     }
 

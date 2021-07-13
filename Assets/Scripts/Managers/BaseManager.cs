@@ -15,8 +15,7 @@ public abstract class BaseManager<T> : MonoBehaviour where T : class
     {
         if(_Instance == null)
         {
-            _Instance = gameObject.GetComponent<T>();
-            DontDestroyOnLoad(gameObject);
+            _Instance = gameObject.GetComponent<T>(); 
         }
     }
 }
