@@ -33,7 +33,12 @@ public class UIManager : BaseManager<UIManager>
 
     private void SceneInit()
     {
-        if()
+        // Event System 존재 확인
+        GameObject eventSystem = GameObject.Find("EventSystem");
+        if (eventSystem == null)
+        {
+            //ResourceManager.Instance.CreatePrefab<Transform>("EventSystem", null, PrefabPath.UI, true);
+        }
 
         if (mainCanvas == null)
         {
