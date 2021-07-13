@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_Title : MonoBehaviour
 {
-    private string stageName = "temp";
+    [SerializeField] private string stageName = "temp";
     
     public void GameStart()
     {
