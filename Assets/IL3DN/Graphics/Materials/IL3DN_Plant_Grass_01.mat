@@ -128,17 +128,17 @@ Material:
     - _UVSec: 0
     - _Wiggle: 0
     - _WiggleRandomisation: 0
-    - _WiggleStrenght: 0.401
+    - _WiggleStrenght: 0.39
     - _Wind: 0
     - _WindAmplitudeMultiplier: 1
     - _WindDirectionSpeed: 5
     - _WindQuality: 4
-    - _WindStrenght: 0.139
+    - _WindStrenght: 0.496
     - _WindSwinging: 0.5
     - _ZWrite: 1
     - __dirty: 1
     m_Colors:
-    - _Color: {r: 0.37647027, g: 0.47058803, b: 0.18823498, a: 1}
+    - _Color: {r: 0.4811173, g: 0.6132076, b: 0.21693665, a: 1}
     - _Color0: {r: 1, g: 0.9847094, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _HueVariation: {r: 1, g: 1, b: 1, a: 1}
