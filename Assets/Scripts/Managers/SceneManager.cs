@@ -6,7 +6,12 @@ using UnityScene = UnityEngine.SceneManagement;
 
 public class SceneManager : BaseManager<SceneManager>
 {
+    [HideInInspector] public bool transitionReady = false;
     private bool isLoading = false;
+
+
+    public delegate void LoadCompleteDelegate();
+    public LoadCompleteDelegate onLoadComplete;
 
 
     protected override void Awake()
@@ -14,12 +19,15 @@ public class SceneManager : BaseManager<SceneManager>
         base.Awake();
     }
 
-    public void LoadStage(string sceneName)
+    public void LoadStage(ref string sceneName)
     {
         if (isLoading)
             return;
 
         isLoading = true;
+        transitionReady = false;
+        UIManager.Instance.StartTransition();
+        Debug.Log("로딩 시작!");
         StartCoroutine(LoadSceneAsync(sceneName));
     }
 
@@ -33,15 +41,23 @@ public class SceneManager : BaseManager<SceneManager>
     {
         AsyncOperation asyncOperation = UnityScene.SceneManager.LoadSceneAsync(sceneName);
 
+        asyncOperation.allowSceneActivation = false;
+
         while(!asyncOperation.isDone)
         {
-            Debug.Log($"Loading:{asyncOperation.progress}");
+            if(transitionReady)
+                asyncOperation.allowSceneActivation = true;
+
+            Debug.Log($"Loading:{asyncOperation.progress}, Ready:{transitionReady}");
 
             yield return null;
         }
 
         isLoading = false;
-        Debug.Log("Load Complete!");
+        Debug.Log("로딩 완료!");
+
+        if (onLoadComplete != null)
+            onLoadComplete();
     }
 
     private IEnumerator UnloadSceneAsync(string sceneName)

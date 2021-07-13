@@ -21,7 +21,7 @@ public partial class PlayerController : BaseCharacterController
         PlayerCharacter.SetHP(0);
         MinimiManager.Instance.PutInAllMinimis();
 
-        UIManager.Instance.OpenUI_Death();
+        UIManager.Instance.OpenView(UIManager.EUIView.Death);
     }
 
     private void Dead_Update()

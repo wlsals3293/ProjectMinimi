@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class StageManager : BaseManager<StageManager>
 {
-    // TODO 임시변수
-    [SerializeField] private Transform startPos = null;
 
     /// <summary>
     /// 스테이지 정보
@@ -15,7 +13,7 @@ public class StageManager : BaseManager<StageManager>
     /// <summary>
     /// 현재 체크포인트에 해당하는 리스트 번호
     /// </summary>
-    private int currentCheckpoint = -1;
+    private int currentCheckpoint = 0;
 
     /// <summary>
     /// 체크포인트 리스트
@@ -23,10 +21,6 @@ public class StageManager : BaseManager<StageManager>
     private List<Checkpoint> checkpoints = null;
     
 
-    public Vector3 StartPosition
-    {
-        get => startPos.position;
-    }
 
     public float GlobalKillY
     {
@@ -42,9 +36,9 @@ public class StageManager : BaseManager<StageManager>
 
     public void RestartStage()
     {
-        PlayerManager.Instance.InitStagePlayer();
+        currentCheckpoint = 0;
 
-        currentCheckpoint = -1;
+        PlayerManager.Instance.RespawnPlayer();
     }
 
     public void Initialize()
@@ -75,12 +69,9 @@ public class StageManager : BaseManager<StageManager>
             return;
         }
 
-        if (currentCheckpoint >= checkpoints.Count)
-        {
-            currentCheckpoint = checkpoints.Count - 1;
-        }
+        currentCheckpoint = 0;
 
-        for (int i=0; i<checkpoints.Count; i++)
+        for (int i = 0; i < checkpoints.Count; i++)
         {
             checkpoints[i].index = i;
         }
@@ -100,7 +91,7 @@ public class StageManager : BaseManager<StageManager>
 
     public Transform GetLastCheckpoint()
     {
-        if (checkpoints == null || currentCheckpoint < 0 ||
+        if (currentCheckpoint < 0 || checkpoints == null ||
             currentCheckpoint >= checkpoints.Count)
             return null;
 

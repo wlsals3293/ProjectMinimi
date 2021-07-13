@@ -72,8 +72,6 @@ public partial class PlayerController : BaseCharacterController
     private FSMController fsm = new FSMController();
 
 
-    private delegate void StateUpdateDelegate();
-
 
 
     public override void Awake()
@@ -88,6 +86,8 @@ public partial class PlayerController : BaseCharacterController
         Dead_SetState();
         Climb_SetState();
         Sliding_SetState();
+
+        StartCoroutine(RandomIdle());
     }
 
     public void Init()
@@ -201,6 +201,17 @@ public partial class PlayerController : BaseCharacterController
             elapsedChangingTime = 0.0f;
 
             rotationChanging = false;
+        }
+    }
+
+    // 임시 랜덤 Idle 구현
+    private IEnumerator RandomIdle()
+    {
+        while(true)
+        {
+            float randomTime = Random.Range(10.0f, 40.0f);
+            yield return new WaitForSeconds(randomTime);
+            animator.SetTrigger("RandomMotion");
         }
     }
 }

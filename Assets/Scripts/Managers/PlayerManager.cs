@@ -19,19 +19,13 @@ public class PlayerManager : BaseManager<PlayerManager>
     public void Initialize()
     {
         CreatePlayer();
-        InitStagePlayer();
+        RespawnPlayer();
     }
 
     public void CreatePlayer()
     {
         playerCtrl = ResourceManager.Instance.CreatePrefab<PlayerController>(PrefabNames.Player);
         playerChar = playerCtrl.PlayerCharacter;
-    }
-
-    public void InitStagePlayer()
-    {
-        playerCtrl.transform.position = StageManager.Instance.StartPosition;
-        playerCtrl.Init();
     }
 
     public void RespawnPlayer()
@@ -44,7 +38,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         }
         else
         {
-            playerCtrl.transform.position = StageManager.Instance.StartPosition;
+            playerCtrl.transform.position = Vector3.zero;
         }
         
         playerCtrl.Init();

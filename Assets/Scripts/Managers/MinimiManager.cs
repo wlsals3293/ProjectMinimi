@@ -80,6 +80,41 @@ public class MinimiManager : BaseManager<MinimiManager>
             allMinimiLists.Add((MinimiType)i, new List<Minimi>());
             ownMinimiLists.Add((MinimiType)i, new List<Minimi>());
         }
+    }
+
+    public void Initialize()
+    {
+        playerTrans = PlayerManager.Instance.PlayerCtrl.transform;
+
+        // 리스트 초기화       
+        for(int i=1; i<(int)MinimiType.Max; i++)
+        {
+            ownMinimiLists[(MinimiType)i].Clear();
+
+            foreach(var minimi in allMinimiLists[(MinimiType)i])
+            {
+                Destroy(minimi.gameObject);
+            }
+            allMinimiLists[(MinimiType)i].Clear();
+        }
+
+
+        // 임시로 여기서 미니미 생성
+        // 나중에 스테이지 생성 과정에서 다루어야 할듯
+        for (int i = 0; i < 3; i++)
+        {
+            Minimi curMinimi = CreateMinimi(MinimiType.Block);
+            if (curMinimi != null)
+                curMinimi.Initialize();
+        }
+
+        CreateBlueprintMinimi();
+    }
+
+    private void CreateBlueprintMinimi()
+    {
+        if (blueprintObject[0] != null)
+            return;
 
         if (boxMinimiRef != null)
         {
@@ -93,21 +128,6 @@ public class MinimiManager : BaseManager<MinimiManager>
         else
         {
             Debug.LogError("박스 미니미 프리팹 등록 안됨");
-        }
-
-    }
-
-    public void Initialize()
-    {
-        playerTrans = PlayerManager.Instance.PlayerCtrl.transform;
-
-        // 임시로 여기서 미니미 생성
-        // 나중에 스테이지 생성 과정에서 다루어야 할듯
-        for (int i = 0; i < 3; i++)
-        {
-            Minimi curMinimi = CreateMinimi(MinimiType.Block);
-            if (curMinimi != null)
-                curMinimi.Initialize();
         }
     }
 

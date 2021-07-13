@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Death : MonoBehaviour
+public class UI_Death : UIView
 {
     public void Respawn()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
-        gameObject.SetActive(false);
         PlayerManager.Instance.RespawnPlayer();
+        UIManager.Instance.CloseView();
     }
 }

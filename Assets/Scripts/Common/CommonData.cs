@@ -7,12 +7,24 @@ public static class ResourcePath
 { 
     private const string PATH_PREFAB = "Prefabs/";
 
-    // 폴더가 나뉠때는 파라미터 추가해서 enum 작업
-    public static string GetPrefabPath(string filename)
+    private const string PATH_UI = "UI/";
+
+
+
+    public static string GetPrefabPath(string filename, PrefabPath path)
     {
+        switch (path)
+        {
+            case PrefabPath.Root:
+                return string.Concat(PATH_PREFAB, filename);
+            case PrefabPath.UI:
+                return string.Concat(PATH_PREFAB, PATH_UI, filename);
+            default:
+                break;
+        }
         return string.Concat(PATH_PREFAB, filename);
     }
-    
+
 }
 
 

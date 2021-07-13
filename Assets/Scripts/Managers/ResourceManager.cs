@@ -8,14 +8,33 @@ public class ResourceManager : BaseManager<ResourceManager>
         base.Awake();
     }
 
-    public T CreatePrefab<T>(string filename, bool active = true) where T : MonoBehaviour
+    public GameObject CreatePrefab(string filename, Transform parent = null,
+        PrefabPath path = PrefabPath.Root, bool active = true)
     {
-        T result = null;
-        GameObject obj = Resources.Load<GameObject>(ResourcePath.GetPrefabPath(filename));
+        GameObject result = null;
+        GameObject obj = Resources.Load<GameObject>(ResourcePath.GetPrefabPath(filename, path));
 
         if (obj != null)
         {
-            result = GameObject.Instantiate(obj).GetComponent<T>();
+            result = GameObject.Instantiate(obj, parent);
+            if (active == false)
+            {
+                result.gameObject.SetActive(false);
+            }
+        }
+
+        return result;
+    }
+
+    public T CreatePrefab<T>(string filename, Transform parent = null,
+        PrefabPath path = PrefabPath.Root, bool active = true) where T : MonoBehaviour
+    {
+        T result = null;
+        GameObject obj = Resources.Load<GameObject>(ResourcePath.GetPrefabPath(filename, path));
+
+        if (obj != null)
+        {
+            result = GameObject.Instantiate(obj, parent).GetComponent<T>();
             if(active == false)
             {
                 result.gameObject.SetActive(false);

@@ -59,3 +59,10 @@ public enum DirectionType
     Z,
     All,
 }
+
+
+public enum PrefabPath
+{
+    Root,
+    UI
+}
