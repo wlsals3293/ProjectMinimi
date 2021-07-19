@@ -44,7 +44,7 @@ public class FSMController
 
         prevState = curState;
         curState = nextState;
-        Debug.Log(prevState + " => " + nextState);
+        Debug.Log($"Player State: {prevState} => {nextState}");
 
         curBehaviour = PlayerManager.Instance.GetBehaviour(nextState);
 

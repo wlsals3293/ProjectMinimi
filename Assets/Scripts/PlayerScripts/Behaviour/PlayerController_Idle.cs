@@ -62,7 +62,7 @@ public partial class PlayerController : BaseCharacterController
 
         if (key_interact)
         {
-            Debug.LogError("Input E Key");
+            Debug.Log("Input E Key");
             Interact_Action(hit, interactType);
         }
 

@@ -34,7 +34,7 @@ public class PlayerManager : BaseManager<PlayerManager>
 
         if(checkpoint != null)
         {
-            playerCtrl.transform.position = checkpoint.position;
+            playerCtrl.transform.SetPositionAndRotation(checkpoint.position, checkpoint.rotation);
         }
         else
         {

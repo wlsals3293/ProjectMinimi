@@ -139,8 +139,10 @@ public partial class PlayerController : BaseCharacterController
         // Toggle pause / resume.
         // By default, will restore character's velocity on resume (eg: restoreVelocityOnResume = true)
 
-        if (Input.GetKeyDown(KeyCode.P))
-            pause = !pause;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.ToggleESCMenu();
+        }
 
         // Handle user input
         moveDirectionRaw = new Vector3

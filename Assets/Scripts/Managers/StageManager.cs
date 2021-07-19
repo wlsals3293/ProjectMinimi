@@ -19,7 +19,7 @@ public class StageManager : BaseManager<StageManager>
     /// 체크포인트 리스트
     /// </summary>
     private List<Checkpoint> checkpoints = null;
-    
+
 
 
     public float GlobalKillY
@@ -28,22 +28,30 @@ public class StageManager : BaseManager<StageManager>
     }
 
 
+
     protected override void Awake()
     {
         base.Awake();
 
     }
 
-    public void RestartStage()
-    {
-        currentCheckpoint = 0;
 
-        PlayerManager.Instance.RespawnPlayer();
+    /// <summary>
+    /// 스테이지 재시작
+    /// </summary>
+    /// <param name="resetCheckpoint">true면 체크포인트 초기화</param>
+    public void RestartStage(bool resetCheckpoint = false)
+    {
+        if (resetCheckpoint)
+            currentCheckpoint = 0;
+
+        SceneManager.Instance.ReloadScene();
     }
 
     public void Initialize()
     {
-        if(stageInfo == null)
+        // 스테이지 정보 체크
+        if (stageInfo == null)
         {
             GameObject obj = GameObject.FindGameObjectWithTag(Tags.stageInfo);
             if (obj == null)
@@ -68,8 +76,6 @@ public class StageManager : BaseManager<StageManager>
             currentCheckpoint = -1;
             return;
         }
-
-        currentCheckpoint = 0;
 
         for (int i = 0; i < checkpoints.Count; i++)
         {

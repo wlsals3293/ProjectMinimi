@@ -91,10 +91,10 @@ public class MinimiManager : BaseManager<MinimiManager>
         {
             ownMinimiLists[(MinimiType)i].Clear();
 
-            foreach(var minimi in allMinimiLists[(MinimiType)i])
+            /*foreach(var minimi in allMinimiLists[(MinimiType)i])
             {
                 Destroy(minimi.gameObject);
-            }
+            }*/
             allMinimiLists[(MinimiType)i].Clear();
         }
 

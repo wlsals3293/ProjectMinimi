@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class UI_Death : UIView
 {
+
     public void Respawn()
     {
-        PlayerManager.Instance.RespawnPlayer();
+        StageManager.Instance.RestartStage();
         UIManager.Instance.CloseView();
     }
 }

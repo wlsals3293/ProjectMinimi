@@ -8,7 +8,7 @@ public class UI_StageEnd : UIView
 
     public void Restart()
     {
-        StageManager.Instance.RestartStage();
+        StageManager.Instance.RestartStage(true);
         UIManager.Instance.CloseView();
     }
 

@@ -6,7 +6,14 @@ using UnityScene = UnityEngine.SceneManagement;
 
 public class SceneManager : BaseManager<SceneManager>
 {
+    /// <summary>
+    /// 씬 전환 준비 여부
+    /// </summary>
     [HideInInspector] public bool transitionReady = false;
+
+    /// <summary>
+    /// 로딩중 여부
+    /// </summary>
     private bool isLoading = false;
 
 
@@ -19,7 +26,7 @@ public class SceneManager : BaseManager<SceneManager>
         base.Awake();
     }
 
-    public void LoadStage(ref string sceneName)
+    public void LoadScene(ref string sceneName)
     {
         if (isLoading)
             return;
@@ -31,24 +38,29 @@ public class SceneManager : BaseManager<SceneManager>
         StartCoroutine(LoadSceneAsync(sceneName));
     }
 
+    public void ReloadScene()
+    {
+        string currentScene = UnityScene.SceneManager.GetActiveScene().name;
+        LoadScene(ref currentScene);
+    }
+
     public void UnloadStage(string sceneName)
     {
         StartCoroutine(UnloadSceneAsync(sceneName));
     }
 
-    // TODO 로딩 & 타이틀 기타 UI필요
     private IEnumerator LoadSceneAsync(string sceneName)
     {
         AsyncOperation asyncOperation = UnityScene.SceneManager.LoadSceneAsync(sceneName);
 
         asyncOperation.allowSceneActivation = false;
 
-        while(!asyncOperation.isDone)
+        while (!asyncOperation.isDone)
         {
-            if(transitionReady)
+            if (transitionReady)
                 asyncOperation.allowSceneActivation = true;
 
-            Debug.Log($"Loading:{asyncOperation.progress}, Ready:{transitionReady}");
+            //Debug.Log($"Loading:{asyncOperation.progress}, Ready:{transitionReady}");
 
             yield return null;
         }

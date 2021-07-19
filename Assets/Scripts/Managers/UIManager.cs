@@ -7,13 +7,15 @@ public class UIManager : BaseManager<UIManager>
     public enum EUIView
     {
         StageEnd,
-        Death
+        Death,
+        EscMenu,
+        Max
     }
 
 
-    private UIView currentView = null;
-
     private Dictionary<EUIView, UIView> viewList = new Dictionary<EUIView, UIView>();
+
+    private Stack<UIView> viewStack = new Stack<UIView>();
 
     private Transform mainCanvas = null;
 
@@ -39,7 +41,7 @@ public class UIManager : BaseManager<UIManager>
         SceneInit();
     }
 
-    private void SceneInit()
+    public void SceneInit()
     {
         // Event System »Æ¿Œ
         if (GameObject.Find("EventSystem") == null)
@@ -74,8 +76,13 @@ public class UIManager : BaseManager<UIManager>
 
     public void InGameInit()
     {
-        viewList.Add(EUIView.StageEnd, CreateView(EUIView.StageEnd));
-        viewList.Add(EUIView.Death, CreateView(EUIView.Death));
+        for (int i = 0; i < (int)EUIView.Max; i++)
+        {
+            if (!viewList.ContainsKey((EUIView)i))
+            {
+                viewList.Add((EUIView)i, CreateView((EUIView)i));
+            }
+        }
     }
 
 
@@ -97,13 +104,14 @@ public class UIManager : BaseManager<UIManager>
 
     public void OpenView(EUIView view)
     {
-        if (currentView != null)
+        if (viewStack.Count > 0)
         {
-            currentView.Hide();
+            viewStack.Peek().Hide();
         }
 
-        currentView = viewList[view];
-        currentView.Show();
+        UIView ui = viewList[view];
+        viewStack.Push(ui);
+        ui.Show();
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -111,8 +119,26 @@ public class UIManager : BaseManager<UIManager>
 
     public void CloseView()
     {
-        currentView.Hide();
-        currentView = null;
+        UIView ui = viewStack.Pop();
+        ui.Hide();
+
+        if (viewStack.Count > 0)
+        {
+            viewStack.Peek().Show();
+        }
+        else
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    public void CloseAllView()
+    {
+        while (viewStack.Count > 0)
+        {
+            viewStack.Pop().Hide();
+        }
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -129,6 +155,9 @@ public class UIManager : BaseManager<UIManager>
                 break;
             case EUIView.Death:
                 newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_Death", mainCanvas, PrefabPath.UI, false);
+                break;
+            case EUIView.EscMenu:
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_ESC", mainCanvas, PrefabPath.UI, false);
                 break;
             default:
                 return null;
