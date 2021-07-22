@@ -111,11 +111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d51917e07f197494f9f3f6a58fd49f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseWeight: 0
+  BaseWeight: 2
   TotalWeight: 0
   isEmpty: 0
   otherWeight: 0
-  OBJs: []
 --- !u!54 &8240520510630200525
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -288,7 +287,7 @@ MonoBehaviour:
   LightSide_rgd: {fileID: 0}
   HeavySide_Target: {x: 0, y: 0, z: 0}
   LightSide_Target: {x: 0, y: 0, z: 0}
-  UpdownSpeed: 5
+  UpdownSpeed: 1
 --- !u!1 &8240520511410104733
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,11 +399,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d51917e07f197494f9f3f6a58fd49f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseWeight: 0
+  BaseWeight: 2
   TotalWeight: 0
   isEmpty: 0
   otherWeight: 0
-  OBJs: []
 --- !u!54 &8240520511410104731
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -81,11 +81,11 @@ public class Scale_Core : MonoBehaviour
         Vector3 HeavyDirection = HeavySide_Target - HeavySide.transform.position;
         Vector3 LightDirection = LightSide_Target - LightSide.transform.position;
 
-        if (Vector3.Distance(HeavySide.transform.position, HeavySide_Target) > 0.3f)
+        if (Vector3.Distance(HeavySide.transform.position, HeavySide_Target) > 0.1f)
         {
             HeavySide_rgd.MovePosition(HeavySide.transform.position + HeavyDirection.normalized * UpdownSpeed * Time.deltaTime);
         }
-        if (Vector3.Distance(LightSide.transform.position, LightSide_Target) > 0.3f)
+        if (Vector3.Distance(LightSide.transform.position, LightSide_Target) > 0.1f)
         {
             LightSide_rgd.MovePosition(LightSide.transform.position + LightDirection.normalized * UpdownSpeed * Time.deltaTime);
         }

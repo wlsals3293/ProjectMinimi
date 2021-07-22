@@ -13,27 +13,11 @@ public class Scale_Side : MonoBehaviour
 
     private Coroutine onActivateCort;
     private LayerMask layerMask;
-    public List<Weight> OBJs;
-
+    
     // Start is called before the first frame update
     void Start()
     {
         layerMask = LayerMask.GetMask("Minimi", "Player", "Object");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        float Total_otherWeight = 0;
-        if (OBJs.Count > 0)
-        {
-            foreach (Weight obj in OBJs)
-            {
-                Total_otherWeight += obj.weight;
-            }
-        }
-        TotalWeight = BaseWeight + Total_otherWeight;
-        otherWeight = Total_otherWeight;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -57,30 +41,32 @@ public class Scale_Side : MonoBehaviour
             
 
             bool isEmpty = true;
-            OBJs.Clear();
+            
+
+            otherWeight = 0;
 
             foreach (Collider col in cols)
             {
                 if (col.CompareTag("Player") || col.CompareTag("Minimi") || col.CompareTag("Object"))
                 {
                     isEmpty = false;
-                    GameObject temp = col.gameObject;
-                    if(temp.gameObject.GetComponent<Weight>() != null)
-                    {
-                        OBJs.Add(temp.gameObject.GetComponent<Weight>());
-                    }
-                    
+                    otherWeight += col.gameObject.GetComponent<Rigidbody>().mass;
                 }
             }
 
+            
+            
+            TotalWeight = BaseWeight + otherWeight;
+            
+
             if (isEmpty)
             {
-                OBJs.Clear();
+                otherWeight = 0;
                 StopCoroutine(onActivateCort);
                 break;
             }
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
