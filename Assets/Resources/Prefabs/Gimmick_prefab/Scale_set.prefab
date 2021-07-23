@@ -287,7 +287,7 @@ MonoBehaviour:
   LightSide_rgd: {fileID: 0}
   HeavySide_Target: {x: 0, y: 0, z: 0}
   LightSide_Target: {x: 0, y: 0, z: 0}
-  UpdownSpeed: 1
+  UpdownSpeed: 1.5
 --- !u!1 &8240520511410104733
 GameObject:
   m_ObjectHideFlags: 0

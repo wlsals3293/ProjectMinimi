@@ -78,6 +78,13 @@ public class Scale_Core : MonoBehaviour
         HeavySide_Target = new Vector3(HeavySide.transform.position.x, middlePoint.y - moveDistance, HeavySide.transform.position.z);
         LightSide_Target = new Vector3(LightSide.transform.position.x, middlePoint.y + moveDistance, LightSide.transform.position.z);
 
+        
+
+        
+    }
+
+    private void FixedUpdate()
+    {
         Vector3 HeavyDirection = HeavySide_Target - HeavySide.transform.position;
         Vector3 LightDirection = LightSide_Target - LightSide.transform.position;
 
