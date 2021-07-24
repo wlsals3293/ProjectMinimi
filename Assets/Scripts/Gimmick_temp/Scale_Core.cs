@@ -32,8 +32,8 @@ public class Scale_Core : MonoBehaviour
         HeavySide_rgd = Side1.gameObject.GetComponent<Rigidbody>();
         LightSide = Side2;
         LightSide_rgd = Side2.gameObject.GetComponent<Rigidbody>();
-
-        middleDistance = Vector3.Distance(highPoint.position, lowPoint.position) / 2;
+        
+        middleDistance = (highPoint.position.y - lowPoint.position.y) / 2;
 
         Side1.transform.position = new Vector3(Side1.transform.position.x, highPoint.position.y - middleDistance, Side1.transform.position.z);
         Side2.transform.position = new Vector3(Side2.transform.position.x, highPoint.position.y - middleDistance, Side2.transform.position.z);
