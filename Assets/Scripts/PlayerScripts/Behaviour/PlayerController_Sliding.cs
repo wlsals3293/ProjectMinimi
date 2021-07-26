@@ -66,7 +66,8 @@ public partial class PlayerController : BaseCharacterController
     {
         slidingSlope = null;
         rotationChanging = false;
-        CameraManager.Instance.CurrentCameraCtrl.UseRotation = true;
+
+        // TODO 카메라 관련 처리
     }
     #endregion
 
@@ -80,13 +81,16 @@ public partial class PlayerController : BaseCharacterController
         slidingForward = slidingSlope.transform.forward;
         slidingRight = slidingSlope.transform.right;
 
-        CameraManager.Instance.CurrentCameraCtrl.UseRotation = false;
+
+        // TODO 카메라 관련 처리
+
+        /*CameraManager.Instance.CurrentCameraCtrl.UseRotation = false;
         Vector3 lookDirection = Vector3.ProjectOnPlane(slidingForward, Vector3.up);
         ChangeRotation(Quaternion.LookRotation(lookDirection), slidingEnterTime);
 
         lookDirection -= Vector3.up * 0.5f;
         CameraManager.Instance.GetMoveDirCamera().rotation = Quaternion.LookRotation(lookDirection);
-
+        */
 
         ChangeState(PlayerState.Sliding);
     }

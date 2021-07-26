@@ -97,17 +97,7 @@ public partial class PlayerController : BaseCharacterController
             MinimiManager.Instance.UninstallMinimi();
         }
 
-
-
-        if (CameraManager.Instance.CurrentCameraCtrl != null && CameraManager.Instance.CurrentCameraCtrl.IsMainCamera)
-        {
-            //moveDirection = (input.z * Vector3.Scale(cameraT.forward, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
-            moveDirection = moveDirection.relativeTo(cameraT);
-        }
-        else
-        {
-            //moveDirection = (input.z * Vector3.Scale(cameraT.up, new Vector3(1, 0, 1)).normalized + input.x * cameraT.right).normalized;
-        }
+        moveDirection = moveDirection.relativeTo(CameraT);
     }
 
     public void Interact_Action(RaycastHit hit, InteractType keyType)

@@ -6,6 +6,8 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
+    [Header("Player Controller")]
+
     // 현재속도 확인용. 디버그 전용
     [SerializeField, ReadOnly]
     private float currentSpeed;
@@ -45,11 +47,17 @@ public partial class PlayerController : BaseCharacterController
     }
 
 
-    private Transform cameraT
+    private Transform cameraT;
+
+    private Transform CameraT
     {
         get
         {
-            return CameraManager.Instance.GetMoveDirCamera();
+            if(cameraT == null)
+            {
+                cameraT = CameraManager.Instance.MainCam.transform;
+            }
+            return cameraT;
         }
     }
 

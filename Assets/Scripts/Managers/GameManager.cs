@@ -49,7 +49,7 @@ public class GameManager : BaseManager<GameManager>
         MinimiManager.Instance.Initialize();
         UIManager.Instance.SceneInit();
         UIManager.Instance.InGameInit();
-        CameraManager.Instance.CurrentCameraCtrl.Initialize();
+        CameraManager.Instance.Initialize();
     }
 
     public void ToggleESCMenu()

@@ -64,5 +64,6 @@ public enum DirectionType
 public enum PrefabPath
 {
     Root,
+    Camera,
     UI
 }

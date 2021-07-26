@@ -6,9 +6,8 @@
 public static class ResourcePath
 { 
     private const string PATH_PREFAB = "Prefabs/";
-
+    private const string PATH_CAMERA = "Camera/";
     private const string PATH_UI = "UI/";
-
 
 
     public static string GetPrefabPath(string filename, PrefabPath path)
@@ -17,6 +16,8 @@ public static class ResourcePath
         {
             case PrefabPath.Root:
                 return string.Concat(PATH_PREFAB, filename);
+            case PrefabPath.Camera:
+                return string.Concat(PATH_PREFAB, PATH_CAMERA, filename);
             case PrefabPath.UI:
                 return string.Concat(PATH_PREFAB, PATH_UI, filename);
             default:

@@ -1,116 +1,187 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using Cinemachine;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : BaseManager<CameraManager>
 {
+    private const int CAMERA_PRIORITY_DEFAULT = 10;
+    private const int CAMERA_PRIORITY_PLAYER = 100;
+    private const int CAMERA_PRIORITY_SCENE = 500;
+    private const int CAMERA_PRIORITY_CINEMATIC = 1000;
 
-    private CameraController mainCamCtrl = null;
+
+    /// <summary>
+    /// 메인 카메라
+    /// </summary>
+    private MainCamera mainCam;
+
+
+    /// <summary>
+    /// 현재 활성화되어있는 카메라 컨트롤러
+    /// </summary>
     private CameraController curCameraCtrl = null;
+
+    /// <summary>
+    /// 자유시점 카메라 컨트롤러
+    /// </summary>
+    private FreeLookCamController freeLookCam = null;
+
+    /// <summary>
+    /// 숄더뷰시점 카메라 컨트롤러
+    /// </summary>
+    private ShoulderCamController shoulderCam = null;
+
+    /// <summary>
+    /// 카메라 컨트롤러 리스트
+    /// </summary>
+    private Dictionary<int, CameraController> customCameraDic = new Dictionary<int, CameraController>();
+
+
+    /// <summary>
+    /// 현재 활성화되어있는 씬카메라
+    /// </summary>
+    private ICinemachineCamera curSceneCamera;
+
+
+    [Tooltip("마우스 잠금")]
+    [SerializeField]
+    private bool lockCursor;
+
+
+
+    public MainCamera MainCam { get => mainCam; }
 
     public CameraController CurrentCameraCtrl { get => curCameraCtrl; }
 
 
-    private Dictionary<int, CameraController> camerDic = new Dictionary<int, CameraController>();
 
     protected override void Awake()
     {
         base.Awake();
+
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
-
-    public void SetMainCamera(CameraController cam)
-    {
-        mainCamCtrl = cam;
-        curCameraCtrl = mainCamCtrl;
-    }
-
-    public void AddCamera(int idx, CameraController cam)
-    {
-        if (cam == null)
-            return;
-
-        camerDic.Add(idx, cam);
-        cam.gameObject.SetActive(false);
-    }
-
-    // TODO 임시
     private void LateUpdate()
     {
-        if(mainCamCtrl != null && mainCamCtrl.gameObject.activeSelf == false)
+        if (curCameraCtrl != null)
         {
-            mainCamCtrl.CameraCtrl();
+            curCameraCtrl.CameraUpdate();
         }
 
-        TempInputCamera(10);
+        TempInputCamera();
     }
 
-    private void TempInputCamera(int count)
+    /// <summary>
+    /// 초기화. 필요한 카메라들 있는지 체크
+    /// </summary>
+    public void Initialize()
+    {
+        if (freeLookCam == null)
+        {
+            freeLookCam = ResourceManager.Instance.CreatePrefab<FreeLookCamController>(
+                "FreeLookCam", null, PrefabPath.Camera);
+
+            freeLookCam.Target = PlayerManager.Instance.PlayerCtrl.transform;
+        }
+
+        if (shoulderCam == null)
+        {
+            shoulderCam = ResourceManager.Instance.CreatePrefab<ShoulderCamController>(
+                "ShoulderCam", null, PrefabPath.Camera);
+
+            shoulderCam.Target = PlayerManager.Instance.PlayerCtrl.transform;
+        }
+    }
+
+    /// <summary>
+    /// 메인 카메라 설정
+    /// </summary>
+    /// <param name="camera">설정할 메인카메라</param>
+    public void SetMainCamera(MainCamera camera)
+    {
+        mainCam = camera;
+    }
+
+    /// <summary>
+    /// 커스텀 카메라 리스트에 카메라를 추가합니다
+    /// </summary>
+    /// <param name="idx">인덱스</param>
+    /// <param name="camera">추가할 카메라</param>
+    public void AddCustomCamera(int idx, CameraController camera)
+    {
+        if (camera == null)
+            return;
+
+        if (customCameraDic.ContainsKey(idx))
+        {
+            customCameraDic[idx] = camera;
+        }
+        else
+        {
+            customCameraDic.Add(idx, camera);
+        }
+    }
+
+    /// <summary>
+    /// 커스텀 카메라를 활성화합니다
+    /// </summary>
+    /// <param name="idx">인덱스</param>
+    public void ActivateCustomCamera(int idx)
+    {
+        if (customCameraDic.ContainsKey(idx))
+        {
+            if (curCameraCtrl != null)
+                curCameraCtrl.Priority = CAMERA_PRIORITY_DEFAULT;
+
+            curCameraCtrl = customCameraDic[idx];
+            curCameraCtrl.Priority = CAMERA_PRIORITY_PLAYER;
+            curCameraCtrl.ApplyPreMovement(mainCam.transform.rotation);
+        }
+    }
+
+    /// <summary>
+    /// 씬카메라를 활성화합니다
+    /// </summary>
+    /// <param name="camera">활성화할 카메라</param>
+    public void ActivateSceneCamera(ICinemachineCamera camera)
+    {
+        if (curSceneCamera != null)
+            curSceneCamera.Priority = CAMERA_PRIORITY_DEFAULT;
+
+        camera.Priority = CAMERA_PRIORITY_SCENE;
+        curSceneCamera = camera;
+    }
+
+    /// <summary>
+    /// 씬카메라를 비활성화합니다
+    /// </summary>
+    public void DeactivateSceneCamera()
+    {
+        if (curSceneCamera == null)
+            return;
+
+        curSceneCamera.Priority = CAMERA_PRIORITY_DEFAULT;
+        curSceneCamera = null;
+    }
+
+    // 임시
+    private void TempInputCamera()
     {
         //if (Input.GetKey(KeyCode.LeftControl))
         {
-            int tempIdx = (int)KeyCode.F1;
-            if (Input.GetKeyDown(KeyCode.F1))
+            for (int i = 0; i < 10; i++)
             {
-                ActiveCamera(0);
-            }
-            else
-            {
-                foreach (var item in camerDic)
+                if (Input.GetKeyDown(KeyCode.F1 + i))
                 {
-                    if (Input.GetKeyDown((KeyCode)(tempIdx + item.Key)))
-                    {
-                        ActiveCamera(item.Key);
-                    }
+                    ActivateCustomCamera(i);
+                    return;
                 }
             }
-        }
-    }
-
-    public void ActiveCamera(int idx)
-    {
-        if (idx == 0)
-        {
-            if (mainCamCtrl != null)
-            {
-                DisableAllCamera();
-                mainCamCtrl.gameObject.SetActive(true);
-                curCameraCtrl = mainCamCtrl;
-            }
-        }
-        else
-        {
-            if(camerDic.ContainsKey(idx))
-            {
-                DisableAllCamera();
-                camerDic[idx].gameObject.SetActive(true);
-                curCameraCtrl = camerDic[idx];
-            }
-        }
-    }
-
-    public void DisableAllCamera()
-    {
-        mainCamCtrl.gameObject.SetActive(false);
-
-        foreach (var item in camerDic)
-        {
-            item.Value.gameObject.SetActive(false);
-        }
-    }
-
-    public Transform GetMoveDirCamera()
-    {
-        if(mainCamCtrl.gameObject.activeSelf)
-        {
-            return mainCamCtrl.transform;
-        }
-        else
-        {
-            if (curCameraCtrl != null && curCameraCtrl.IsTargetPlayerCamera)
-                return curCameraCtrl.transform;
-
-            return mainCamCtrl.transform;
         }
     }
 }
