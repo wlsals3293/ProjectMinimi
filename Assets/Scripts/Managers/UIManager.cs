@@ -21,6 +21,8 @@ public class UIManager : BaseManager<UIManager>
 
     private UI_LoadingScreen loadingScreen = null;
 
+    private UI_HUD hud = null;
+
 
     public delegate void TransitionDelegate();
 
@@ -76,6 +78,7 @@ public class UIManager : BaseManager<UIManager>
 
     public void InGameInit()
     {
+        // View
         for (int i = 0; i < (int)EUIView.Max; i++)
         {
             if (!viewList.ContainsKey((EUIView)i))
@@ -83,6 +86,9 @@ public class UIManager : BaseManager<UIManager>
                 viewList.Add((EUIView)i, CreateView((EUIView)i));
             }
         }
+
+        // HUD
+        hud = ResourceManager.Instance.CreatePrefab<UI_HUD>("HUDCanvas", null, PrefabPath.UI);
     }
 
 

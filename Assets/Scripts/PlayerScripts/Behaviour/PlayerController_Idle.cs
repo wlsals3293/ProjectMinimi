@@ -36,6 +36,9 @@ public partial class PlayerController : BaseCharacterController
         UpdateRotation();
         Animate();
 
+        if (playerAbility != null)
+            playerAbility.AbilityUpdate();
+
         if (onIdleUpdate != null)
             onIdleUpdate();
     }
@@ -68,34 +71,38 @@ public partial class PlayerController : BaseCharacterController
 
 
         // 좌클릭
-        if (leftClick)
+        /*if (abilityAction1.down)
         {
             if (MinimiManager.Instance.InstallMinimi())
             {
                 onIdleUpdate -= MinimiManager.Instance.DrawBlueprintObject;
             }
-        }
+        }*/
+        playerAbility.MainAction1(mainAbilityAction1);
+
         // 우클릭
-        if (rightClick)
+        /*if (mainAbilityAction2.down)
         {
             MinimiManager.Instance.PutInAllMinimis();
             onIdleUpdate -= MinimiManager.Instance.DrawBlueprintObject;
-        }
+        }*/
+
+        playerAbility.MainAction2(mainAbilityAction2);
 
         // 블럭 미니미
-        if (key_alpha1)
+        /*if (key_alpha1)
         {
             if(MinimiManager.Instance.TakeOutMinimi(MinimiType.Block))
             {
                 onIdleUpdate += MinimiManager.Instance.DrawBlueprintObject;
             }
-        }
+        }*/
 
         // F Key
-        if (key_f)
+        /*if (key_f)
         {
             MinimiManager.Instance.UninstallMinimi();
-        }
+        }*/
 
         moveDirection = moveDirection.relativeTo(CameraT);
     }
@@ -125,12 +132,12 @@ public partial class PlayerController : BaseCharacterController
             layer = hit.collider.gameObject.layer;
         }
 
-        if (layer == Layers.minimi)
+        if (layer == Layers.Minimi)
         {
             //Debug.Log("Did Hit Minimi");
             return InteractType.Block;
         }
-        else if (layer == Layers.obj)
+        else if (layer == Layers.Obj)
         {
             //Debug.Log("Did Hit Obejct");
             if (fsm.CurState == PlayerState.Idle)

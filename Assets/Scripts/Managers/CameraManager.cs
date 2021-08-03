@@ -13,7 +13,7 @@ public class CameraManager : BaseManager<CameraManager>
     /// <summary>
     /// 메인 카메라
     /// </summary>
-    private MainCamera mainCam;
+    private Camera mainCam;
 
 
     /// <summary>
@@ -49,7 +49,7 @@ public class CameraManager : BaseManager<CameraManager>
 
 
 
-    public MainCamera MainCam { get => mainCam; }
+    public Camera MainCam { get => mainCam; }
 
     public CameraController CurrentCameraCtrl { get => curCameraCtrl; }
 
@@ -81,6 +81,8 @@ public class CameraManager : BaseManager<CameraManager>
     /// </summary>
     public void Initialize()
     {
+        mainCam = Camera.main;
+
         if (freeLookCam == null)
         {
             freeLookCam = ResourceManager.Instance.CreatePrefab<FreeLookCamController>(
@@ -94,17 +96,14 @@ public class CameraManager : BaseManager<CameraManager>
             shoulderCam = ResourceManager.Instance.CreatePrefab<ShoulderCamController>(
                 "ShoulderCam", null, PrefabPath.Camera);
 
-            shoulderCam.Target = PlayerManager.Instance.PlayerCtrl.transform;
+            shoulderCam.Target = PlayerManager.Instance.PlayerCtrl.followTarget;
         }
-    }
 
-    /// <summary>
-    /// 메인 카메라 설정
-    /// </summary>
-    /// <param name="camera">설정할 메인카메라</param>
-    public void SetMainCamera(MainCamera camera)
-    {
-        mainCam = camera;
+        ActivateCustomCamera(0);
+
+        lockCursor = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     /// <summary>
@@ -141,6 +140,7 @@ public class CameraManager : BaseManager<CameraManager>
             curCameraCtrl = customCameraDic[idx];
             curCameraCtrl.Priority = CAMERA_PRIORITY_PLAYER;
             curCameraCtrl.ApplyPreMovement(mainCam.transform.rotation);
+            PlayerManager.Instance.PlayerCtrl.onRotationAxisInput = curCameraCtrl.Rotate;
         }
     }
 

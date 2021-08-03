@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260e55212a1b3a843a85a57c202d9c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGameStart: 0
 --- !u!114 &8505380948136242160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,8 +63,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 160a480adcd25734c8dbaaf786ffdc69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxMinimiRef: {fileID: 2311138389989647883, guid: 67e7a3e3aa21203448c7f16e23c661f1, type: 3}
   mergeDistance: 2.5
+  boxMinimiRef: {fileID: 2311138389989647883, guid: 67e7a3e3aa21203448c7f16e23c661f1, type: 3}
+  playerTrans: {fileID: 0}
 --- !u!114 &8801364098190912461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf1a1c0ec20a4c4e92a3ce1b7fabcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {fileID: 0}
 --- !u!114 &997577732159213850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3334532c7565034ebaec5782df4acd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endPanel: {fileID: 0}
 --- !u!114 &4591844355853873408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039ff54d0c58e384e9b4c469808c0bdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockCursor: 0
 --- !u!114 &115909478934908855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,3 +139,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c614c462caca32438d0bf30ae92cfa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transitionReady: 0

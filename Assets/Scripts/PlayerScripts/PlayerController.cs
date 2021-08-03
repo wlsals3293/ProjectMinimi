@@ -4,6 +4,22 @@ using UnityEngine;
 using ECM.Controllers;
 
 
+public struct KeyInfo
+{
+    public bool current;
+    public bool pre;
+    public bool down;
+    public bool up;
+
+    public void Put(bool newInput)
+    {
+        pre = current;
+        current = newInput;
+        down = !pre && current;
+        up = pre && !current;
+    }
+}
+
 public partial class PlayerController : BaseCharacterController
 {
     [Header("Player Controller")]
@@ -14,14 +30,26 @@ public partial class PlayerController : BaseCharacterController
 
     private Vector3 moveDirectionRaw;
 
+    private Vector2 rotationInput;
+
     /// <summary>
     /// 플레이어가 이 높이보다 낮아지면 사망함
     /// </summary>
     private float killY;
 
+    [Tooltip("마우스 수평 감도")]
+    public float mouseHorizontalSensitivity = 4;
 
-    private bool leftClick;
-    private bool rightClick;
+    [Tooltip("마우스 수직 감도")]
+    public float mouseVerticalSensitivity = 4;
+
+
+
+    private KeyInfo mainAbilityAction1;
+
+
+    private KeyInfo mainAbilityAction2;
+
 
     private bool key_alpha1, key_alpha2, key_alpha3;    // 1, 2, 3
     private bool key_interact;  // E
@@ -33,6 +61,18 @@ public partial class PlayerController : BaseCharacterController
     private Quaternion targetRotation;
     private float elapsedChangingTime;
     private float changingTime;
+
+
+
+    private PlayerAbility playerAbility = null;
+
+
+
+
+    public delegate void TwoAxisDelegate(float deltaX, float deltaY);
+
+    public TwoAxisDelegate onRotationAxisInput;
+
 
     private bool RotationChanging
     {
@@ -53,7 +93,7 @@ public partial class PlayerController : BaseCharacterController
     {
         get
         {
-            if(cameraT == null)
+            if (cameraT == null)
             {
                 cameraT = CameraManager.Instance.MainCam.transform;
             }
@@ -62,11 +102,11 @@ public partial class PlayerController : BaseCharacterController
     }
 
     private Transform trans = null;
-    public new Transform transform 
-    { 
+    public new Transform transform
+    {
         get
         {
-            if(trans == null)
+            if (trans == null)
             {
                 trans = GetComponent<Transform>();
             }
@@ -88,12 +128,14 @@ public partial class PlayerController : BaseCharacterController
 
         playerCharacter = GetComponent<PlayerCharacter>();
         animator = GetComponentInChildren<Animator>();
+        playerAbility = GetComponent<PlayerAbility>();
 
         Idle_SetState();
         Hold_SetState();
         Dead_SetState();
         Climb_SetState();
         Sliding_SetState();
+        Aim_SetState();
 
         StartCoroutine(RandomIdle());
     }
@@ -103,7 +145,6 @@ public partial class PlayerController : BaseCharacterController
         killY = StageManager.Instance.GlobalKillY;
         ChangeState(PlayerState.Idle);
         pause = false;
-        
     }
 
     public void ChangeState(PlayerState state)
@@ -121,9 +162,9 @@ public partial class PlayerController : BaseCharacterController
 
         fsm.Update();
 
-        if(fsm.CurState != PlayerState.None && fsm.CurState != PlayerState.Dead)
+        if (fsm.CurState != PlayerState.None && fsm.CurState != PlayerState.Dead)
         {
-            if(movement.cachedRigidbody.position.y < killY)
+            if (movement.cachedRigidbody.position.y < killY)
             {
                 ChangeState(PlayerState.Dead);
             }
@@ -161,8 +202,20 @@ public partial class PlayerController : BaseCharacterController
         };
         moveDirection = moveDirectionRaw;
 
-        leftClick = Input.GetMouseButtonDown(0);
-        rightClick = Input.GetMouseButtonDown(1);
+
+        // 마우스 움직임 입력
+        rotationInput = new Vector2
+        {
+            x = Input.GetAxis("Mouse X") * mouseHorizontalSensitivity,
+            y = Input.GetAxis("Mouse Y") * mouseVerticalSensitivity
+        };
+
+        if(onRotationAxisInput != null)
+            onRotationAxisInput(rotationInput.x, rotationInput.y);
+
+        // 주기술 (마우스 왼클릭, 오른클릭)
+        mainAbilityAction1.Put(Input.GetMouseButton(0));
+        mainAbilityAction2.Put(Input.GetMouseButton(1));
 
         jump = Input.GetButton("Jump");
         key_interact = Input.GetKeyDown(KeyCode.E);
@@ -195,14 +248,14 @@ public partial class PlayerController : BaseCharacterController
 
     private void UpdateRotationChanging()
     {
-        if(!rotationChanging)
+        if (!rotationChanging)
         {
             return;
         }
 
         elapsedChangingTime += Time.deltaTime;
 
-        if(elapsedChangingTime <= changingTime)
+        if (elapsedChangingTime <= changingTime)
         {
             movement.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedChangingTime / changingTime);
         }
@@ -217,7 +270,7 @@ public partial class PlayerController : BaseCharacterController
     // 임시 랜덤 Idle 구현
     private IEnumerator RandomIdle()
     {
-        while(true)
+        while (true)
         {
             float randomTime = Random.Range(10.0f, 40.0f);
             yield return new WaitForSeconds(randomTime);

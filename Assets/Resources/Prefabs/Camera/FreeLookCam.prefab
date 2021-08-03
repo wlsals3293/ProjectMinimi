@@ -97,7 +97,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -128,14 +128,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraIdx: 0
   target: {fileID: 0}
-  cameraDistance: 10
-  mouseHorizontalSensitivity: 4
-  mouseVerticalSensitivity: 4
+  cameraDistance: 6
+  pitchMinMax: {x: -70, y: 89}
   targetOffset: {x: 0, y: 1.5, z: 0}
   smoothMovement: 1
   horizontalDamping: 0.05
   verticalDamping: 0.2
   useRotation: 1
-  pitchMinMax: {x: -45, y: 85}
   smoothRotation: 1
   rotationDamping: 0.05

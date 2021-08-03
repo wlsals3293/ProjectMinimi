@@ -18,7 +18,7 @@ public class SlidingSlope_Obstacle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Tags.player))
+        if(other.CompareTag(Tags.Player))
         {
             PlayerController player = other.GetComponent<PlayerController>();
 

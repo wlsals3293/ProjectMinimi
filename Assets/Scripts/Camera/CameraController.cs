@@ -3,14 +3,37 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    [Header("Config")]
+
     [SerializeField, Range(0, 10)]
-    private int cameraIdx = 0;
+    protected int cameraIdx = 0;
+
+    
+
+    /// <summary>
+    /// 상하 회전 각도. x축 회전
+    /// </summary>
+    [SerializeField, ReadOnly]
+    protected float pitch;
+
+    /// <summary>
+    /// 좌우 회전 각도. y축 회전
+    /// </summary>
+    [SerializeField, ReadOnly]
+    protected float yaw;
+
+
 
     protected CinemachineVirtualCamera virtualCamera;
 
 
 
     public int CameraIdx { get => cameraIdx; }
+
+    public CinemachineVirtualCamera VCam
+    {
+        get => virtualCamera;
+    }
 
     public int Priority
     {
@@ -26,14 +49,7 @@ public class CameraController : MonoBehaviour
         if (virtualCamera == null)
             Debug.LogWarning("VirtualCamera가 존재하지 않습니다.");
 
-    }
-
-    protected void Start()
-    {
         CameraManager.Instance.AddCustomCamera(cameraIdx, this);
-
-        if (cameraIdx == 0)
-            CameraManager.Instance.ActivateCustomCamera(0);
     }
 
     /// <summary>
@@ -44,11 +60,28 @@ public class CameraController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 카메라 회전
+    /// </summary>
+    public virtual void Rotate(float deltaX, float deltaY)
+    {
+        
+    }
 
+
+    /// <summary>
+    /// 이전 카메라의 회전값을 받아 적용합니다
+    /// </summary>
+    /// <param name="rotation"></param>
     public virtual void ApplyPreMovement(Quaternion rotation)
     {
 
     }
 
-
+    /// <summary>
+    /// 카메라의 최종 위치와 회전값을 실제 트랜스폼에 적용
+    /// </summary>
+    protected virtual void ApplyFinalChanges()
+    {
+    }
 }

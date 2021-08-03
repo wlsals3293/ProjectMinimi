@@ -2,21 +2,20 @@ using UnityEngine;
 
 public class FreeLookCamController : CameraController
 {
-    [Header("Config")]
-
+    [Header("FreeLook")]
 
     [Tooltip("카메라가 따라가는 목표물")]
     [SerializeField]
-    private Transform target;
+    protected Transform target;
+
 
     [Tooltip("목표지점으로부터 카메라까지의 거리")]
-    public float cameraDistance = 10.0f;
+    public float cameraDistance = 6.0f;
 
-    [Tooltip("마우스 수평 감도")]
-    public float mouseHorizontalSensitivity = 4;
+    
 
-    [Tooltip("마우스 수직 감도")]
-    public float mouseVerticalSensitivity = 4;
+    [Tooltip("카메라 상하회전 최소, 최대값")]
+    public Vector2 pitchMinMax = new Vector2(-70, 89);
 
 
 
@@ -55,18 +54,6 @@ public class FreeLookCamController : CameraController
 
     [SerializeField] private bool useRotation = true;
 
-    [Tooltip("카메라 상하회전 최소, 최대값")]
-    public Vector2 pitchMinMax = new Vector2(-45, 85);
-
-    /// <summary>
-    /// 상하 회전 각도. x축 회전
-    /// </summary>
-    private float pitch;
-
-    /// <summary>
-    /// 좌우 회전 각도. y축 회전
-    /// </summary>
-    private float yaw;
 
     /// <summary>
     /// 카메라의 현재 회전값
@@ -105,9 +92,6 @@ public class FreeLookCamController : CameraController
     {
         FollowTarget();
 
-        if (UseRotation)
-            Rotate();
-
         ApplyFinalChanges();
     }
 
@@ -126,6 +110,10 @@ public class FreeLookCamController : CameraController
         // 회전값 적용
         pitch = rotation.eulerAngles.x;
         yaw = rotation.eulerAngles.y;
+
+        if (pitch > 180.0f) pitch -= 360.0f;
+        else if (pitch < -180.0f) pitch += 360.0f;
+
         targetEulerAngles.x = pitch;
         targetEulerAngles.y = yaw;
     }
@@ -133,10 +121,13 @@ public class FreeLookCamController : CameraController
     /// <summary>
     /// 카메라 회전
     /// </summary>
-    public void Rotate()
+    public override void Rotate(float deltaX, float deltaY)
     {
-        yaw += Input.GetAxis("Mouse X") * mouseHorizontalSensitivity;
-        pitch -= Input.GetAxis("Mouse Y") * mouseVerticalSensitivity;
+        if (!useRotation)
+            return;
+
+        yaw += deltaX;
+        pitch -= deltaY;
 
         if (yaw < -180.0f)
             yaw += 360.0f;
@@ -144,7 +135,6 @@ public class FreeLookCamController : CameraController
             yaw -= 360.0f;
 
         pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
-
 
         if (smoothRotation)
         {
@@ -191,7 +181,7 @@ public class FreeLookCamController : CameraController
     /// <summary>
     /// 카메라의 최종 위치와 회전값을 실제 트랜스폼에 적용
     /// </summary>
-    private void ApplyFinalChanges()
+    protected override void ApplyFinalChanges()
     {
         Vector3 cameraDistanceVector = currentRotation * -Vector3.forward * cameraDistance;
         Vector3 finalPosition = targetPosition + cameraDistanceVector;

@@ -294,7 +294,7 @@ public class SingleBlock : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == Tags.minimi)
+        if (collision.collider.tag == Tags.Minimi)
         { 
             OnHit();
         }
@@ -308,7 +308,7 @@ public class SingleBlock : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.tag == Tags.player)
+        if (collision.tag == Tags.Player)
         {
             Collider[] buffers = new Collider[16];
 

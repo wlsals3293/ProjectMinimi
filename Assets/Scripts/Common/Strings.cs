@@ -4,19 +4,20 @@ using UnityEngine;
 
 public static class Tags
 {
-    public const string minimi = "Minimi";
-    public const string enemy = "Enemy";
-    public const string player = "Player";
-    public const string _object = "Object";
-    public const string stageInfo = "StageInfo";
+    public const string Minimi = "Minimi";
+    public const string Enemy = "Enemy";
+    public const string Player = "Player";
+    public const string Object = "Object";
+    public const string StageInfo = "StageInfo";
+    public const string SwallowableObject = "SwallowableObject";
 }
 
 public static class Layers
 {
-    public const int none = -1;
-    public static readonly int enemy = LayerMask.NameToLayer("Enemy");
-    public static readonly int player = LayerMask.NameToLayer("Player");
+    public const int None = -1;
+    public static readonly int Enemy = LayerMask.NameToLayer("Enemy");
+    public static readonly int Player = LayerMask.NameToLayer("Player");
 
-    public static readonly int minimi = LayerMask.NameToLayer("Minimi");
-    public static readonly int obj = LayerMask.NameToLayer("Object");
+    public static readonly int Minimi = LayerMask.NameToLayer("Minimi");
+    public static readonly int Obj = LayerMask.NameToLayer("Object");
 }

@@ -37,6 +37,7 @@ public enum PlayerState
 
     Hold,
     Climb,
+    Aim,
     Sliding
 }
 

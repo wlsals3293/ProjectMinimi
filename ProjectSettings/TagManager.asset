@@ -8,6 +8,7 @@ TagManager:
   - SubCamera
   - Object
   - StageInfo
+  - SwallowableObject
   layers:
   - Default
   - TransparentFX

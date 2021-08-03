@@ -53,7 +53,7 @@ public class StageManager : BaseManager<StageManager>
         // 스테이지 정보 체크
         if (stageInfo == null)
         {
-            GameObject obj = GameObject.FindGameObjectWithTag(Tags.stageInfo);
+            GameObject obj = GameObject.FindGameObjectWithTag(Tags.StageInfo);
             if (obj == null)
                 return;
 

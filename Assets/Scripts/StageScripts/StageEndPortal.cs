@@ -6,7 +6,7 @@ public class StageEndPortal : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == Layers.player)
+        if (other.gameObject.layer == Layers.Player)
         {
             Debug.LogError("End");
             StageEndProcess();

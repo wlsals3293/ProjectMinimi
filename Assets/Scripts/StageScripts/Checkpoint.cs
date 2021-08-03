@@ -9,7 +9,7 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Tags.player))
+        if(other.CompareTag(Tags.Player))
         {
             StageManager.Instance.UpdateCheckpoint(index);
         }

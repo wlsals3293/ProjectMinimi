@@ -8,7 +8,7 @@ public class SlidingSlope : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag(Tags.player))
+        if(collision.gameObject.CompareTag(Tags.Player))
         {
             pc = collision.gameObject.GetComponent<PlayerController>();
 
@@ -18,7 +18,7 @@ public class SlidingSlope : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.CompareTag(Tags.player))
+        if(collision.gameObject.CompareTag(Tags.Player))
         {
             pc.ChangeState(PlayerState.Idle);
 
