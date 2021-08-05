@@ -9,6 +9,7 @@ TagManager:
   - Object
   - StageInfo
   - SwallowableObject
+  - DistructibleObject
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Ground
   - Object
   - Minimi
-  - 
+  - Wagon
   - 
   - 
   - 

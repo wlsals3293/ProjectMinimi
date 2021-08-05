@@ -119,8 +119,11 @@ public partial class PlayerController : BaseCharacterController
             case InteractType.Hold:
                 Interact_Action_Hold();
                 break;
-        }
+            case InteractType.Wagon:
+                Interact_Action_Drag();
+                break;
         
+        }
     }
 
     private InteractType UpdateInteractActionType(RaycastHit hit)
@@ -145,6 +148,16 @@ public partial class PlayerController : BaseCharacterController
                 hold_target = hit.transform;
 
                 return InteractType.Hold;
+            }
+        }
+
+        else if (layer == Layers.Wagon)
+        {
+            if(fsm.CurState == PlayerState.Idle)
+            {
+                wagon = hit.transform;
+
+                return InteractType.Wagon;
             }
         }
 
@@ -177,7 +190,19 @@ public partial class PlayerController : BaseCharacterController
         climbFaceNormal = hit.normal;
         ChangeState(PlayerState.Climb);
     }
-    
+
+    private void Interact_Action_Drag()
+    {
+        switch (fsm.CurState)
+        {
+            case PlayerState.Idle:
+                fsm.ChangeState(PlayerState.Drag);
+                break;
+            case PlayerState.Drag:
+                fsm.ChangeState(PlayerState.Idle);
+                break;
+        }
+    }
 
     public void DrawLineRaycatAllways(float distance = 0f)
     {

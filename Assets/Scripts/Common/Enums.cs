@@ -38,7 +38,8 @@ public enum PlayerState
     Hold,
     Climb,
     Aim,
-    Sliding
+    Sliding,
+    Drag
 }
 
 /// <summary>
@@ -49,6 +50,7 @@ public enum InteractType
     None,
     Block,
     Hold,
+    Wagon
 }
 
 

@@ -136,6 +136,7 @@ public partial class PlayerController : BaseCharacterController
         Climb_SetState();
         Sliding_SetState();
         Aim_SetState();
+        Drag_SetState();
 
         StartCoroutine(RandomIdle());
     }
