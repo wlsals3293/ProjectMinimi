@@ -24,6 +24,11 @@ public partial class PlayerController : BaseCharacterController
 {
     [Header("Player Controller")]
 
+    [Tooltip("피격이상 지속시간")]
+    [SerializeField, Range(0.0f, 1.0f)]
+    private float hitDisorderTime = 0.6f;
+
+
     // 현재속도 확인용. 디버그 전용
     [SerializeField, ReadOnly]
     private float currentSpeed;
@@ -61,6 +66,9 @@ public partial class PlayerController : BaseCharacterController
     private Quaternion targetRotation;
     private float elapsedChangingTime;
     private float changingTime;
+
+    private bool hitDisordering;
+    private float elapsedHitDisorderTime;
 
 
 
@@ -137,6 +145,7 @@ public partial class PlayerController : BaseCharacterController
         Sliding_SetState();
         Aim_SetState();
         Drag_SetState();
+        LedgeGrab_SetState();
 
         StartCoroutine(RandomIdle());
     }
@@ -195,12 +204,16 @@ public partial class PlayerController : BaseCharacterController
         }
 
         // Handle user input
-        moveDirectionRaw = new Vector3
-        {
-            x = Input.GetAxisRaw("Horizontal"),
-            y = 0.0f,
-            z = Input.GetAxisRaw("Vertical")
-        };
+        if (!hitDisordering)
+            moveDirectionRaw = new Vector3
+            {
+                x = Input.GetAxisRaw("Horizontal"),
+                y = 0.0f,
+                z = Input.GetAxisRaw("Vertical")
+            };
+        else
+            moveDirectionRaw = Vector3.zero;
+
         moveDirection = moveDirectionRaw;
 
 
@@ -211,7 +224,7 @@ public partial class PlayerController : BaseCharacterController
             y = Input.GetAxis("Mouse Y") * mouseVerticalSensitivity
         };
 
-        if(onRotationAxisInput != null)
+        if (onRotationAxisInput != null)
             onRotationAxisInput(rotationInput.x, rotationInput.y);
 
         // 주기술 (마우스 왼클릭, 오른클릭)
@@ -265,6 +278,42 @@ public partial class PlayerController : BaseCharacterController
             elapsedChangingTime = 0.0f;
 
             rotationChanging = false;
+        }
+    }
+
+    /// <summary>
+    /// 피격이상을 발동합니다. 피격이상이 활성화된 동안은 캐릭터에 이동조작이 먹히지 않습니다.
+    /// </summary>
+    /// <param name="hitDirection">피격 방향</param>
+    public void ActivateHitDisorder(Vector3 hitDirection)
+    {
+        hitDirection = Vector3.ProjectOnPlane(hitDirection, transform.up).normalized;
+        hitDirection.y = 1.0f;
+
+        movement.velocity = hitDirection * 10.0f;
+        movement.DisableGrounding();
+
+        elapsedHitDisorderTime = 0.0f;
+        if (!hitDisordering)
+        {
+            hitDisordering = true;
+            StartCoroutine(UpdateHitDisorder());
+        }
+    }
+
+    private IEnumerator UpdateHitDisorder()
+    {
+        while (hitDisordering)
+        {
+            elapsedHitDisorderTime += Time.deltaTime;
+
+            if (elapsedHitDisorderTime >= hitDisorderTime)
+            {
+                hitDisordering = false;
+                break;
+            }
+
+            yield return null;
         }
     }
 

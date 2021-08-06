@@ -54,4 +54,13 @@ public class PlayerCharacter : MonoBehaviour
 
         // 데미지 입은 것에 대한 이펙트, UI 처리 등등
     }
+
+    public void TakeDamage(int amount, Vector3 hitDirection)
+    {
+        int newHP = curHP - amount;
+
+        SetHP(newHP);
+
+        controller.ActivateHitDisorder(hitDirection);
+    }
 }

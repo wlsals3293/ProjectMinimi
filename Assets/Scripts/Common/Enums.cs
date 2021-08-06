@@ -39,7 +39,8 @@ public enum PlayerState
     Climb,
     Aim,
     Sliding,
-    Drag
+    Drag,
+    LedgeGrab
 }
 
 /// <summary>
