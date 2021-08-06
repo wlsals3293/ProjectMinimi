@@ -13,18 +13,6 @@ public class Switch_C_OBJ : MonoBehaviour
     public List<Switchs_Ctrl> _switchs;
     public bool AllSwitchOn = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public virtual void Activate() //문이 열리는 행동 혹은 발판의 움직임
     {
 

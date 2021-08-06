@@ -26,6 +26,7 @@ public partial class PlayerController : BaseCharacterController
     {
         if(wagon != null)
         {
+            transform.rotation = wagon.rotation;
             Vector3 handle = wagon.Find("Handle").transform.position;
             transform.position = new Vector3(handle.x, transform.position.y, handle.z);
             DragDir = wagon.transform.forward;

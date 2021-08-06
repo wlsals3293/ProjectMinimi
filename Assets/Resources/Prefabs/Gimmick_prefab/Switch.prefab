@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5856485377774079473}
   - component: {fileID: 5856485377774079472}
   - component: {fileID: 5856485377774079475}
-  - component: {fileID: 5856485377774079485}
   - component: {fileID: 1176024619449648578}
   - component: {fileID: 9168473793807515988}
+  - component: {fileID: 7789595699291346333}
   m_Layer: 7
   m_Name: Switch
   m_TagString: Untagged
@@ -85,23 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5856485377774079485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5856485377774079484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c469cb4f948a40a44849fdab4c22557c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _type: 1
-  _connetObj: {fileID: 0}
-  _color_DontTouch:
-  - {fileID: 2100000, guid: 32a5f3b2a81b3d6499dbdbb025134c8e, type: 2}
-  - {fileID: 2100000, guid: baca7f006ae20944c8fd02ca6e736e48, type: 2}
 --- !u!65 &1176024619449648578
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128,3 +111,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.17, y: 0.7, z: 3.1}
   m_Center: {x: 0, y: 0.21304388, z: 0}
+--- !u!114 &7789595699291346333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856485377774079484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71493393c7f6c7546a17fa1be3831d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _connetObj: {fileID: 0}
+  _color_DontTouch:
+  - {fileID: 2100000, guid: 32a5f3b2a81b3d6499dbdbb025134c8e, type: 2}
+  - {fileID: 2100000, guid: baca7f006ae20944c8fd02ca6e736e48, type: 2}
+  _thisColor: {fileID: 0}
+  _type: 1

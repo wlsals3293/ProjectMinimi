@@ -18,6 +18,7 @@ public class Scale_Side : MonoBehaviour
     void Start()
     {
         layerMask = LayerMask.GetMask("Minimi", "Player", "Object");
+        onActivateCort = StartCoroutine(OnActivate());
     }
 
     private void OnCollisionEnter(Collision other)
