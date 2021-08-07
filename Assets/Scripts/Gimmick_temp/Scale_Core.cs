@@ -9,19 +9,19 @@ public class Scale_Core : MonoBehaviour
 
     public Transform highPoint;
     public Transform lowPoint;
-    public Vector3 middlePoint;
+    Vector3 middlePoint;
 
-    public float middleDistance;
-    public float moveDistance;
-    public float weightProportion;
+    float middleDistance;
+    float moveDistance;
+    float weightProportion;
 
-    public Scale_Side HeavySide;
-    public Scale_Side LightSide;
-    public Rigidbody HeavySide_rgd;
-    public Rigidbody LightSide_rgd;
+    Scale_Side HeavySide;
+    Scale_Side LightSide;
+    Rigidbody HeavySide_rgd;
+    Rigidbody LightSide_rgd;
 
-    public Vector3 HeavySide_Target;
-    public Vector3 LightSide_Target;
+    Vector3 HeavySide_Target;
+    Vector3 LightSide_Target;
 
     public float UpdownSpeed;
     

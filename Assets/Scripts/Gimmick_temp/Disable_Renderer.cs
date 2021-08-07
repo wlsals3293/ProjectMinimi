@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Disable_Renderer : MonoBehaviour
 {
-    Renderer render;
+    MeshRenderer render;
 
     // Start is called before the first frame update
     void Start()
     {
-        render = GetComponent<Renderer>();
+        render = GetComponent<MeshRenderer>();
         render.enabled = false;
     }
 

@@ -10,9 +10,11 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField, ReadOnly]
     private int curHP;
 
-
     private PlayerController controller = null;
 
+    float Invincibility_Interval = 0f;
+
+    bool isInvincibility = false;
 
     public int MaxHP { get => maxHP; }
     public int CurHP { get => curHP; }
@@ -29,6 +31,19 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (isInvincibility)
+        {
+            Invincibility_Interval += Time.deltaTime;
+
+            if(Invincibility_Interval > 0.2f)
+            {
+                isInvincibility = false;
+                Invincibility_Interval = 0f;
+            }
+        }
+    }
 
     public void SetHP(int newHP)
     {
@@ -57,10 +72,15 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TakeDamage(int amount, Vector3 hitDirection)
     {
-        int newHP = curHP - amount;
+        if (!isInvincibility)
+        {
+            int newHP = curHP - amount;
 
-        SetHP(newHP);
+            SetHP(newHP);
 
-        controller.ActivateHitDisorder(hitDirection);
+            controller.ActivateHitDisorder(hitDirection);
+
+            isInvincibility = true;
+        }
     }
 }
