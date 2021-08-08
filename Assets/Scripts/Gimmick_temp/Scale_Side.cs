@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class Scale_Side : MonoBehaviour
 {
-    public float BaseWeight;
-    [HideInInspector]
-    public float TotalWeight;
-    [HideInInspector]
-    public bool isEmpty;
-    public float otherWeight;
-
+    public float baseWeight;
+    [HideInInspector] public float totalWeight = 0f;
+    private float otherWeight;
     private Coroutine onActivateCort;
     private LayerMask layerMask;
-    
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -29,20 +25,21 @@ public class Scale_Side : MonoBehaviour
            other.gameObject.CompareTag("Object")
            )
         {
+            
             onActivateCort = StartCoroutine(OnActivate());
         }
     }
 
     private IEnumerator OnActivate()
     {
+        yield return null;
+
         while (true)
         {
             Vector3 center = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
             Collider[] cols = Physics.OverlapBox(center, transform.lossyScale / 2, transform.rotation, layerMask, QueryTriggerInteraction.Ignore);
             
-
             bool isEmpty = true;
-            
 
             otherWeight = 0;
 
@@ -55,10 +52,7 @@ public class Scale_Side : MonoBehaviour
                 }
             }
 
-            
-            
-            TotalWeight = BaseWeight + otherWeight;
-            
+            totalWeight = baseWeight + otherWeight;
 
             if (isEmpty)
             {

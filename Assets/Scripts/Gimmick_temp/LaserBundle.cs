@@ -5,11 +5,11 @@ using UnityEngine;
 public class LaserBundle : Switch_C_OBJ
 {
 
-    public LineRenderer[] lasers;
-    public Transform[] startPoints;
-    Coroutine active;
-    LayerMask layerMask;
-    bool alreadyActive = false;
+    private LineRenderer[] lasers;
+    private Transform[] startPoints;
+    private Coroutine active;
+    private LayerMask layerMask;
+    private bool alreadyActive = false;
     
     // Start is called before the first frame update
     void Start()
@@ -17,25 +17,24 @@ public class LaserBundle : Switch_C_OBJ
         layerMask = LayerMask.GetMask("Ground", "Object", "Player");
         lasers = GetComponentsInChildren<LineRenderer>();
         startPoints = GetComponentsInChildren<Transform>();
-        foreach (Switchs_Ctrl switchs in _switchs)
-        {
-            if (switchs._connetObj != null) { Debug.LogError("한개의 스위치는 한개의 오브젝트만 연결이 가능합니다."); }
-            switchs.Connecting(GetComponent<LaserBundle>());
-        }
+        ConnectingSwitch();
         active = StartCoroutine(ActiveLaser());
     }
 
-    private void Update()
+    public override void WhenAllSwitchOn()
     {
-        if(AllSwitchOn && !alreadyActive)
+        if (!alreadyActive)
         {
             active = StartCoroutine(ActiveLaser());
             alreadyActive = true;
         }
     }
 
+
     IEnumerator ActiveLaser()
     {
+        yield return null;
+
         while (AllSwitchOn)
         {
             int i = 1;
@@ -51,9 +50,11 @@ public class LaserBundle : Switch_C_OBJ
                     layerMask,
                     QueryTriggerInteraction.Ignore
                     );
-                
-                laser.SetPosition(0, startPoints[i].position);
-                laser.SetPosition(1, hit.point);
+
+                float distance = Vector3.Distance(startPoints[i].position, hit.point);
+
+                laser.SetPosition(0, Vector3.zero);
+                laser.SetPosition(1, new Vector3(0,0, distance));
 
                 if (hit.collider != null && hit.collider.CompareTag(Tags.Player))
                 {
@@ -62,8 +63,8 @@ public class LaserBundle : Switch_C_OBJ
 
                 i++;
 
-                yield return new WaitForSeconds(0.03f);
             }
+            yield return new WaitForSeconds(0.03f);
         }
         if (!AllSwitchOn)
         {
@@ -72,6 +73,7 @@ public class LaserBundle : Switch_C_OBJ
                 laser.enabled = false;
             }
             alreadyActive = false;
+            
             StopCoroutine(active);
         }
     }

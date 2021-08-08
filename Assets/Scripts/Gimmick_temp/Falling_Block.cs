@@ -6,13 +6,13 @@ public class Falling_Block : MonoBehaviour
 {
     bool isCollisioned;
     Coroutine coroutine;
-    Renderer renderer;
+    MeshRenderer _renderer;
     public float interval;
 
     // Start is called before the first frame update
     void Start()
     {
-        renderer = GetComponent<Renderer>();
+        _renderer = GetComponent<MeshRenderer>();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -27,10 +27,10 @@ public class Falling_Block : MonoBehaviour
 
     private IEnumerator OnActivate()
     {
-        renderer.material.color = Color.yellow;
+        _renderer.material.color = Color.yellow;
         yield return new WaitForSeconds(interval);
 
-        renderer.material.color = Color.red;
+        _renderer.material.color = Color.red;
         yield return new WaitForSeconds(interval);
 
         this.gameObject.SetActive(false);

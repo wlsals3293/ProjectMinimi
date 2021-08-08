@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 250707613872440651}
   m_Layer: 0
-  m_Name: Handle
+  m_Name: PlayerLocation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,9 +42,9 @@ GameObject:
   - component: {fileID: 250707614633729382}
   - component: {fileID: 250707614633729385}
   - component: {fileID: 250707614633729384}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Wagon
-  m_TagString: Untagged
+  m_TagString: Wagon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 250707614752650416}
   - component: {fileID: 250707614752650419}
   - component: {fileID: 250707614752650418}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

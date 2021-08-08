@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressSwitch : Switchs_Ctrl
+public class PressSwitch : SwitchBase
 {
     public enum SwitchType { Maintain, OnOff }
     public SwitchType _type = SwitchType.OnOff;
@@ -32,7 +32,7 @@ public class PressSwitch : Switchs_Ctrl
            other.gameObject.CompareTag("Object")
            )
         {
-            isActivate = true;
+            IsActivate = true;
 
             onActivateCort = StartCoroutine(OnActivate());
         }
@@ -58,7 +58,7 @@ public class PressSwitch : Switchs_Ctrl
 
             if (isEmpty)
             {
-                isActivate = false;
+                IsActivate = false;
                 StopCoroutine(onActivateCort);
                 break;
             }

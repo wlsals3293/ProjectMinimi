@@ -6,15 +6,15 @@ using ECM.Common;
 
 public partial class PlayerController : BaseCharacterController
 {
-    public float DragSpeed = 3.0f;
+    public float dragSpeed = 3.0f;
 
     Transform wagon = null;
 
-    Vector3 DragDir = Vector3.zero;
+    Vector3 dragDir = Vector3.zero;
 
 
 
-    #region <�ൿ �߰��� ����Ʈ �۾�>
+    #region <행동 추가시 디폴트 작업>
     private void Drag_SetState()
     {
         PlayerManager.Instance.AddBehaviour(
@@ -27,29 +27,26 @@ public partial class PlayerController : BaseCharacterController
         if(wagon != null)
         {
             transform.rotation = wagon.rotation;
-            Vector3 handle = wagon.Find("Handle").transform.position;
+            Vector3 handle = wagon.Find("PlayerLocation").transform.position;
             transform.position = new Vector3(handle.x, transform.position.y, handle.z);
-            DragDir = wagon.transform.forward;
+            dragDir = wagon.transform.forward;
             wagon.parent = this.transform;
-            
-            
         }
     }
 
     private void Drag_Update()
     {
-        UpdateRotationChanging();
         Drag_GetInput();
     }
 
     private void Drag_FixedUpdate()
     {
-        float MoveSpd = moveDirectionRaw.z * DragSpeed;
+        float MoveSpd = moveDirectionRaw.z * dragSpeed;
 
         Vector3 desiredVelocity =
-            (DragDir * MoveSpd);
+            (dragDir * MoveSpd);
 
-        movement.Move(desiredVelocity, DragSpeed, true);
+        movement.Move(desiredVelocity, dragSpeed, true);
     }
 
     private void Drag_Exit(PlayerState next)

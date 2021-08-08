@@ -12,9 +12,9 @@ public class PlayerCharacter : MonoBehaviour
 
     private PlayerController controller = null;
 
-    float Invincibility_Interval = 0f;
+    private float invincibility_Interval = 0f;
 
-    bool isInvincibility = false;
+    private bool isInvincibility = false;
 
     public int MaxHP { get => maxHP; }
     public int CurHP { get => curHP; }
@@ -35,12 +35,12 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (isInvincibility)
         {
-            Invincibility_Interval += Time.deltaTime;
+            invincibility_Interval += Time.deltaTime;
 
-            if(Invincibility_Interval > 0.2f)
+            if(invincibility_Interval > 0.2f)
             {
                 isInvincibility = false;
-                Invincibility_Interval = 0f;
+                invincibility_Interval = 0f;
             }
         }
     }
@@ -63,10 +63,12 @@ public class PlayerCharacter : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        int newHP = curHP - amount;
+        if (!isInvincibility)
+        {
+            int newHP = curHP - amount;
 
-        SetHP(newHP);
-
+            SetHP(newHP);
+        }
         // 데미지 입은 것에 대한 이펙트, UI 처리 등등
     }
 

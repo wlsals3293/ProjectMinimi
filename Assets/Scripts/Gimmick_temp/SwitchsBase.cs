@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switchs_Ctrl : MonoBehaviour
+public class SwitchBase : MonoBehaviour
 {
-    [HideInInspector] public Switch_C_OBJ _connetObj;
+    [HideInInspector] public Switch_C_OBJ connetObj;
 
-    private bool is_activate = false;
+    private bool isActivate = false;
 
-    public bool isActivate
+    public bool IsActivate
     {
-        get { return is_activate; }
+        get { return isActivate; }
         set
         {
-            is_activate = value;
+            isActivate = value;
 
-            _connetObj.SwitchCheck();
+            connetObj.SwitchCheck();
             
-            if (is_activate)
+            if (isActivate)
             {
                 _thisColor.material = _color_DontTouch[0];
             }
@@ -35,7 +35,7 @@ public class Switchs_Ctrl : MonoBehaviour
 
     public void Connecting(Switch_C_OBJ connectingObj)
     {
-        _connetObj = connectingObj;
+        connetObj = connectingObj;
     }
 
 }

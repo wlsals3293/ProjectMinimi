@@ -10,6 +10,7 @@ TagManager:
   - StageInfo
   - SwallowableObject
   - DistructibleObject
+  - Wagon
   layers:
   - Default
   - TransparentFX

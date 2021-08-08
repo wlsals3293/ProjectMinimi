@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitSwitch : Switchs_Ctrl
+public class HitSwitch : SwitchBase
 { 
     private CapsuleCollider coll;
 
-    float Invincibility_Interval = 0f;
+    float invincibility_Interval = 0f;
 
     bool isInvincibility = false;
 
@@ -15,8 +15,8 @@ public class HitSwitch : Switchs_Ctrl
         if (collision.gameObject.CompareTag(Tags.SwallowableObject) && !isInvincibility)
         {
             isInvincibility = true;
-            if (!isActivate) isActivate = true;
-            else isActivate = false;
+            if (!IsActivate) IsActivate = true;
+            else IsActivate = false;
         }
     }
 
@@ -24,12 +24,12 @@ public class HitSwitch : Switchs_Ctrl
     {
         if (isInvincibility)
         {
-            Invincibility_Interval += Time.deltaTime;
+            invincibility_Interval += Time.deltaTime;
 
-            if (Invincibility_Interval > 0.5f)
+            if (invincibility_Interval > 0.5f)
             {
                 isInvincibility = false;
-                Invincibility_Interval = 0f;
+                invincibility_Interval = 0f;
             }
         }
     }

@@ -4,39 +4,39 @@ using UnityEngine;
 
 public class Scale_Core : MonoBehaviour
 {
-    public Scale_Side Side1;
-    public Scale_Side Side2;
+    public Scale_Side side1;
+    public Scale_Side side2;
 
     public Transform highPoint;
     public Transform lowPoint;
-    Vector3 middlePoint;
+    private Vector3 middlePoint;
 
-    float middleDistance;
-    float moveDistance;
-    float weightProportion;
+    private float middleDistance;
+    private float moveDistance;
+    private float weightProportion;
 
-    Scale_Side HeavySide;
-    Scale_Side LightSide;
-    Rigidbody HeavySide_rgd;
-    Rigidbody LightSide_rgd;
+    private Scale_Side heavySide;
+    private Scale_Side lightSide;
+    private Rigidbody heavySide_rgd;
+    private Rigidbody lightSide_rgd;
 
-    Vector3 HeavySide_Target;
-    Vector3 LightSide_Target;
+    private Vector3 heavySide_Target;
+    private Vector3 lightSide_Target;
 
-    public float UpdownSpeed;
+    public float updownSpeed;
     
     // Start is called before the first frame update
     void Start()
     {   
-        HeavySide = Side1;
-        HeavySide_rgd = Side1.gameObject.GetComponent<Rigidbody>();
-        LightSide = Side2;
-        LightSide_rgd = Side2.gameObject.GetComponent<Rigidbody>();
+        heavySide = side1;
+        heavySide_rgd = side1.gameObject.GetComponent<Rigidbody>();
+        lightSide = side2;
+        lightSide_rgd = side2.gameObject.GetComponent<Rigidbody>();
         
         middleDistance = (highPoint.position.y - lowPoint.position.y) / 2;
 
-        Side1.transform.position = new Vector3(Side1.transform.position.x, highPoint.position.y - middleDistance, Side1.transform.position.z);
-        Side2.transform.position = new Vector3(Side2.transform.position.x, highPoint.position.y - middleDistance, Side2.transform.position.z);
+        side1.transform.position = new Vector3(side1.transform.position.x, highPoint.position.y - middleDistance, side1.transform.position.z);
+        side2.transform.position = new Vector3(side2.transform.position.x, highPoint.position.y - middleDistance, side2.transform.position.z);
 
         middlePoint = new Vector3(highPoint.position.x, highPoint.position.y - middleDistance, highPoint.position.z);
     }
@@ -44,57 +44,51 @@ public class Scale_Core : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (HeavySide.TotalWeight == LightSide.TotalWeight)
-            
+        if (heavySide.totalWeight == lightSide.totalWeight)
+
         {
             weightProportion = 0;
         }
 
-        else if(LightSide.TotalWeight * 2 <= HeavySide.TotalWeight)
+        else if (lightSide.totalWeight * 2 <= heavySide.totalWeight)
         {
             weightProportion = 1;
         }
 
-        else  weightProportion = (HeavySide.TotalWeight % LightSide.TotalWeight) / LightSide.TotalWeight;
+        else weightProportion = (heavySide.totalWeight % lightSide.totalWeight) / lightSide.totalWeight;
 
-        if (Side1.TotalWeight > Side2.TotalWeight)
+        if (side1.totalWeight > side2.totalWeight)
         {
-            HeavySide = Side1;
-            HeavySide_rgd = Side1.gameObject.GetComponent<Rigidbody>();
-            LightSide = Side2;
-            LightSide_rgd = Side2.gameObject.GetComponent<Rigidbody>();
+            heavySide = side1;
+            heavySide_rgd = side1.gameObject.GetComponent<Rigidbody>();
+            lightSide = side2;
+            lightSide_rgd = side2.gameObject.GetComponent<Rigidbody>();
         }
 
         else
         {
-            HeavySide = Side2;
-            HeavySide_rgd = Side2.gameObject.GetComponent<Rigidbody>();
-            LightSide = Side1;
-            LightSide_rgd = Side1.gameObject.GetComponent<Rigidbody>();
+            heavySide = side2;
+            heavySide_rgd = side2.gameObject.GetComponent<Rigidbody>();
+            lightSide = side1;
+            lightSide_rgd = side1.gameObject.GetComponent<Rigidbody>();
         }
 
         moveDistance = middleDistance * weightProportion;
 
-        HeavySide_Target = new Vector3(HeavySide.transform.position.x, middlePoint.y - moveDistance, HeavySide.transform.position.z);
-        LightSide_Target = new Vector3(LightSide.transform.position.x, middlePoint.y + moveDistance, LightSide.transform.position.z);
+        heavySide_Target = new Vector3(heavySide.transform.position.x, middlePoint.y - moveDistance, heavySide.transform.position.z);
+        lightSide_Target = new Vector3(lightSide.transform.position.x, middlePoint.y + moveDistance, lightSide.transform.position.z);
 
-        
-
-        
     }
 
     private void FixedUpdate()
     {
-        Vector3 HeavyDirection = HeavySide_Target - HeavySide.transform.position;
-        Vector3 LightDirection = LightSide_Target - LightSide.transform.position;
+        Vector3 HeavyDirection = heavySide_Target - heavySide.transform.position;
+        Vector3 LightDirection = lightSide_Target - lightSide.transform.position;
 
-        if (Vector3.Distance(HeavySide.transform.position, HeavySide_Target) > 0.1f)
+        if (Vector3.Distance(heavySide.transform.position, heavySide_Target) > 0.1f)
         {
-            HeavySide_rgd.MovePosition(HeavySide.transform.position + HeavyDirection.normalized * UpdownSpeed * Time.deltaTime);
-        }
-        if (Vector3.Distance(LightSide.transform.position, LightSide_Target) > 0.1f)
-        {
-            LightSide_rgd.MovePosition(LightSide.transform.position + LightDirection.normalized * UpdownSpeed * Time.deltaTime);
+            heavySide_rgd.MovePosition(heavySide.transform.position + HeavyDirection.normalized * updownSpeed * Time.deltaTime);
+            lightSide_rgd.MovePosition(lightSide.transform.position + LightDirection.normalized * updownSpeed * Time.deltaTime);
         }
     }
 }

@@ -143,17 +143,14 @@ public partial class PlayerController : BaseCharacterController
         else if (layer == Layers.Obj)
         {
             //Debug.Log("Did Hit Obejct");
-            if (fsm.CurState == PlayerState.Idle)
+            if (fsm.CurState == PlayerState.Idle && hit.collider.CompareTag(Tags.Object))
             {
                 hold_target = hit.transform;
 
                 return InteractType.Hold;
             }
-        }
 
-        else if (layer == Layers.Wagon)
-        {
-            if(fsm.CurState == PlayerState.Idle)
+            else if (fsm.CurState == PlayerState.Idle && hit.collider.CompareTag(Tags.Wagon))
             {
                 wagon = hit.transform;
 

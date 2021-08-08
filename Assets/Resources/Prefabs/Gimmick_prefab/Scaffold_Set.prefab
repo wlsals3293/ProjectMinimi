@@ -141,14 +141,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b02e7e7f8fab4d429a53f5773e64fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _switchs: []
-  MoveType: 0
+  switchs: []
+  moveType: 0
   scaffold_trfm: {fileID: 989475364381738468}
   scaffold_rgd: {fileID: 477263239861314151}
-  _start: {fileID: 989475363356711735}
-  _end: {fileID: 989475362634431869}
+  start: {fileID: 989475363356711735}
+  end: {fileID: 989475362634431869}
   direction: {x: 0, y: 0, z: 0}
-  Speed: 7
+  speed: 4
 --- !u!1 &989475363356711734
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,25 +8,17 @@ public class Door_Ctrl : Switch_C_OBJ
 {
     public enum DoorType {Maintain, OnOff}
     public DoorType doorType;
-    private Door_Ctrl thisDoor;
-    private Vector3 _startPoint;
-    private Vector3 _endPotint;
+    private Vector3 startPoint;
+    private Vector3 endPotint;
     private bool isOpen;
 
-    public float DoorSpd = 4.0f;
-    // Start is called before the first frame update
+    public float doorSpd = 4.0f;
     void Start()
-    {
-        thisDoor = GetComponent<Door_Ctrl>();
+    { 
+        startPoint = transform.position;
+        endPotint = startPoint - new Vector3(0, transform.lossyScale.y, 0);
 
-        _startPoint = transform.position;
-        _endPotint = _startPoint - new Vector3(0, transform.lossyScale.y, 0);
-
-        foreach(Switchs_Ctrl switchs in _switchs)
-        {
-            if(switchs._connetObj != null) { Debug.LogError("한개의 스위치는 한개의 오브젝트만 연결이 가능합니다."); }
-            switchs.Connecting(thisDoor);
-        }
+        ConnectingSwitch();
     }
 
 
@@ -38,11 +30,11 @@ public class Door_Ctrl : Switch_C_OBJ
 
         if (isOpen) //isOpen이 true면 열림
         {
-            transform.position = Vector3.MoveTowards(transform.position, _endPotint, DoorSpd * Time.deltaTime); 
+            transform.position = Vector3.MoveTowards(transform.position, endPotint, doorSpd * Time.deltaTime); 
         }
         else //isOpen이 false면 닫힘
         {
-            transform.position = Vector3.MoveTowards(transform.position, _startPoint, DoorSpd * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, startPoint, doorSpd * Time.deltaTime);
         }
 
     }
