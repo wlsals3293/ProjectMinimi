@@ -23,3 +23,26 @@ public static class Layers
     public static readonly int Minimi = LayerMask.NameToLayer("Minimi");
     public static readonly int Obj = LayerMask.NameToLayer("Object");
 }
+
+public static class LayerMasks
+{
+    public static readonly LayerMask Player = LayerMask.GetMask("Player");
+    public static readonly LayerMask Ground = LayerMask.GetMask("Ground");
+    public static readonly LayerMask Object = LayerMask.GetMask("Object");
+    public static readonly LayerMask Enemy = LayerMask.GetMask("Enemy");
+
+    /// <summary>
+    /// Layers: Ground, Object
+    /// </summary>
+    public static readonly LayerMask GO = LayerMask.GetMask("Ground", "Object");
+
+    /// <summary>
+    /// Layers: Player, Object
+    /// </summary>
+    public static readonly LayerMask PO = LayerMask.GetMask("Player", "Object");
+
+    /// <summary>
+    /// Layers: Player, Ground, Object
+    /// </summary>
+    public static readonly LayerMask PGO = LayerMask.GetMask("Player", "Ground", "Object");
+}

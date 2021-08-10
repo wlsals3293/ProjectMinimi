@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class UI_ESC : UIView
 {
-    
+    public void Resume()
+    {
+        GameManager.Instance.ToggleESCMenu();
+    }
+
     public void Restart()
     {
         StageManager.Instance.RestartStage(true);

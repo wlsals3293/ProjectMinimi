@@ -658,6 +658,27 @@ namespace ECM.Controllers
         }
 
         /// <summary>
+        /// 기본 점프와 상관없이 추가적인 점프를 하고싶을 때 사용합니다. MidAirJump와 다름
+        /// </summary>
+        protected void ExtraJump()
+        {
+            _jumpTimer = 0.0f;
+            _midAirJumpCount = 0;
+
+            _canJump = false;           // Halt jump until jump button is released
+            _isJumping = true;          // Update isJumping flag
+            _updateJumpTimer = true;    // Allow mid-air jump to be variable height
+
+            // Apply jump impulse
+
+            movement.ApplyVerticalImpulse(jumpImpulse);
+
+            // 'Pause' grounding, allowing character to safely leave the 'ground'
+
+            movement.DisableGrounding();
+        }
+
+        /// <summary>
         /// Perform variable jump height logic.
         /// </summary>
 

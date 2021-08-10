@@ -7,9 +7,6 @@ using ECM.Common;
 
 public partial class PlayerController : BaseCharacterController
 {
-    private const float RAY_DISTANCE = 5f;
-
-   
     private InteractType interactType = InteractType.None;
 
     private delegate void IdleUpdateDelegate();
@@ -39,13 +36,13 @@ public partial class PlayerController : BaseCharacterController
         if (playerAbility != null)
             playerAbility.AbilityUpdate();
 
-        if (onIdleUpdate != null)
-            onIdleUpdate();
+        onIdleUpdate?.Invoke();
     }
 
     private void Idle_FixedUpdate()
     {
         Move();
+        DetectLedge();
     }
     
     private void Idle_Exit(PlayerState next)
@@ -211,21 +208,6 @@ public partial class PlayerController : BaseCharacterController
         {
             Raycast(RAY_DISTANCE);
         }
-    }
-
-    private RaycastHit Raycast(float distance)
-    {
-        RaycastHit hit;
-        Vector3 pos = trans.position + (Vector3.up * 0.5f);
-
-        if (Physics.Raycast(pos, trans.TransformDirection(Vector3.forward), out hit, RAY_DISTANCE))
-        {
-#if UNITY_EDITOR
-            Debug.DrawLine(pos, pos + (trans.TransformDirection(Vector3.forward) * hit.distance), Color.red);
-#endif
-        }
-
-        return hit;
     }
 
 }

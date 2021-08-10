@@ -26,7 +26,7 @@ public partial class PlayerController : BaseCharacterController
     private void Sliding_SetState()
     {
         PlayerManager.Instance.AddBehaviour(
-            PlayerState.Sliding
+            PlayerState.Sliding 
             , new SimpleBehaviour(Sliding_Enter, Sliding_Update, Sliding_FixedUpdate, Sliding_Exit));
     }
 
@@ -82,17 +82,13 @@ public partial class PlayerController : BaseCharacterController
         slidingRight = slidingSlope.transform.right;
 
 
-        // TODO 카메라 관련 처리
-
-        /*CameraManager.Instance.CurrentCameraCtrl.UseRotation = false;
         Vector3 lookDirection = Vector3.ProjectOnPlane(slidingForward, Vector3.up);
         ChangeRotation(Quaternion.LookRotation(lookDirection), slidingEnterTime);
 
-        lookDirection -= Vector3.up * 0.5f;
-        CameraManager.Instance.GetMoveDirCamera().rotation = Quaternion.LookRotation(lookDirection);
-        */
-
         ChangeState(PlayerState.Sliding);
+
+
+        // TODO 카메라 관련 처리
     }
 
     public void CrashObstacle(int damage)

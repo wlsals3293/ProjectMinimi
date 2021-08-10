@@ -12,9 +12,11 @@ public class FlowerAbility : PlayerAbility
     [SerializeField]
     private float firePower = 25.0f;
 
+    [Tooltip("현재 가지고 있는 오브젝트")]
     [SerializeField, ReadOnly]
     private ISwallowableObject curHavingObject;
 
+    [Tooltip("현재 크로스헤어에 있는 오브젝트")]
     [SerializeField, ReadOnly]
     private ISwallowableObject focusedObject;
 
@@ -22,6 +24,7 @@ public class FlowerAbility : PlayerAbility
     private bool havingObject = false;
 
     private bool aiming = false;
+
 
 
     private void Awake()
@@ -38,14 +41,14 @@ public class FlowerAbility : PlayerAbility
         Ray ray = CameraManager.Instance.MainCam.ScreenPointToRay(screenCenter);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100.0f,
-            LayerMask.GetMask("Object"), QueryTriggerInteraction.Ignore))
+            LayerMasks.Object, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag(Tags.SwallowableObject))
             {
-                float distance = 
+                float distanceSqr = 
                     (pc.transform.position - hit.collider.transform.position).sqrMagnitude;
 
-                if (distance <= swallowDistance * swallowDistance)
+                if (distanceSqr <= swallowDistance * swallowDistance)
                 {
                     focusedObject = hit.collider.GetComponent<ISwallowableObject>();
                     return;
@@ -74,7 +77,7 @@ public class FlowerAbility : PlayerAbility
             Vector3 fireDirection;
 
             if (Physics.Raycast(ray, out RaycastHit hit, 100.0f,
-                LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore))
+                LayerMasks.GO, QueryTriggerInteraction.Ignore))
             {
                 fireDirection = (hit.point - pc.firePoint.position).normalized;
             }

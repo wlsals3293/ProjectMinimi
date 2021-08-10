@@ -65,8 +65,6 @@ public partial class PlayerController : BaseCharacterController
 
     private void Aim_Rotate(float deltaX, float deltaY)
     {
-        Quaternion rotation = Quaternion.Euler(0.0f, deltaX, 0.0f);
-
-        movement.rotation *= rotation;
+        movement.rotation *= Quaternion.Euler(0.0f, deltaX, 0.0f);
     }
 }

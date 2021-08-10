@@ -22,6 +22,10 @@ public struct KeyInfo
 
 public partial class PlayerController : BaseCharacterController
 {
+    private const float RAY_DISTANCE = 5f;
+
+
+
     [Header("Player Controller")]
 
     [Tooltip("피격이상 지속시간")]
@@ -71,6 +75,7 @@ public partial class PlayerController : BaseCharacterController
     private float elapsedHitDisorderTime;
 
 
+    private CapsuleCollider col;
 
     private PlayerAbility playerAbility = null;
 
@@ -134,8 +139,9 @@ public partial class PlayerController : BaseCharacterController
     {
         base.Awake();
 
-        playerCharacter = GetComponent<PlayerCharacter>();
         animator = GetComponentInChildren<Animator>();
+        col = GetComponent<CapsuleCollider>();
+        playerCharacter = GetComponent<PlayerCharacter>();
         playerAbility = GetComponent<PlayerAbility>();
 
         Idle_SetState();
@@ -248,7 +254,6 @@ public partial class PlayerController : BaseCharacterController
         animator.SetBool("Run", isRun);
     }
 
-
     private void ChangeRotation(Quaternion inTargetRotation, float inChangingTime)
     {
         startRotation = trans.rotation;
@@ -315,6 +320,28 @@ public partial class PlayerController : BaseCharacterController
 
             yield return null;
         }
+    }
+
+    private RaycastHit Raycast(float distance)
+    {
+        RaycastHit hit;
+        Vector3 pos = trans.position + (Vector3.up * 0.5f);
+
+        if (Physics.Raycast(pos, trans.TransformDirection(Vector3.forward), out hit, RAY_DISTANCE))
+        {
+#if UNITY_EDITOR
+            Debug.DrawLine(pos, pos + (trans.TransformDirection(Vector3.forward) * hit.distance), Color.red);
+#endif
+        }
+
+        return hit;
+    }
+
+    private bool RaycastForward(out RaycastHit hitInfo, float maxDistance, LayerMask layerMask)
+    {
+        Vector3 pos = transform.position + (transform.up * (col.height * 0.5f));
+
+        return Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
     }
 
     // 임시 랜덤 Idle 구현
