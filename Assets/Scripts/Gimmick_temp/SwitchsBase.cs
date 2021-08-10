@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class SwitchBase : MonoBehaviour
 {
-    [HideInInspector] public Switch_C_OBJ connetObj;
+    [HideInInspector]public List<Switch_C_OBJ> connectObjs;
 
     private bool isActivate = false;
+
+    private RadioSwitchBundle radio;
+
+    private SwitchBase thisSwitch;
 
     public bool IsActivate
     {
@@ -15,11 +19,18 @@ public class SwitchBase : MonoBehaviour
         {
             isActivate = value;
 
-            connetObj.SwitchCheck();
+            foreach (Switch_C_OBJ obj in connectObjs)
+            {
+                obj.SwitchCheck();
+            }
             
             if (isActivate)
             {
                 _thisColor.material = _color_DontTouch[0];
+                if(radio != null)
+                {
+                    radio.TurnOffOtherSwitchs(thisSwitch);
+                }
             }
             else
             {
@@ -30,12 +41,19 @@ public class SwitchBase : MonoBehaviour
 
     public Material[] _color_DontTouch;
     public Renderer _thisColor;
-    
 
-
-    public void Connecting(Switch_C_OBJ connectingObj)
+    private void Awake()
     {
-        connetObj = connectingObj;
+        thisSwitch = GetComponent<SwitchBase>();
     }
 
+    public void ConnectToOBJ(Switch_C_OBJ connectingObj)
+    {
+        connectObjs.Add(connectingObj);
+    }
+
+    public void ConnectToBundle(RadioSwitchBundle connect)
+    {
+        radio = connect;
+    }
 }

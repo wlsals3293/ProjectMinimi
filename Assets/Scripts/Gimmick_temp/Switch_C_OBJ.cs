@@ -9,10 +9,9 @@ using UnityEngine;
 
 public class Switch_C_OBJ : MonoBehaviour
 {
-
     public List<SwitchBase> switchs;
     private bool allSwitchOn = false;
-
+    private bool alreadyOff = true;
     public bool AllSwitchOn
     {
         get { return allSwitchOn; }
@@ -21,17 +20,28 @@ public class Switch_C_OBJ : MonoBehaviour
             allSwitchOn = value;
             if (allSwitchOn)
             {
-                WhenAllSwitchOn();
+                Activate();
+                alreadyOff = false;
+            }
+            if (!allSwitchOn)
+            {
+                if (!alreadyOff)
+                {
+                    Deactivate();
+                    alreadyOff = true;
+                }
             }
         }
-    }
 
-    public virtual void Activate() //문이 열리는 행동 혹은 발판의 움직임
+    }
+    public virtual void Activate() //스위치가 다 켜지면 한번 호출
     {
 
     }
 
-    public virtual void WhenAllSwitchOn() //스위치가 다 켜졌을 때만 호출
+    
+
+    public virtual void Deactivate() //스위치가 다 켜진 상태에서 스위치가 하나라도 꺼지면 한번 호출
     {
 
     }
@@ -62,7 +72,7 @@ public class Switch_C_OBJ : MonoBehaviour
     {
         foreach (SwitchBase switchs in switchs) 
         {
-            switchs.Connecting(GetComponent<Switch_C_OBJ>());
+            switchs.ConnectToOBJ(GetComponent<Switch_C_OBJ>());
         }
     }
 }

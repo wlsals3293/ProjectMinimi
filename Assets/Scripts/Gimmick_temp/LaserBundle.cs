@@ -10,7 +10,6 @@ public class LaserBundle : Switch_C_OBJ
     private Coroutine active;
     private LayerMask layerMask;
     private bool alreadyActive = false;
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,28 +18,46 @@ public class LaserBundle : Switch_C_OBJ
         startPoints = GetComponentsInChildren<Transform>();
         ConnectingSwitch();
         active = StartCoroutine(ActiveLaser());
+        AllSwitchOn = false;
     }
 
-    public override void WhenAllSwitchOn()
+    public override void Activate()
     {
-        if (!alreadyActive)
+        foreach (LineRenderer laser in lasers)
         {
-            active = StartCoroutine(ActiveLaser());
-            alreadyActive = true;
+            laser.enabled = !laser.enabled;
         }
+
+    }
+
+    public override void Deactivate()
+    {
+
+        foreach (LineRenderer laser in lasers)
+        {
+            laser.enabled = !laser.enabled;
+        }
+
     }
 
 
     IEnumerator ActiveLaser()
     {
-        yield return null;
-
-        while (AllSwitchOn)
+        while (true)
         {
-            int i = 1;
-            foreach (LineRenderer laser in lasers)
+            DrawLaser();
+            yield return new WaitForSeconds(0.03f);
+        }
+
+    }
+
+    void DrawLaser()
+    {
+        int i = 1;
+        foreach (LineRenderer laser in lasers)
+        {
+            if (laser.enabled)
             {
-                laser.enabled = true;
                 RaycastHit hit;
                 Physics.Raycast(
                     startPoints[i].position,
@@ -54,27 +71,14 @@ public class LaserBundle : Switch_C_OBJ
                 float distance = Vector3.Distance(startPoints[i].position, hit.point);
 
                 laser.SetPosition(0, Vector3.zero);
-                laser.SetPosition(1, new Vector3(0,0, distance));
+                laser.SetPosition(1, new Vector3(0, 0, distance));
 
                 if (hit.collider != null && hit.collider.CompareTag(Tags.Player))
                 {
                     hit.collider.GetComponent<PlayerCharacter>().TakeDamage(1, -hit.collider.transform.forward);
                 }
-
-                i++;
-
             }
-            yield return new WaitForSeconds(0.03f);
-        }
-        if (!AllSwitchOn)
-        {
-            foreach (LineRenderer laser in lasers)
-            {
-                laser.enabled = false;
-            }
-            alreadyActive = false;
-            
-            StopCoroutine(active);
+            i++;
         }
     }
 }

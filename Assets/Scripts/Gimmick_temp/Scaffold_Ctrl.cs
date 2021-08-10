@@ -34,7 +34,7 @@ public class Scaffold_Ctrl : Switch_C_OBJ
             ConnectingSwitch();
         }
     }
-    public override void Activate() //문이 열리는 행동 혹은 발판의 움직임
+    public void ScaffoldMove()
     {
         if (!isConnect) //연결된 스위치가 없으면 자동으로 왕복 반복
         {
@@ -48,7 +48,7 @@ public class Scaffold_Ctrl : Switch_C_OBJ
                 ReturnMoving();
             }
 
-            if(moveType == ScaffoldType.Reciprocate && AllSwitchOn) //왕복형이고 스위치가 눌러져있으면
+            else if(moveType == ScaffoldType.Reciprocate && AllSwitchOn) //왕복형이고 스위치가 눌러져있으면
             {
                 ReciprocateMoving();
             }
@@ -108,6 +108,6 @@ public class Scaffold_Ctrl : Switch_C_OBJ
     // Update is called once per frame
     void FixedUpdate()
     {
-        Activate();
+        ScaffoldMove();
     }
 }

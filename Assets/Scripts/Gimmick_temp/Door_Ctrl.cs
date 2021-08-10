@@ -22,7 +22,7 @@ public class Door_Ctrl : Switch_C_OBJ
     }
 
 
-    public override void Activate()
+    public void DoorOpen()
     {
         if (AllSwitchOn) isOpen = true; //연결된 스위치가 전부 켜지면 isOpen = true
 
@@ -42,6 +42,6 @@ public class Door_Ctrl : Switch_C_OBJ
     // Update is called once per frame
     void Update()
     {
-        Activate();
+        DoorOpen();
     }
 }
