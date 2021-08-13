@@ -10,7 +10,6 @@ public class PressSwitch : SwitchBase
     private Coroutine onActivateCort;
     private BoxCollider boxTrigger;
 
-    private LayerMask layerMask;
 
     private void Awake()
     {
@@ -21,7 +20,6 @@ public class PressSwitch : SwitchBase
     {
         _thisColor = GetComponent<Renderer>();
 
-        layerMask = LayerMask.GetMask("Minimi", "Player", "Object");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,7 +41,7 @@ public class PressSwitch : SwitchBase
     {
         while (true)
         {
-            Collider[] cols = Physics.OverlapBox(transform.position + boxTrigger.center, boxTrigger.size, transform.rotation, layerMask, QueryTriggerInteraction.Ignore);
+            Collider[] cols = Physics.OverlapBox(transform.position + boxTrigger.center, boxTrigger.size, transform.rotation, LayerMasks.PO, QueryTriggerInteraction.Ignore);
 
             bool isEmpty = true;
 

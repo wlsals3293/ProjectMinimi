@@ -8,12 +8,11 @@ public class Scale_Side : MonoBehaviour
     [HideInInspector] public float totalWeight = 0f;
     private float otherWeight;
     private Coroutine onActivateCort;
-    private LayerMask layerMask;
  
     // Start is called before the first frame update
     void Start()
     {
-        layerMask = LayerMask.GetMask("Minimi", "Player", "Object");
+        
         onActivateCort = StartCoroutine(OnActivate());
     }
 
@@ -37,7 +36,7 @@ public class Scale_Side : MonoBehaviour
         while (true)
         {
             Vector3 center = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-            Collider[] cols = Physics.OverlapBox(center, transform.lossyScale / 2, transform.rotation, layerMask, QueryTriggerInteraction.Ignore);
+            Collider[] cols = Physics.OverlapBox(center, transform.lossyScale / 2, transform.rotation, LayerMasks.PO, QueryTriggerInteraction.Ignore);
             
             bool isEmpty = true;
 

@@ -8,12 +8,9 @@ public class LaserBundle : Switch_C_OBJ
     private LineRenderer[] lasers;
     private Transform[] startPoints;
     private Coroutine active;
-    private LayerMask layerMask;
-    private bool alreadyActive = false;
     // Start is called before the first frame update
     void Start()
     {
-        layerMask = LayerMask.GetMask("Ground", "Object", "Player");
         lasers = GetComponentsInChildren<LineRenderer>();
         startPoints = GetComponentsInChildren<Transform>();
         ConnectingSwitch();
@@ -64,7 +61,7 @@ public class LaserBundle : Switch_C_OBJ
                     startPoints[i].forward,
                     out hit,
                     40f,
-                    layerMask,
+                    LayerMasks.PGO,
                     QueryTriggerInteraction.Ignore
                     );
 
