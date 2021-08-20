@@ -8,13 +8,9 @@ public class PressSwitch : SwitchBase
     public SwitchType _type = SwitchType.OnOff;
 
     private Coroutine onActivateCort;
-    private BoxCollider boxTrigger;
 
+    public Transform box;
 
-    private void Awake()
-    {
-        boxTrigger = GetComponent<BoxCollider>();
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -39,9 +35,10 @@ public class PressSwitch : SwitchBase
     // 임시. 나중에 개편 예정
     private IEnumerator OnActivate()
     {
+        yield return null;
         while (true)
         {
-            Collider[] cols = Physics.OverlapBox(transform.position + boxTrigger.center, boxTrigger.size, transform.rotation, LayerMasks.PO, QueryTriggerInteraction.Ignore);
+            Collider[] cols = Physics.OverlapBox(box.position + (Vector3.up * 0.2f), box.lossyScale / 2, transform.rotation, LayerMasks.PO, QueryTriggerInteraction.Ignore);
 
             bool isEmpty = true;
 
