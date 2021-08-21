@@ -8,14 +8,12 @@ public class FreeLookCamController : CameraController
     [SerializeField]
     protected Transform target;
 
-
     [Tooltip("목표지점으로부터 카메라까지의 거리")]
-    public float cameraDistance = 6.0f;
+    public float cameraDistance = 3.5f;
 
-    
-
-    [Tooltip("카메라 상하회전 최소, 최대값")]
-    public Vector2 pitchMinMax = new Vector2(-70, 89);
+    [Tooltip("카메라 상하회전 최소, 최대각도")]
+    [SerializeField]
+    private AngleLimit pitchLimit = new AngleLimit(-70.0f, 89.0f);
 
 
 
@@ -32,15 +30,30 @@ public class FreeLookCamController : CameraController
 
 
     [Tooltip("부드러운 이동 적용 여부")]
-    public bool smoothMovement = true;
+    [SerializeField]
+    private bool smoothMovement = true;
 
     [Tooltip("수평이동 지연값. 값이 클수록 목표를 늦게 따라감")]
-    [Range(0.0f, 3.0f)]
-    public float horizontalDamping = 0.05f;
+    [SerializeField, Range(0.0f, 1.0f)]
+    private float horizontalDamping = 0.05f;
 
     [Tooltip("수직이동 지연값. 값이 클수록 목표를 늦게 따라감")]
-    [Range(0.0f, 3.0f)]
-    public float verticalDamping = 0.2f;
+    [SerializeField, Range(0.0f, 1.0f)]
+    private float verticalDamping = 0.4f;
+
+    [Tooltip("수평이동 데드존. 월드좌표 기준")]
+    [SerializeField]
+    private float deadZoneHorizontal = 3.0f;
+
+    [Tooltip("수직이동 데드존. 월드좌표 기준")]
+    [SerializeField]
+    private float deadZoneVertical = 2.2f;
+
+    /// <summary>
+    /// 수직이동 데드존 오프셋
+    /// </summary>
+    private float deadZoneVerticalOffset = -0.3f;
+
 
 
     private float xDampVelocity;
@@ -51,8 +64,9 @@ public class FreeLookCamController : CameraController
 
     [Header("Orbit")]
 
-
-    [SerializeField] private bool useRotation = true;
+    [Tooltip("사용자 입력을 통한 카메라 회전을 활성화합니다")]
+    [SerializeField]
+    private bool useRotation = true;
 
 
     /// <summary>
@@ -70,8 +84,8 @@ public class FreeLookCamController : CameraController
     public bool smoothRotation = true;
 
     [Tooltip("회전 지연값. 값이 클수록 늦게 회전함")]
-    [Range(0.0f, 3.0f)]
-    public float rotationDamping = 0.05f;
+    [SerializeField, Range(0.0f, 0.1f)]
+    private float rotationDamping = 0.05f;
 
 
     private float pitchDampVelocity;
@@ -134,7 +148,7 @@ public class FreeLookCamController : CameraController
         else if (yaw > 180.0f)
             yaw -= 360.0f;
 
-        pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
+        pitch = Mathf.Clamp(pitch, pitchLimit.min, pitchLimit.max);
 
         if (smoothRotation)
         {
@@ -171,11 +185,31 @@ public class FreeLookCamController : CameraController
                 targetPosition.y, adjustedPosition.y, ref yDampVelocity, verticalDamping);
             targetPosition.z = Mathf.SmoothDamp(
                 targetPosition.z, adjustedPosition.z, ref zDampVelocity, horizontalDamping);
+
+
+            // 데드존 적용
+            float deadZoneV = targetPosition.y > adjustedPosition.y ?
+                Mathf.Min(targetPosition.y, adjustedPosition.y + deadZoneVertical + deadZoneVerticalOffset) :
+                Mathf.Max(targetPosition.y, adjustedPosition.y - deadZoneVertical + deadZoneVerticalOffset);
+
+            Vector3 deadZoneH = targetPosition - adjustedPosition;
+            deadZoneH.y = 0.0f;
+
+            if(deadZoneH.magnitude > deadZoneHorizontal)
+            {
+                targetPosition = adjustedPosition + (deadZoneH.normalized * deadZoneHorizontal);
+            }
+            targetPosition.y = deadZoneV;
         }
         else
         {
             targetPosition = adjustedPosition;
         }
+    }
+
+    private void AvoidObstacle()
+    {
+
     }
 
     /// <summary>

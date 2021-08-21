@@ -1,8 +1,26 @@
 using Cinemachine;
 using UnityEngine;
 
+
 public class CameraController : MonoBehaviour
 {
+    [System.Serializable]
+    public struct AngleLimit
+    {
+        [Range(-89.0f, 89.0f)]
+        public float min;
+
+        [Range(-89.0f, 89.0f)]
+        public float max;
+
+        public AngleLimit(float inMin, float inMax)
+        {
+            min = inMin;
+            max = inMax;
+        }
+    }
+
+
     [Header("Config")]
 
     [SerializeField, Range(0, 10)]

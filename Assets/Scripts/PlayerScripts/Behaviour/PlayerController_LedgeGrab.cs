@@ -10,6 +10,8 @@ public partial class PlayerController : BaseCharacterController
 
     private Vector3 ledgeUpMovePosition;
 
+    private Rigidbody grabbedRigidbody;
+
 
 
     #region <행동 추가시 디폴트 작업>
@@ -37,10 +39,12 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_FixedUpdate()
     {
+        ApplyPlatformMovement();
     }
 
     private void LedgeGrab_Exit(PlayerState next)
     {
+        grabbedRigidbody = null;
         movement.capsuleCollider.isTrigger = false;
         movement.EnableGroundDetection();
     }
@@ -88,6 +92,8 @@ public partial class PlayerController : BaseCharacterController
 
                 ledgeUpMovePosition = hit2.point;   // 올라가는 애니메이션 후 있을 위치 (임시)
 
+                grabbedRigidbody = hit2.rigidbody;
+
 
                 // 매달리고 있을 위치로 조정
                 Vector3 position = new Vector3(hit.point.x, hit2.point.y - col.height, hit.point.z);
@@ -100,5 +106,14 @@ public partial class PlayerController : BaseCharacterController
                 ChangeState(PlayerState.LedgeGrab);
             }
         }
+    }
+
+
+    private void ApplyPlatformMovement()
+    {
+        if (grabbedRigidbody == null)
+            return;
+
+        CachedRigidbody.velocity = grabbedRigidbody.GetPointVelocity(CachedRigidbody.position);
     }
 }

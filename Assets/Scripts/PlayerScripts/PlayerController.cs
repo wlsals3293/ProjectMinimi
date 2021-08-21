@@ -22,7 +22,7 @@ public struct KeyInfo
 
 public partial class PlayerController : BaseCharacterController
 {
-    private const float RAY_DISTANCE = 5f;
+    private const float RAY_DISTANCE = 2f;
 
 
 
@@ -47,10 +47,10 @@ public partial class PlayerController : BaseCharacterController
     private float killY;
 
     [Tooltip("마우스 수평 감도")]
-    public float mouseHorizontalSensitivity = 4;
+    public float mouseHorizontalSensitivity = 3;
 
     [Tooltip("마우스 수직 감도")]
-    public float mouseVerticalSensitivity = 4;
+    public float mouseVerticalSensitivity = 3;
 
 
 
@@ -99,6 +99,10 @@ public partial class PlayerController : BaseCharacterController
         }
     }
 
+    private Rigidbody CachedRigidbody
+    {
+        get => movement.cachedRigidbody;
+    }
 
     private Transform cameraT;
 
@@ -325,7 +329,7 @@ public partial class PlayerController : BaseCharacterController
     private RaycastHit Raycast(float distance)
     {
         RaycastHit hit;
-        Vector3 pos = trans.position + (Vector3.up * 0.5f);
+        Vector3 pos = trans.position + (Vector3.up * 0.7f);
 
         if (Physics.Raycast(pos, trans.TransformDirection(Vector3.forward), out hit, RAY_DISTANCE))
         {
