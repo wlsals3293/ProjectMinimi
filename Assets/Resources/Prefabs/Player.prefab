@@ -154,7 +154,7 @@ MonoBehaviour:
   _maxRiseSpeed: 30
   _maxFallSpeed: 30
   _useGravity: 1
-  _gravity: {x: 0, y: -50, z: 0}
+  _gravity: {x: 0, y: -30, z: 0}
   _slideOnSteepSlope: 0
   _slopeLimit: 45
   _slideGravityMultiplier: 2
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edda8bfb4c748cc40a2ef9e6fc47d478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 11
+  _speed: 7
   _angularSpeed: 540
   _acceleration: 40
   _deceleration: 40
@@ -184,8 +184,8 @@ MonoBehaviour:
   _canCrouch: 0
   _standingHeight: 2
   _crouchingHeight: 1
-  _baseJumpHeight: 2
-  _extraJumpTime: 0.5
+  _baseJumpHeight: 1.3
+  _extraJumpTime: 0.3
   _extraJumpPower: 25
   _jumpPreGroundedToleranceTime: 0.15
   _jumpPostGroundedToleranceTime: 0.15
