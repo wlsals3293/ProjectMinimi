@@ -30,6 +30,12 @@ public class UIManager : BaseManager<UIManager>
     public TransitionDelegate onScreenRevealComplete;
 
 
+    public UI_HUD HUD
+    {
+        get => hud;
+    }
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -89,6 +95,7 @@ public class UIManager : BaseManager<UIManager>
 
         // HUD
         hud = ResourceManager.Instance.CreatePrefab<UI_HUD>("HUDCanvas", null, PrefabPath.UI);
+        hud.Init();
     }
 
 
