@@ -95,7 +95,7 @@ public class Scaffold_Ctrl : Switch_C_OBJ
     public void DirectionSwitching() //시작점이나 종착점에 도착하면 반대지점으로 다시 향하도록 방향 컨트롤
     {
 
-        if (goToEnd && Vector3.Distance(scaffold_trfm.position, end.transform.position) < 0.3f) //종착점에 닿으면 다시 시작점으로 향하게
+        if (goToEnd && Vector3.Distance(scaffold_trfm.position, end.transform.position) < 0.1f) //종착점에 닿으면 다시 시작점으로 향하게
         {
             if (!alreadyWait)
             {
@@ -103,7 +103,7 @@ public class Scaffold_Ctrl : Switch_C_OBJ
                 waitCor = StartCoroutine(Wait());
             }
         }
-        if (goToStart && Vector3.Distance(scaffold_trfm.position, start.transform.position) < 0.3f) //시작점에 닿으면 다시 종착점으로 향하게
+        if (goToStart && Vector3.Distance(scaffold_trfm.position, start.transform.position) < 0.1f) //시작점에 닿으면 다시 종착점으로 향하게
         {
             if (!alreadyWait)
             {

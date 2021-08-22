@@ -20,11 +20,7 @@ public class PressSwitch : SwitchBase
 
     private void OnTriggerEnter(Collider other)
     {
-        if (
-           other.gameObject.CompareTag("Player") ||
-           other.gameObject.CompareTag("Minimi") ||
-           other.gameObject.CompareTag("Object")
-           )
+        if (other.gameObject.CompareTag("Object"))
         {
             IsActivate = true;
 
@@ -44,7 +40,7 @@ public class PressSwitch : SwitchBase
 
             foreach (Collider col in cols)
             {
-                if (col.CompareTag("Player") || col.CompareTag("Minimi") || col.CompareTag("Object"))
+                if (col.CompareTag("Object"))
                 {
                     isEmpty = false;
                     break;
