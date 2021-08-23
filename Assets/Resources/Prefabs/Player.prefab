@@ -96,7 +96,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2898909722588396410}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   climbingSpeed: 5
   dragSpeed: 3
   pivotObjHolding: {fileID: 6800537864608850124}
-  slidingSpeed: 27
+  slidingSpeed: 20
   slidingSideSpeed: 15
   hitDisorderTime: 0.6
   currentSpeed: 0
