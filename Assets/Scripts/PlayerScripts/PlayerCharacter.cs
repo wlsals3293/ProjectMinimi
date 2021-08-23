@@ -73,6 +73,7 @@ public class PlayerCharacter : MonoBehaviour
         curHP = newHP;
 
         // 현재 체력 나타내는 UI는 여기서 업데이트
+        UIManager.Instance.HUD.SetLife(curHP);
     }
 
     /// <summary>

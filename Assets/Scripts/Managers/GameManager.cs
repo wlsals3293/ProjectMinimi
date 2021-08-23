@@ -45,10 +45,10 @@ public class GameManager : BaseManager<GameManager>
     public void InGameInit()
     {
         StageManager.Instance.Initialize();
-        PlayerManager.Instance.Initialize();
-        MinimiManager.Instance.Initialize();
         UIManager.Instance.SceneInit();
         UIManager.Instance.InGameInit();
+        PlayerManager.Instance.Initialize();
+        MinimiManager.Instance.Initialize();
         CameraManager.Instance.Initialize();
     }
 

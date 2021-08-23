@@ -29,6 +29,7 @@ public partial class PlayerController : BaseCharacterController
         currentRot.y = CameraT.rotation.eulerAngles.y;
         movement.rotation = Quaternion.Euler(currentRot);
 
+        UIManager.Instance.HUD.VisibleCrossHair(true);
         CameraManager.Instance.ActivateCustomCamera(1);
 
         onRotationAxisInput += Aim_Rotate;
@@ -50,6 +51,7 @@ public partial class PlayerController : BaseCharacterController
 
     private void Aim_Exit(PlayerState next)
     {
+        UIManager.Instance.HUD.VisibleCrossHair(false);
         CameraManager.Instance.ActivateCustomCamera(0);
     }
     #endregion

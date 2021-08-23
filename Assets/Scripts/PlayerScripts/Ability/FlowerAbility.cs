@@ -51,12 +51,14 @@ public class FlowerAbility : PlayerAbility
                 if (distanceSqr <= swallowDistance * swallowDistance)
                 {
                     focusedObject = hit.collider.GetComponent<ISwallowableObject>();
+
+                    UIManager.Instance.HUD.SetBehaviourDesc(true);
                     return;
                 }
             }
         }
         focusedObject = null;
-
+        UIManager.Instance.HUD.SetBehaviourDesc(false);
     }
 
     public override void MainAction1(KeyInfo key)
@@ -96,6 +98,8 @@ public class FlowerAbility : PlayerAbility
             curHavingObject = focusedObject;
             focusedObject = null;
             curHavingObject.Swallow();
+
+            UIManager.Instance.HUD.SetBehaviourDesc(false);
         }
     }
 
