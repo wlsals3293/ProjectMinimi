@@ -13,7 +13,7 @@ public class FreeLookCamController : CameraController
 
     [Tooltip("카메라 상하회전 최소, 최대각도")]
     [SerializeField]
-    private AngleLimit pitchLimit = new AngleLimit(-70.0f, 89.0f);
+    private AngleLimit pitchLimit = new AngleLimit(-70.0f, 89.9f);
 
 
 
@@ -39,20 +39,20 @@ public class FreeLookCamController : CameraController
 
     [Tooltip("수직이동 지연값. 값이 클수록 목표를 늦게 따라감")]
     [SerializeField, Range(0.0f, 1.0f)]
-    private float verticalDamping = 0.4f;
+    private float verticalDamping = 0.3f;
 
     [Tooltip("수평이동 데드존. 월드좌표 기준")]
     [SerializeField]
-    private float deadZoneHorizontal = 3.0f;
+    private float deadZoneHorizontal = 2.5f;
 
     [Tooltip("수직이동 데드존. 월드좌표 기준")]
     [SerializeField]
-    private float deadZoneVertical = 2.2f;
+    private float deadZoneVertical = 1.5f;
 
     /// <summary>
     /// 수직이동 데드존 오프셋
     /// </summary>
-    private float deadZoneVerticalOffset = -0.3f;
+    private float deadZoneVerticalOffset = -0.5f;
 
 
 

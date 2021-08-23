@@ -253,9 +253,11 @@ public partial class PlayerController : BaseCharacterController
         if (animator == null)
             return;
 
-        bool isRun = movement.velocity.sqrMagnitude > 9.0f;
+        bool isRun = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).sqrMagnitude > 9.0f;
+            
 
         animator.SetBool("Run", isRun);
+        animator.SetBool("Jump", isJumping);
     }
 
     private void ChangeRotation(Quaternion inTargetRotation, float inChangingTime)

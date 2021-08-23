@@ -5,7 +5,7 @@ public class ShoulderCamController : CameraController
 
 
     [Tooltip("카메라 상하회전 최소, 최대값")]
-    public Vector2 pitchMinMax = new Vector2(-70, 89);
+    public Vector2 pitchMinMax = new Vector2(-70.0f, 89.9f);
 
 
     /// <summary>

@@ -7,10 +7,10 @@ public class CameraController : MonoBehaviour
     [System.Serializable]
     public struct AngleLimit
     {
-        [Range(-89.0f, 89.0f)]
+        [Range(-89.0f, 89.9f)]
         public float min;
 
-        [Range(-89.0f, 89.0f)]
+        [Range(-89.0f, 89.9f)]
         public float max;
 
         public AngleLimit(float inMin, float inMax)

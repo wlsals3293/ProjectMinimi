@@ -22,7 +22,7 @@ public partial class PlayerController : BaseCharacterController
             , new SimpleBehaviour(LedgeGrab_Enter, LedgeGrab_Update, LedgeGrab_FixedUpdate, LedgeGrab_Exit));
 
         ledgeDistance = col.radius + 0.4f;
-        ledgeHeight = col.height * 0.5f + 0.1f;
+        ledgeHeight = col.height * 0.5f;
     }
 
     private void LedgeGrab_Enter(PlayerState prev)
@@ -30,6 +30,8 @@ public partial class PlayerController : BaseCharacterController
         movement.velocity = Vector3.zero;
         movement.capsuleCollider.isTrigger = true;
         movement.DisableGroundDetection();
+
+        animator.SetBool("LedgeGrab", true);
     }
 
     private void LedgeGrab_Update()
@@ -47,6 +49,8 @@ public partial class PlayerController : BaseCharacterController
         grabbedRigidbody = null;
         movement.capsuleCollider.isTrigger = false;
         movement.EnableGroundDetection();
+
+        animator.SetBool("LedgeGrab", false);
     }
     #endregion
 
@@ -81,7 +85,7 @@ public partial class PlayerController : BaseCharacterController
 
 
             // 첫번째 레이가 히트한 위치를 기준으로 위에서 아래로 다시 레이를 쏴 히트했는지 체크
-            if (Physics.Raycast(pos, -transform.up, out RaycastHit hit2, 0.2f, LayerMasks.Ground))
+            if (Physics.Raycast(pos, -transform.up, out RaycastHit hit2, 0.3f, LayerMasks.Ground))
             {
                 // 히트한 땅의 각도가 대략 45도보다 크면 리턴
                 float dot = Vector3.Dot(hit2.normal, Vector3.up);
@@ -96,7 +100,7 @@ public partial class PlayerController : BaseCharacterController
 
 
                 // 매달리고 있을 위치로 조정
-                Vector3 position = new Vector3(hit.point.x, hit2.point.y - col.height, hit.point.z);
+                Vector3 position = new Vector3(hit.point.x, hit2.point.y - 1.1f, hit.point.z);
                 position += -grabForward * (col.radius + 0.01f);
                 Quaternion rotation = Quaternion.LookRotation(grabForward);
 

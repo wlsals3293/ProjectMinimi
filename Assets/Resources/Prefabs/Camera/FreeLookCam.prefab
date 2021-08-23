@@ -133,13 +133,13 @@ MonoBehaviour:
   cameraDistance: 3.5
   pitchLimit:
     min: -70
-    max: 89
+    max: 89.9
   targetOffset: {x: 0, y: 1.5, z: 0}
   smoothMovement: 1
   horizontalDamping: 0.05
-  verticalDamping: 0.4
-  deadZoneHorizontal: 3
-  deadZoneVertical: 2.2
+  verticalDamping: 0.3
+  deadZoneHorizontal: 2.5
+  deadZoneVertical: 1.5
   useRotation: 1
   smoothRotation: 1
   rotationDamping: 0.05
