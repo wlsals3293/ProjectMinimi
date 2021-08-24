@@ -137,7 +137,7 @@ MonoBehaviour:
   targetOffset: {x: 0, y: 1.5, z: 0}
   smoothMovement: 1
   horizontalDamping: 0.05
-  verticalDamping: 0.3
+  verticalDamping: 0.2
   deadZoneHorizontal: 2.5
   deadZoneVertical: 1.5
   useRotation: 1
