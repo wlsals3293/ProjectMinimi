@@ -553,6 +553,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel_Title
       objectReference: {fileID: 0}
+    - target: {fileID: 8750446285236212753, guid: 5769ab25f0df3d6468d1a991ad8e100b, type: 3}
+      propertyPath: stageName
+      value: stage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5769ab25f0df3d6468d1a991ad8e100b, type: 3}
 --- !u!1001 &4787041223015059889

@@ -186,6 +186,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: maxHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: minHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: blockDirChangeDelay
       value: 0
       objectReference: {fileID: 0}
@@ -1901,7 +1909,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 252168233}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 140.8, y: 23.1, z: 26}
+  m_LocalPosition: {x: 143.7, y: 23.1, z: 25.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1956696440}
@@ -3411,7 +3419,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475228743}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 301.86, y: 25.29, z: 652.82}
+  m_LocalPosition: {x: 301.64, y: 25.29, z: 652.82}
   m_LocalScale: {x: 1, y: 11.713565, z: 14.014119}
   m_Children: []
   m_Father: {fileID: 289896295}
@@ -5250,6 +5258,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 101335923}
     m_Modifications:
+    - target: {fileID: 8895773307642356240, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
+      propertyPath: m_Size.x
+      value: 5.268463
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895773307642356240, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
+      propertyPath: m_Size.y
+      value: 0.5099888
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895773307642356240, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
+      propertyPath: m_Size.z
+      value: 4.9752502
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895773307642356240, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
+      propertyPath: m_Center.x
+      value: 1.8322296
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895773307642356240, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
+      propertyPath: m_Center.y
+      value: -0.24500561
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895773307642356240, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
+      propertyPath: m_Center.z
+      value: 2.358963
+      objectReference: {fileID: 0}
     - target: {fileID: 8895773307642356246, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
       propertyPath: m_Name
       value: TriggerSwitch (1)
@@ -5264,7 +5296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8895773307642356269, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21.91
+      value: 21.64
       objectReference: {fileID: 0}
     - target: {fileID: 8895773307642356269, guid: a1954d8953bfc9d4e9b891d539b6e883, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6281,7 +6313,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: startDelay
-      value: 1
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: maxHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: minHighTime
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: blockDirChangeDelay
@@ -7543,7 +7583,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: startDelay
-      value: 1
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: maxHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: minHighTime
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: blockDirChangeDelay
@@ -9553,6 +9601,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: maxHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: minHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: blockDirChangeDelay
       value: 0
       objectReference: {fileID: 0}
@@ -10276,6 +10332,14 @@ PrefabInstance:
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: startDelay
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: maxHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: minHighTime
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: blockDirChangeDelay
@@ -11167,7 +11231,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: startDelay
-      value: 1
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: maxHighTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
+      propertyPath: minHighTime
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1598219773455753907, guid: 1ecdcef3f87a60e47ae477a0e57333a5, type: 3}
       propertyPath: blockDirChangeDelay
@@ -14289,8 +14361,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2118925586}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 273.42, y: 25.29, z: 653.8}
-  m_LocalScale: {x: 3.075, y: 11.713565, z: 14.014119}
+  m_LocalPosition: {x: 273.72, y: 25.29, z: 653.8}
+  m_LocalScale: {x: 3.075, y: 11.713565, z: 16.466589}
   m_Children: []
   m_Father: {fileID: 289896295}
   m_RootOrder: 4

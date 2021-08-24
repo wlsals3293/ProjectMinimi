@@ -38,7 +38,7 @@ public class SwallowStone : MonoBehaviour, ISwallowableObject
             {
                 collision.gameObject.SetActive(false);
             }
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 
