@@ -39,7 +39,7 @@ public class FreeLookCamController : CameraController
 
     [Tooltip("수직이동 지연값. 값이 클수록 목표를 늦게 따라감")]
     [SerializeField, Range(0.0f, 1.0f)]
-    private float verticalDamping = 0.3f;
+    private float verticalDamping = 0.2f;
 
     [Tooltip("수평이동 데드존. 월드좌표 기준")]
     [SerializeField]
@@ -52,7 +52,7 @@ public class FreeLookCamController : CameraController
     /// <summary>
     /// 수직이동 데드존 오프셋
     /// </summary>
-    private float deadZoneVerticalOffset = -0.5f;
+    private float deadZoneVerticalOffset = -0.7f;
 
 
 
