@@ -79,7 +79,7 @@ Material:
     m_Floats:
     - FadeEndDist: 10
     - FadeStartDist: 3
-    - Thickness: 0.1
+    - Thickness: 0.05
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
