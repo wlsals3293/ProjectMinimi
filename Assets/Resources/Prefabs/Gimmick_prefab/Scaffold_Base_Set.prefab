@@ -149,6 +149,7 @@ MonoBehaviour:
   end: {fileID: 989475362634431869}
   direction: {x: 0, y: 0, z: 0}
   speed: 4
+  waitTime: 1
 --- !u!1 &989475363356711734
 GameObject:
   m_ObjectHideFlags: 0

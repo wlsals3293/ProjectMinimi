@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5831746929514153508}
   - component: {fileID: 5831746929514153511}
   - component: {fileID: 6614169464270938533}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Scaffold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,8 +95,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5.6346436, y: 1.4056568, z: 5.5974426}
-  m_Center: {x: -0.018585205, y: 0.64228916, z: 0.000015258789}
+  m_Size: {x: 5.6346436, y: 1.3615513, z: 5.5974426}
+  m_Center: {x: -0.018585205, y: 0.6202364, z: 0.000015258789}
 --- !u!54 &6614169464270938533
 Rigidbody:
   m_ObjectHideFlags: 0
