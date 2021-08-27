@@ -257,7 +257,7 @@ public partial class PlayerController : BaseCharacterController
             
 
         animator.SetBool("Run", isRun);
-        animator.SetBool("Jump", isJumping);
+        animator.SetBool("Jump", !isGrounded);
     }
 
     private void ChangeRotation(Quaternion inTargetRotation, float inChangingTime)
