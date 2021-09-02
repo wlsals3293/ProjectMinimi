@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Girl_Cloak_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 09c29ad3e5583bb41b1a355ba78f77ef, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 0199c0d4db7163b4cab679f07495680e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
