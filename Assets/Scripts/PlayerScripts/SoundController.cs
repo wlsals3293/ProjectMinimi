@@ -12,6 +12,9 @@ public class SoundController : MonoBehaviour
     [SerializeField]
     private AudioClip footstepSound2;
 
+    [SerializeField]
+    private AudioClip landingSound;
+
 
     private void Awake()
     {
@@ -26,5 +29,10 @@ public class SoundController : MonoBehaviour
     public void PlayFootStepSound2()
     {
         audioSource.PlayOneShot(footstepSound2);
+    }
+
+    public void PlayLandingSound()
+    {
+        audioSource.PlayOneShot(landingSound);
     }
 }
