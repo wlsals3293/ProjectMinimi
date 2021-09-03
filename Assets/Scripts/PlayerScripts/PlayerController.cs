@@ -75,6 +75,8 @@ public partial class PlayerController : BaseCharacterController
     private float elapsedHitDisorderTime;
 
 
+
+
     private CapsuleCollider col;
 
     private PlayerAbility playerAbility = null;
@@ -147,6 +149,7 @@ public partial class PlayerController : BaseCharacterController
         col = GetComponent<CapsuleCollider>();
         playerCharacter = GetComponent<PlayerCharacter>();
         playerAbility = GetComponent<PlayerAbility>();
+        
 
         Idle_SetState();
         Hold_SetState();
@@ -349,6 +352,8 @@ public partial class PlayerController : BaseCharacterController
 
         return Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
     }
+
+    
 
     // 임시 랜덤 Idle 구현
     private IEnumerator RandomIdle()

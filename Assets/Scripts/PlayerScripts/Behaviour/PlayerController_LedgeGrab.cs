@@ -13,6 +13,9 @@ public partial class PlayerController : BaseCharacterController
     private Rigidbody grabbedRigidbody;
 
 
+    private bool once = false;
+
+
 
     #region <행동 추가시 디폴트 작업>
     private void LedgeGrab_SetState()
@@ -27,11 +30,15 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_Enter(PlayerState prev)
     {
+        once = false;
+
+        allowVerticalMovement = true;
         movement.velocity = Vector3.zero;
         movement.capsuleCollider.isTrigger = true;
         movement.DisableGroundDetection();
 
         animator.SetBool("LedgeGrab", true);
+        animator.SetBool("LedgeGrabUp", false);
     }
 
     private void LedgeGrab_Update()
@@ -46,23 +53,32 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_Exit(PlayerState next)
     {
+        CachedRigidbody.MovePosition(ledgeUpMovePosition);
+
         grabbedRigidbody = null;
+        allowVerticalMovement = false;
         movement.capsuleCollider.isTrigger = false;
         movement.EnableGroundDetection();
 
         animator.SetBool("LedgeGrab", false);
+        animator.SetBool("LedgeGrabUp", false);
     }
     #endregion
 
     private void LedgeGrab_GetInput()
     {
+        if (once)
+            return;
+
         //TODO 나중에 애니메이션 추가 되면 수정
-        /*if (jump && moveDirection.z > 0f)
+        if (moveDirection.z > 0f)
         {
-            movement.cachedRigidbody.MovePosition(ledgeUpMovePosition);
-            ChangeState(PlayerState.Idle);
-        }*/
-        if (jump && _canJump)
+            Invoke("AnimationDelay", 1.53f);
+            animator.SetBool("LedgeGrabUp", true);
+
+            once = true;
+        }
+        else if (jump && _canJump)
         {
             ChangeState(PlayerState.Idle);
             ExtraJump();
@@ -81,7 +97,7 @@ public partial class PlayerController : BaseCharacterController
         if (RaycastForward(out RaycastHit hit, ledgeDistance, LayerMasks.Ground))
         {
             Vector3 grabForward = Vector3.ProjectOnPlane(-hit.normal, Vector3.up).normalized;
-            Vector3 pos = hit.point + (grabForward * 0.4f) + (transform.up * ledgeHeight);
+            Vector3 pos = hit.point + (grabForward * 0.0999f) + (transform.up * ledgeHeight);
 
 
             // 첫번째 레이가 히트한 위치를 기준으로 위에서 아래로 다시 레이를 쏴 히트했는지 체크
@@ -119,5 +135,10 @@ public partial class PlayerController : BaseCharacterController
             return;
 
         CachedRigidbody.velocity = grabbedRigidbody.GetPointVelocity(CachedRigidbody.position);
+    }
+
+    private void AnimationDelay()
+    {
+        ChangeState(PlayerState.Idle);
     }
 }
