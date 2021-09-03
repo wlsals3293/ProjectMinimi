@@ -7,7 +7,10 @@ public class SoundController : MonoBehaviour
     private AudioSource audioSource = null;
 
     [SerializeField]
-    private AudioClip footstepSound;
+    private AudioClip footstepSound1;
+
+    [SerializeField]
+    private AudioClip footstepSound2;
 
 
     private void Awake()
@@ -15,8 +18,13 @@ public class SoundController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlayFootStepSound()
+    public void PlayFootStepSound1()
     {
-        audioSource.PlayOneShot(footstepSound);
+        audioSource.PlayOneShot(footstepSound1);
+    }
+
+    public void PlayFootStepSound2()
+    {
+        audioSource.PlayOneShot(footstepSound2);
     }
 }
