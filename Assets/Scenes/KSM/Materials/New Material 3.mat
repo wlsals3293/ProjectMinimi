@@ -89,6 +89,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - BendStrength: 0.5
+    - Bend_Strength: 0
+    - NoiseScale: 11
     - _AlphaClip: 1
     - _Blend: 0
     - _BumpScale: 1
@@ -115,7 +118,9 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - speed: 0.1
     m_Colors:
+    - Direction: {r: 0.63, g: 0.39, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
