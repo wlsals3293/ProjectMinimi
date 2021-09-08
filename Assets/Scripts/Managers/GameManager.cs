@@ -50,6 +50,7 @@ public class GameManager : BaseManager<GameManager>
         PlayerManager.Instance.Initialize();
         MinimiManager.Instance.Initialize();
         CameraManager.Instance.Initialize();
+        SoundManager.Instance.Initialize();
     }
 
     public void ToggleESCMenu()

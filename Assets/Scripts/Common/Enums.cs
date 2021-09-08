@@ -71,3 +71,12 @@ public enum PrefabPath
     Camera,
     UI
 }
+
+public enum SoundType
+{
+    BGM,
+    Sfx,
+    PlayerVoice,
+    Environment,
+    UI
+}

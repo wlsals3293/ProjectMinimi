@@ -97,7 +97,7 @@ public partial class PlayerController : BaseCharacterController
         if (RaycastForward(out RaycastHit hit, ledgeDistance, LayerMasks.Ground))
         {
             Vector3 grabForward = Vector3.ProjectOnPlane(-hit.normal, Vector3.up).normalized;
-            Vector3 pos = hit.point + (grabForward * 0.0999f) + (transform.up * ledgeHeight);
+            Vector3 pos = hit.point + (grabForward * 0.2f) + (transform.up * ledgeHeight);
 
 
             // 첫번째 레이가 히트한 위치를 기준으로 위에서 아래로 다시 레이를 쏴 히트했는지 체크

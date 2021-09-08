@@ -776,7 +776,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.01
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -891,9 +891,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c50cc9f960c2940a47efa81f0952cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepSound1: {fileID: 8300000, guid: c5f90e45353d0ab46b2227e439c079b7, type: 3}
-  footstepSound2: {fileID: 8300000, guid: 01337a7fa8506bc44aadc60b0e8b5757, type: 3}
-  landingSound: {fileID: 8300000, guid: 9dac13dc5a5450c4c9114c61395405fa, type: 3}
+  footstepSound1: {fileID: 11400000, guid: 02c138b2e9c8e9647beee2037faf9b07, type: 2}
+  footstepSound2: {fileID: 11400000, guid: bae5306a4177bbb4683981b9d3cf3387, type: 2}
+  landingSound: {fileID: 11400000, guid: cf2f19cea34409645af4ce0293d954e5, type: 2}
 --- !u!1 &1797500414872613289
 GameObject:
   m_ObjectHideFlags: 0
