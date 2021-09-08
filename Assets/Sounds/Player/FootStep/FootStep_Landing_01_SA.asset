@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundType: 1
   audioClip: {fileID: 8300000, guid: 9dac13dc5a5450c4c9114c61395405fa, type: 3}
-  volume: 0.1
+  volume: 0.2
   priority: 120
   loop: 0
   is3d: 1
