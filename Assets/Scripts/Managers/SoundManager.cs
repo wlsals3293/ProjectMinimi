@@ -17,10 +17,11 @@ public class SoundManager : BaseManager<SoundManager>
     [Range(0f, 1f)]
     public float sfxVolume = 1.0f;
 
-
+    [Tooltip("효과음 소스의 개수")]
     [SerializeField]
     [Range(3, 10)]
     private int sourceCount = 5;
+
 
     private AudioSource bgmSource;
 
