@@ -775,7 +775,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -820,7 +820,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -879,7 +879,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1908857416861398415
+--- !u!114 &6858696914082107488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -888,12 +888,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1460630581874274588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6c50cc9f960c2940a47efa81f0952cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fb245f6d3d21a9469c1819f7fa6e822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepSound1: {fileID: 11400000, guid: 02c138b2e9c8e9647beee2037faf9b07, type: 2}
-  footstepSound2: {fileID: 11400000, guid: bae5306a4177bbb4683981b9d3cf3387, type: 2}
-  landingSound: {fileID: 11400000, guid: cf2f19cea34409645af4ce0293d954e5, type: 2}
+  soundAsset:
+  - {fileID: 11400000, guid: 02c138b2e9c8e9647beee2037faf9b07, type: 2}
+  - {fileID: 11400000, guid: bae5306a4177bbb4683981b9d3cf3387, type: 2}
+  - {fileID: 11400000, guid: cf2f19cea34409645af4ce0293d954e5, type: 2}
 --- !u!1 &1797500414872613289
 GameObject:
   m_ObjectHideFlags: 0

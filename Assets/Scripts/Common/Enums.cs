@@ -74,9 +74,9 @@ public enum PrefabPath
 
 public enum SoundType
 {
-    BGM,
+    Music,
     Sfx,
     PlayerVoice,
-    Environment,
+    Ambient,
     UI
 }

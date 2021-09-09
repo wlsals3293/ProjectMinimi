@@ -13,11 +13,6 @@ MonoBehaviour:
   m_Name: FootStep_girl_02_SA
   m_EditorClassIdentifier: 
   soundType: 1
-  audioClip: {fileID: 8300000, guid: 01337a7fa8506bc44aadc60b0e8b5757, type: 3}
-  volume: 0.2
-  priority: 120
+  clip: {fileID: 8300000, guid: 01337a7fa8506bc44aadc60b0e8b5757, type: 3}
   loop: 0
-  is3d: 1
-  spatialBlend: 1
-  minDistance: 1
-  maxDistance: 300
+  volume: 0.15

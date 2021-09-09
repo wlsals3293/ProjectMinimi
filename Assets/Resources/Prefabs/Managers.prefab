@@ -153,3 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f369f403812638e45a6a252b10d0b8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 19a1fdceb6790dd48bf6342094879e84, type: 2}
+  masterVolume: 1
+  bgmVolume: 1
+  sfxVolume: 1
+  startingBgmSA: {fileID: 11400000, guid: fb6f9423cbf02084e9f4726ae481b56e, type: 2}

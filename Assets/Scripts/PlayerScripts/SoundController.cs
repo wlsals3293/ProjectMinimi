@@ -23,21 +23,21 @@ public class SoundController : MonoBehaviour
 
     private void Start()
     {
-        SoundManager.Instance.SourceSetup(footstepSound1, audioSource);
+        //SoundManager.Instance.SourceSetup(footstepSound1, audioSource);
     }
 
     public void PlayFootStepSound1()
     {
-        SoundManager.Instance.Play(footstepSound1, audioSource);
+        //SoundManager.Instance.Play(footstepSound1, audioSource);
     }
 
     public void PlayFootStepSound2()
     {
-        SoundManager.Instance.Play(footstepSound2, audioSource);
+        //SoundManager.Instance.Play(footstepSound2, audioSource);
     }
 
     public void PlayLandingSound()
     {
-        SoundManager.Instance.Play(landingSound, audioSource);
+        //SoundManager.Instance.Play(landingSound, audioSource);
     }
 }

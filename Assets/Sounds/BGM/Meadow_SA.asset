@@ -13,11 +13,6 @@ MonoBehaviour:
   m_Name: Meadow_SA
   m_EditorClassIdentifier: 
   soundType: 0
-  audioClip: {fileID: 8300000, guid: fbeded86756cc934981a609c637e7a39, type: 3}
-  volume: 0.22
-  priority: 100
+  clip: {fileID: 8300000, guid: fbeded86756cc934981a609c637e7a39, type: 3}
   loop: 1
-  is3d: 0
-  spatialBlend: 1
-  minDistance: 1
-  maxDistance: 300
+  volume: 0.11

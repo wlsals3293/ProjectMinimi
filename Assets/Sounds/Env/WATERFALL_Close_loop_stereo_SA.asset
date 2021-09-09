@@ -13,11 +13,6 @@ MonoBehaviour:
   m_Name: WATERFALL_Close_loop_stereo_SA
   m_EditorClassIdentifier: 
   soundType: 3
-  audioClip: {fileID: 8300000, guid: 206a0a9f4c6ba6743bc7fe18f3031edb, type: 3}
-  volume: 1
-  priority: 128
+  clip: {fileID: 8300000, guid: 206a0a9f4c6ba6743bc7fe18f3031edb, type: 3}
   loop: 1
-  is3d: 1
-  spatialBlend: 1
-  minDistance: 1
-  maxDistance: 300
+  volume: 1
