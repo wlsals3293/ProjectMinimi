@@ -74,7 +74,7 @@ public partial class PlayerController : BaseCharacterController
     private bool hitDisordering;
     private float elapsedHitDisorderTime;
 
-
+    private AnimationMovement animMovement;
 
 
     private CapsuleCollider col;
@@ -149,7 +149,7 @@ public partial class PlayerController : BaseCharacterController
         col = GetComponent<CapsuleCollider>();
         playerCharacter = GetComponent<PlayerCharacter>();
         playerAbility = GetComponent<PlayerAbility>();
-        
+        animMovement = new AnimationMovement(CachedRigidbody);
 
         Idle_SetState();
         Hold_SetState();
@@ -256,10 +256,13 @@ public partial class PlayerController : BaseCharacterController
         if (animator == null)
             return;
 
-        bool isRun = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).sqrMagnitude > 9.0f;
+        //bool isRun = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).sqrMagnitude > 9.0f;
+        float speed = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).magnitude;
+
+        animator.SetFloat("MoveSpeed", speed);
             
 
-        animator.SetBool("Run", isRun);
+        //animator.SetBool("Run", isRun);
         animator.SetBool("Jump", !isGrounded);
     }
 

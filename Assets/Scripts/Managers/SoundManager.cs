@@ -9,17 +9,20 @@ public class SoundManager : BaseManager<SoundManager>
     [SerializeField]
     private AudioMixer mixer;
 
-    [Tooltip("Á¾ÇÕ º¼·ý")]
-    [Range(0.0001f, 1f)]
-    public float masterVolume = 1.0f;
+    /// <summary>
+    /// Á¾ÇÕ º¼·ý
+    /// </summary>
+    //private float masterVolume = 1.0f;
 
-    [Tooltip("¹è°æÀ½¾Ç º¼·ý")]
-    [Range(0.0001f, 1f)]
-    public float bgmVolume = 1.0f;
+    /// <summary>
+    /// ¹è°æÀ½¾Ç º¼·ý
+    /// </summary>
+    //private float bgmVolume = 1.0f;
 
-    [Tooltip("È¿°úÀ½ º¼·ý")]
-    [Range(0.0001f, 1f)]
-    public float sfxVolume = 1.0f;
+    /// <summary>
+    /// È¿°úÀ½ º¼·ý
+    /// </summary>
+    //private float sfxVolume = 1.0f;
 
 
     private AudioSource musicSource;

@@ -5,15 +5,16 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
+    [SerializeField]
+    private AnimCurve3 pullUpCurve;
+
+
     private float ledgeDistance;
     private float ledgeHeight;
 
     private Vector3 ledgeUpMovePosition;
 
     private Rigidbody grabbedRigidbody;
-
-
-    private bool once = false;
 
 
 
@@ -30,11 +31,10 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_Enter(PlayerState prev)
     {
-        once = false;
-
         allowVerticalMovement = true;
         movement.velocity = Vector3.zero;
         movement.capsuleCollider.isTrigger = true;
+        movement.capsuleCollider.enabled = false;
         movement.DisableGroundDetection();
 
         animator.SetBool("LedgeGrab", true);
@@ -44,6 +44,14 @@ public partial class PlayerController : BaseCharacterController
     private void LedgeGrab_Update()
     {
         LedgeGrab_GetInput();
+        if (animMovement.active)
+        {
+            if(animMovement.UpdatePosition())
+            {
+                ChangeState(PlayerState.Idle);
+            }
+        }
+            
     }
 
     private void LedgeGrab_FixedUpdate()
@@ -53,11 +61,12 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_Exit(PlayerState next)
     {
-        CachedRigidbody.MovePosition(ledgeUpMovePosition);
+        //CachedRigidbody.MovePosition(ledgeUpMovePosition);
 
         grabbedRigidbody = null;
         allowVerticalMovement = false;
         movement.capsuleCollider.isTrigger = false;
+        movement.capsuleCollider.enabled = true;
         movement.EnableGroundDetection();
 
         animator.SetBool("LedgeGrab", false);
@@ -67,16 +76,14 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_GetInput()
     {
-        if (once)
+        if (animMovement.active)
             return;
 
         //TODO 나중에 애니메이션 추가 되면 수정
         if (moveDirection.z > 0f)
         {
-            Invoke("AnimationDelay", 1.53f);
+            animMovement.StartMovement(transform.position, ledgeUpMovePosition, 1.53f, pullUpCurve);
             animator.SetBool("LedgeGrabUp", true);
-
-            once = true;
         }
         else if (jump && _canJump)
         {
@@ -137,8 +144,5 @@ public partial class PlayerController : BaseCharacterController
         CachedRigidbody.velocity = grabbedRigidbody.GetPointVelocity(CachedRigidbody.position);
     }
 
-    private void AnimationDelay()
-    {
-        ChangeState(PlayerState.Idle);
-    }
+    
 }
