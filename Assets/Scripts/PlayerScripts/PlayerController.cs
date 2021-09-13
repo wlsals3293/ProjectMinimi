@@ -259,18 +259,73 @@ public partial class PlayerController : BaseCharacterController
 
     }
 
+
+    /// <summary>
+    /// Calculate the desired movement velocity.
+    /// Eg: Convert the input (moveDirection) to movement velocity vector,
+    ///     use navmesh agent desired velocity, etc.
+    /// </summary>
+    protected override Vector3 CalcDesiredVelocity()
+    {
+        // If using root motion and root motion is being applied (eg: grounded),
+        // use animation velocity as animation takes full control
+
+        if (useRootMotion && applyRootMotion)
+            return rootMotionController.animVelocity;
+
+        // else, convert input (moveDirection) to velocity vector
+
+        return moveDirection * speed;
+    }
+
+    /// <summary>
+    /// Perform character movement logic.
+    /// 
+    /// NOTE: Must be called in FixedUpdate.
+    /// </summary>
+    protected override void Move()
+    {
+        // Apply movement
+
+        // If using root motion and root motion is being applied (eg: grounded),
+        // move without acceleration / deceleration, let the animation takes full control
+
+        var desiredVelocity = CalcDesiredVelocity();
+
+        if (useRootMotion && applyRootMotion)
+            movement.Move(desiredVelocity, speed, !allowVerticalMovement);
+        else
+        {
+            // Move with acceleration and friction
+
+            var currentFriction = isGrounded ? groundFriction : airFriction;
+            var currentBrakingFriction = useBrakingFriction ? brakingFriction : currentFriction;
+
+            movement.Move(desiredVelocity, speed, acceleration, deceleration, currentFriction,
+                currentBrakingFriction, !allowVerticalMovement);
+        }
+
+        // Jump logic
+
+        Jump();
+        MidAirJump();
+        UpdateJumpTimer();
+
+        // Update root motion state,
+        // should animator root motion be enabled? (eg: is grounded)
+
+        applyRootMotion = useRootMotion && movement.isGrounded;
+    }
+
     protected override void Animate()
     {
         if (animator == null)
             return;
 
-        //bool isRun = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).sqrMagnitude > 9.0f;
         float speed = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).magnitude;
 
         animator.SetFloat("MoveSpeed", speed);
-
-
-        //animator.SetBool("Run", isRun);
+        animator.SetBool("Run", moveDirection.sqrMagnitude > 0f);
         animator.SetBool("Jump", !isGrounded);
     }
 

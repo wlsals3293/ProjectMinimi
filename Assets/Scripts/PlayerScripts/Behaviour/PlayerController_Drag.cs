@@ -24,14 +24,19 @@ public partial class PlayerController : BaseCharacterController
 
     private void Drag_Enter(PlayerState prev)
     {
-        if(wagon != null)
+        if (wagon != null)
         {
             transform.rotation = wagon.rotation;
             Vector3 handle = wagon.Find("PlayerLocation").transform.position;
             transform.position = new Vector3(handle.x, transform.position.y, handle.z);
             dragDir = wagon.transform.forward;
             wagon.parent = this.transform;
+
+            animator.SetTrigger("ToDrag");
+            animator.SetBool("Drag", true);
         }
+        else
+            ChangeState(PlayerState.Idle);
     }
 
     private void Drag_Update()
@@ -56,9 +61,11 @@ public partial class PlayerController : BaseCharacterController
             wagon.transform.parent = null;
 
             wagon = null;
-            
-        }
 
+        }
+        animator.SetBool("Drag", false);
+        animator.SetBool("Push", false);
+        animator.SetBool("Pull", false);
     }
     #endregion
     private void Drag_GetInput()
@@ -66,6 +73,16 @@ public partial class PlayerController : BaseCharacterController
         if (key_interact)
         {
             ChangeState(PlayerState.Idle);
+        }
+
+        if (moveDirectionRaw.z > 0f)
+            animator.SetBool("Push", true);
+        else if (moveDirectionRaw.z < 0f)
+            animator.SetBool("Pull", true);
+        else
+        {
+            animator.SetBool("Push", false);
+            animator.SetBool("Pull", false);
         }
     }
 }
