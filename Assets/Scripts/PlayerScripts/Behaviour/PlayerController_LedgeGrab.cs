@@ -5,6 +5,8 @@ using ECM.Controllers;
 
 public partial class PlayerController : BaseCharacterController
 {
+    [Header("Ledge Grab")]
+
     [SerializeField]
     private AnimCurve3 pullUpCurve;
 

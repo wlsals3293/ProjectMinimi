@@ -26,20 +26,20 @@ public partial class PlayerController : BaseCharacterController
     private void Sliding_SetState()
     {
         PlayerManager.Instance.AddBehaviour(
-            PlayerState.Sliding 
+            PlayerState.Sliding
             , new SimpleBehaviour(Sliding_Enter, Sliding_Update, Sliding_FixedUpdate, Sliding_Exit));
     }
 
     private void Sliding_Enter(PlayerState prev)
     {
-       
+
     }
 
     private void Sliding_Update()
     {
-        UpdateRotationChanging();
+        UpdateRotation(false);
 
-        if(crashSpeedFactor < slidingSpeed)
+        if (crashSpeedFactor < slidingSpeed)
         {
             crashSpeedFactor += 1.0f * Time.deltaTime;
         }
@@ -53,7 +53,7 @@ public partial class PlayerController : BaseCharacterController
     {
         float sideSpeed = moveDirectionRaw.x * slidingSideSpeed;
 
-        Vector3 desiredVelocity = 
+        Vector3 desiredVelocity =
             (slidingForward * slidingSpeed + slidingRight * sideSpeed)
             * crashSpeedFactor;
 

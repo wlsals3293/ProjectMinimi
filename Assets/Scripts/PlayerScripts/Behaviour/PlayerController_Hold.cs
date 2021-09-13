@@ -1,11 +1,20 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using ECM.Common;
 using ECM.Controllers;
+using UnityEngine;
 
 public partial class PlayerController : BaseCharacterController
 {
-    [Header("Behaviour Hold")]
-    [SerializeField] private Transform pivotObjHolding = null;
+    [Header("Hold")]
+
+    [SerializeField]
+    private Transform holdingPivot = null;
+
+
+    [SerializeField]
+    private float holdMoveSpeed = 1f;
+
+    private float savedMoveSpeed;
+
 
     private Transform hold_target = null;
 
@@ -21,17 +30,29 @@ public partial class PlayerController : BaseCharacterController
     {
         if (hold_target != null)
         {
-            hold_target.parent = pivotObjHolding;
-            hold_target.localPosition = Vector3.zero;
-            Rigidbody rig = hold_target.GetComponent<Rigidbody>();
-            if (rig != null)
-                rig.isKinematic = true;
+            Vector3 lookDir = hold_target.position - transform.position;
+            lookDir = Vector3.ProjectOnPlane(lookDir, Vector3.up).normalized;
+            Quaternion qut = Quaternion.LookRotation(lookDir);
+
+            ChangeRotation(qut, 0.2f);
+            BlockControl(0.55f);
+
+            savedMoveSpeed = speed;
+            speed = holdMoveSpeed;
+
+            animator.SetTrigger("Pickup");
+            animator.SetBool("Hold", true);
         }
+        else
+            ChangeState(PlayerState.Idle);
     }
 
     private void Hold_Update()
     {
-        Idle_Update();
+        Hold_GetInput();
+        UpdateRotation();
+        UpdateControlBlock();
+        Animate();
     }
 
     private void Hold_FixedUpdate()
@@ -43,19 +64,61 @@ public partial class PlayerController : BaseCharacterController
     {
         if (hold_target != null)
         {
-            hold_target.parent = null;
-            // TODO : 좌표지정 수정필요
-            Vector3 pos = hold_target.localPosition;
-            //pos.y = 1f;
-            hold_target.localPosition = pos;
-            Rigidbody rig = hold_target.GetComponent<Rigidbody>();
-            if(rig != null)
-                rig.isKinematic = false;
-
-            hold_target = null;
+            BlockControl(0.6f);
+            speed = savedMoveSpeed;
         }
+
+        animator.SetBool("Hold", false);
     }
     #endregion
 
-    
+
+    private void Hold_GetInput()
+    {
+        if (key_interact)
+        {
+            ChangeState(PlayerState.Idle);
+        }
+
+        moveDirection = moveDirection.relativeTo(CameraT);
+    }
+
+    private void HoldObject()
+    {
+        if (hold_target == null)
+            return;
+
+        hold_target.parent = holdingPivot;
+        hold_target.localPosition = Vector3.zero;
+
+        Collider col = hold_target.GetComponent<Collider>();
+        if (col != null)
+        {
+            col.attachedRigidbody.isKinematic = true;
+            col.enabled = false;
+        }
+    }
+
+    private void PutObject()
+    {
+        if (hold_target == null)
+            return;
+
+        hold_target.parent = null;
+
+        Collider col = hold_target.GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = true;
+            col.attachedRigidbody.isKinematic = false;
+
+            Vector3 throwVec = transform.forward;
+            throwVec.y = 3f;
+            throwVec = throwVec * 2f;
+
+            col.attachedRigidbody.velocity = throwVec;
+        }
+
+        hold_target = null;
+    }
 }

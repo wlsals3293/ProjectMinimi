@@ -33,10 +33,6 @@ public partial class PlayerController : BaseCharacterController
     private float hitDisorderTime = 0.6f;
 
 
-    // 현재속도 확인용. 디버그 전용
-    [SerializeField, ReadOnly]
-    private float currentSpeed;
-
     private Vector3 moveDirectionRaw;
 
     private Vector2 rotationInput;
@@ -51,6 +47,10 @@ public partial class PlayerController : BaseCharacterController
 
     [Tooltip("마우스 수직 감도")]
     public float mouseVerticalSensitivity = 3;
+
+
+    [SerializeField]
+    private AnimationEventListener animEventListener = null;
 
 
 
@@ -73,6 +73,13 @@ public partial class PlayerController : BaseCharacterController
 
     private bool hitDisordering;
     private float elapsedHitDisorderTime;
+
+    private bool controlBlock = false;
+    private float controlBlockTime;
+    private float elapsedControlBlockTime;
+
+
+
 
     private AnimationMovement animMovement;
 
@@ -168,6 +175,8 @@ public partial class PlayerController : BaseCharacterController
         killY = StageManager.Instance.GlobalKillY;
         ChangeState(PlayerState.Idle);
         pause = false;
+
+        RegistEvents();
     }
 
     public void ChangeState(PlayerState state)
@@ -192,8 +201,6 @@ public partial class PlayerController : BaseCharacterController
                 ChangeState(PlayerState.Dead);
             }
         }
-
-        currentSpeed = movement.velocity.magnitude;
     }
 
     protected override void FixedUpdate()
@@ -216,19 +223,6 @@ public partial class PlayerController : BaseCharacterController
             GameManager.Instance.ToggleESCMenu();
         }
 
-        // Handle user input
-        if (!hitDisordering)
-            moveDirectionRaw = new Vector3
-            {
-                x = Input.GetAxisRaw("Horizontal"),
-                y = 0.0f,
-                z = Input.GetAxisRaw("Vertical")
-            };
-        else
-            moveDirectionRaw = Vector3.zero;
-
-        moveDirection = moveDirectionRaw;
-
 
         // 마우스 움직임 입력
         rotationInput = new Vector2
@@ -239,6 +233,20 @@ public partial class PlayerController : BaseCharacterController
 
         if (onRotationAxisInput != null)
             onRotationAxisInput(rotationInput.x, rotationInput.y);
+
+
+        // 조작 불가능한 상태면 리턴
+        if (controlBlock)
+            return;
+
+        // Handle user input
+        moveDirectionRaw = new Vector3
+        {
+            x = Input.GetAxisRaw("Horizontal"),
+            y = 0.0f,
+            z = Input.GetAxisRaw("Vertical")
+        };
+        moveDirection = moveDirectionRaw;
 
         // 주기술 (마우스 왼클릭, 오른클릭)
         mainAbilityAction1.Put(Input.GetMouseButton(0));
@@ -260,10 +268,44 @@ public partial class PlayerController : BaseCharacterController
         float speed = Vector3.ProjectOnPlane(movement.velocity, Vector3.up).magnitude;
 
         animator.SetFloat("MoveSpeed", speed);
-            
+
 
         //animator.SetBool("Run", isRun);
         animator.SetBool("Jump", !isGrounded);
+    }
+
+    protected virtual void UpdateRotation(bool rotateTowards = true)
+    {
+        if (rotationChanging)
+        {
+            elapsedChangingTime += Time.deltaTime;
+
+            if (elapsedChangingTime <= changingTime)
+            {
+                movement.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedChangingTime / changingTime);
+            }
+            else
+            {
+                elapsedChangingTime = 0.0f;
+
+                rotationChanging = false;
+            }
+        }
+        else if (rotateTowards)
+        {
+            if (useRootMotion && applyRootMotion && useRootMotionRotation)
+            {
+                // Use animation rotation to rotate our character
+
+                movement.rotation *= animator.deltaRotation;
+            }
+            else
+            {
+                // Rotate towards movement direction (input)
+
+                RotateTowardsMoveDirection();
+            }
+        }
     }
 
     private void ChangeRotation(Quaternion inTargetRotation, float inChangingTime)
@@ -274,29 +316,40 @@ public partial class PlayerController : BaseCharacterController
         elapsedChangingTime = 0.0f;
         changingTime = inChangingTime;
         rotationChanging = true;
-
     }
 
-    private void UpdateRotationChanging()
+    private void BlockControl(float time)
     {
-        if (!rotationChanging)
-        {
+        controlBlock = true;
+        elapsedControlBlockTime = 0f;
+        controlBlockTime = time;
+
+
+        moveDirectionRaw = Vector3.zero;
+        moveDirection = moveDirectionRaw;
+
+        mainAbilityAction1.Put(false);
+        mainAbilityAction2.Put(false);
+
+        jump = false;
+        key_interact = false;
+        key_f = false;
+        key_alpha1 = false;
+    }
+
+    private void UpdateControlBlock()
+    {
+        if (!controlBlock)
             return;
-        }
 
-        elapsedChangingTime += Time.deltaTime;
+        elapsedControlBlockTime += Time.deltaTime;
 
-        if (elapsedChangingTime <= changingTime)
+        if (elapsedControlBlockTime >= controlBlockTime)
         {
-            movement.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedChangingTime / changingTime);
-        }
-        else
-        {
-            elapsedChangingTime = 0.0f;
-
-            rotationChanging = false;
+            controlBlock = false;
         }
     }
+
 
     /// <summary>
     /// 피격이상을 발동합니다. 피격이상이 활성화된 동안은 캐릭터에 이동조작이 먹히지 않습니다.
@@ -334,6 +387,17 @@ public partial class PlayerController : BaseCharacterController
         }
     }
 
+    private void RegistEvents()
+    {
+        if(animEventListener == null)
+        {
+            return;
+        }
+
+        animEventListener.OnEventEmitted[0] = HoldObject;
+        animEventListener.OnEventEmitted[1] = PutObject;
+    }
+
     private RaycastHit Raycast(float distance)
     {
         RaycastHit hit;
@@ -356,7 +420,7 @@ public partial class PlayerController : BaseCharacterController
         return Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
     }
 
-    
+
 
     // 임시 랜덤 Idle 구현
     private IEnumerator RandomIdle()

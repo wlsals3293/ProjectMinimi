@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using ECM.Controllers;
 using ECM.Common;
+using ECM.Controllers;
+using UnityEngine;
 
 public partial class PlayerController : BaseCharacterController
 {
@@ -31,6 +28,7 @@ public partial class PlayerController : BaseCharacterController
     {
         Idle_GetInput();
         UpdateRotation();
+        UpdateControlBlock();
         Animate();
 
         if (playerAbility != null)
@@ -134,12 +132,10 @@ public partial class PlayerController : BaseCharacterController
 
         if (layer == Layers.Minimi)
         {
-            //Debug.Log("Did Hit Minimi");
             return InteractType.Block;
         }
         else if (layer == Layers.Obj)
         {
-            //Debug.Log("Did Hit Obejct");
             if (fsm.CurState == PlayerState.Idle && hit.collider.CompareTag(Tags.Object))
             {
                 hold_target = hit.transform;
@@ -153,12 +149,6 @@ public partial class PlayerController : BaseCharacterController
 
                 return InteractType.Wagon;
             }
-        }
-
-        if (fsm.CurState == PlayerState.Hold && hold_target != null)
-        {
-            // OnOff Hold
-            return InteractType.Hold;
         }
 
         return InteractType.None;
@@ -179,8 +169,6 @@ public partial class PlayerController : BaseCharacterController
     }
     private void Interact_Action_Block(RaycastHit hit)
     {
-        // TODO : 임시함수 매니져를 통해 함수호출로 변경 or state로 빼기
-        //hit.collider.SendMessage(MinimiController.SEND_SETPIVOT, trans);
         climbFaceNormal = hit.normal;
         ChangeState(PlayerState.Climb);
     }
