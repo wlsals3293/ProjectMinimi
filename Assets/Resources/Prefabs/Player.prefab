@@ -1529,9 +1529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edda8bfb4c748cc40a2ef9e6fc47d478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 6
   _angularSpeed: 540
-  _acceleration: 40
+  _acceleration: 28
   _deceleration: 40
   _groundFriction: 8
   _useBrakingFriction: 0
