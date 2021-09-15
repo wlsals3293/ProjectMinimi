@@ -331,8 +331,6 @@ public partial class PlayerController : BaseCharacterController
         applyRootMotion = useRootMotion && movement.isGrounded;
     }
 
-
-
     protected override void Animate()
     {
         if (animator == null)
@@ -389,6 +387,10 @@ public partial class PlayerController : BaseCharacterController
         rotationChanging = true;
     }
 
+    /// <summary>
+    /// 플레이어의 조작을 일정 시간동안 막습니다.
+    /// </summary>
+    /// <param name="time">막을 시간</param>
     private void BlockControl(float time)
     {
         controlBlock = true;
@@ -511,18 +513,17 @@ public partial class PlayerController : BaseCharacterController
 
     private void NoclipMove()
     {
-
-        float noclipSpeed = 45.0f;
+        float noclipSpeed = speed * 6f;
 
         Vector3 desiredVelocity = moveDirection * noclipSpeed;
 
         if (Input.GetKey(KeyCode.Space))
         {
-            desiredVelocity.y = 10f;
+            desiredVelocity.y += 10f;
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
-            desiredVelocity.y = -10f;
+            desiredVelocity.y -= 10f;
         }
 
 

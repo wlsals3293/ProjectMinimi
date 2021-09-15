@@ -8,15 +8,19 @@ public class DebugController : MonoBehaviour
 
     private bool showConsole;
     private bool showHelp;
+    private bool firstFocus;
 
     private string input;
 
 
     public DebugCommand HELP;
+
+    public DebugCommand<int> GOTO;
     public DebugCommand HEAL;
     public DebugCommand MUTE;
     public DebugCommand NOCLIP;
-    public DebugCommand<int> GOTO;
+    public DebugCommand TOGGLEHUD;
+
 
     public List<object> commandList;
 
@@ -36,6 +40,11 @@ public class DebugController : MonoBehaviour
             showHelp = true;
         });
 
+        GOTO = new DebugCommand<int>("goto", "지정한 번호의 체크포인트로 이동합니다.", "goto <index>", (x) =>
+        {
+            PlayerManager.Instance.MovePlayer(x);
+        });
+
         HEAL = new DebugCommand("heal", "현재 체력을 최대로 채웁니다.", "heal", () =>
         {
             PlayerManager.Instance.PlayerChar.SetHP(PlayerManager.Instance.PlayerChar.MaxHP);
@@ -51,24 +60,31 @@ public class DebugController : MonoBehaviour
             PlayerManager.Instance.PlayerCtrl.Noclip();
         });
 
-        GOTO = new DebugCommand<int>("goto", "지정한 번호의 체크포인트로 이동합니다.", "goto <index>", (x) =>
+        TOGGLEHUD = new DebugCommand("togglehud", "HUD의 가시성을 바꿉니다.", "togglehud", () =>
         {
-            PlayerManager.Instance.MovePlayer(x);
+            UIManager.Instance.ToggleHUD();
         });
+
 
         commandList = new List<object>
         {
             HELP,
+            GOTO,
             HEAL,
             MUTE,
             NOCLIP,
-            GOTO
+            TOGGLEHUD
         };
     }
 
     public void OnToggleDebug()
     {
         showConsole = !showConsole;
+
+        if (showConsole)
+        {
+            firstFocus = true;
+        }
     }
 
     public void OnReturn()
@@ -86,7 +102,7 @@ public class DebugController : MonoBehaviour
 
         float y = 0f;
 
-        if(showHelp)
+        if (showHelp)
         {
             GUI.Box(new Rect(0, y, Screen.width, 100), "");
 
@@ -94,7 +110,7 @@ public class DebugController : MonoBehaviour
 
             scroll = GUI.BeginScrollView(new Rect(0, y + 5, Screen.width, 90), scroll, viewport);
 
-            for(int i=0;i<commandList.Count;i++)
+            for (int i = 0; i < commandList.Count; i++)
             {
                 DebugCommandBase command = commandList[i] as DebugCommandBase;
 
@@ -111,10 +127,17 @@ public class DebugController : MonoBehaviour
             y += 100;
         }
 
+
         GUI.Box(new Rect(0, y, Screen.width, 30), "");
         GUI.backgroundColor = new Color(0, 0, 0, 0);
+        GUI.SetNextControlName("CommandBox");
         input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 20f), input);
-
+        if (firstFocus)
+        {
+            GUI.FocusControl("CommandBox");
+            firstFocus = false;
+        }
+            
 
         Event e = Event.current;
         if (e.keyCode == KeyCode.Return)

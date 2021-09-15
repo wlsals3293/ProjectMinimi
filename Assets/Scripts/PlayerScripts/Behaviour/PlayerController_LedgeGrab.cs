@@ -14,7 +14,6 @@ public partial class PlayerController : BaseCharacterController
     private float ledgeDistance;
     private float ledgeHeight;
 
-    private Vector3 ledgeUpMovePosition;
 
     private Rigidbody grabbedRigidbody;
 
@@ -48,12 +47,11 @@ public partial class PlayerController : BaseCharacterController
         LedgeGrab_GetInput();
         if (animMovement.active)
         {
-            if(animMovement.UpdatePosition())
+            if (animMovement.UpdatePosition())
             {
                 ChangeState(PlayerState.Idle);
             }
         }
-            
     }
 
     private void LedgeGrab_FixedUpdate()
@@ -84,7 +82,8 @@ public partial class PlayerController : BaseCharacterController
         //TODO 나중에 애니메이션 추가 되면 수정
         if (moveDirection.z > 0f)
         {
-            animMovement.StartMovement(transform.position, ledgeUpMovePosition, 1.53f, pullUpCurve);
+            Vector3 endPos = transform.position + transform.forward * (col.radius + 0.21f) + transform.up * 1.1f;
+            animMovement.StartMovement(transform.position, endPos, 1.53f, pullUpCurve);
             animator.SetBool("LedgeGrabUp", true);
         }
         else if (jump && _canJump)
@@ -118,8 +117,6 @@ public partial class PlayerController : BaseCharacterController
                 if (dot < 0.7f)
                     return;
 
-
-                ledgeUpMovePosition = hit2.point;   // 올라가는 애니메이션 후 있을 위치 (임시)
 
                 grabbedRigidbody = hit2.rigidbody;
 
