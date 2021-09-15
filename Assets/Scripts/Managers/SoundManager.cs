@@ -138,6 +138,11 @@ public class SoundManager : BaseManager<SoundManager>
         provider.Source.PlayOneShot(sound.clip, sound.volume);
     }
 
+    public void Mute()
+    {
+        mixer.SetFloat("MasterVolume", -80f);
+    }
+
 
     private void InitialzeSources()
     {

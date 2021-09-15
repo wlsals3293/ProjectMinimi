@@ -80,6 +80,9 @@ public partial class PlayerController : BaseCharacterController
 
 
 
+    private bool noclipEnable = false;
+
+
 
     private AnimationMovement animMovement;
 
@@ -223,6 +226,11 @@ public partial class PlayerController : BaseCharacterController
             GameManager.Instance.ToggleESCMenu();
         }
 
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            DebugController.Instance.OnToggleDebug();
+        }
+
 
         // 마우스 움직임 입력
         rotationInput = new Vector2
@@ -285,6 +293,12 @@ public partial class PlayerController : BaseCharacterController
     /// </summary>
     protected override void Move()
     {
+        if (noclipEnable)
+        {
+            NoclipMove();
+            return;
+        }
+
         // Apply movement
 
         // If using root motion and root motion is being applied (eg: grounded),
@@ -316,6 +330,8 @@ public partial class PlayerController : BaseCharacterController
 
         applyRootMotion = useRootMotion && movement.isGrounded;
     }
+
+
 
     protected override void Animate()
     {
@@ -444,7 +460,7 @@ public partial class PlayerController : BaseCharacterController
 
     private void RegistEvents()
     {
-        if(animEventListener == null)
+        if (animEventListener == null)
         {
             return;
         }
@@ -475,6 +491,44 @@ public partial class PlayerController : BaseCharacterController
         return Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
     }
 
+
+    public void Noclip()
+    {
+        noclipEnable = !noclipEnable;
+
+        if (noclipEnable)
+        {
+            movement.DisableGroundDetection();
+            CachedRigidbody.velocity = Vector3.zero;
+            col.enabled = false;
+        }
+        else
+        {
+            col.enabled = true;
+            movement.EnableGroundDetection();
+        }
+    }
+
+    private void NoclipMove()
+    {
+
+        float noclipSpeed = 45.0f;
+
+        Vector3 desiredVelocity = moveDirection * noclipSpeed;
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            desiredVelocity.y = 10f;
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            desiredVelocity.y = -10f;
+        }
+
+
+        CachedRigidbody.velocity = desiredVelocity;
+
+    }
 
 
     // 임시 랜덤 Idle 구현

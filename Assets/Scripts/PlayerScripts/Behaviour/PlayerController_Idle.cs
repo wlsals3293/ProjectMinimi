@@ -99,7 +99,7 @@ public partial class PlayerController : BaseCharacterController
             MinimiManager.Instance.UninstallMinimi();
         }*/
 
-        moveDirection = moveDirection.relativeTo(CameraT);
+        moveDirection = moveDirection.relativeTo(CameraT, !noclipEnable);
     }
 
     public void Interact_Action(RaycastHit hit, InteractType keyType)

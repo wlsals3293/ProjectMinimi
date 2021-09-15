@@ -45,6 +45,17 @@ public class PlayerManager : BaseManager<PlayerManager>
         PlayerChar.SetHP(playerChar.MaxHP);
     }
 
+    public bool MovePlayer(int checkpointIndex)
+    {
+        Transform checkpoint = StageManager.Instance.GetCheckpoint(checkpointIndex);
+
+        if (checkpoint == null)
+            return false;
+
+        playerCtrl.transform.SetPositionAndRotation(checkpoint.position, checkpoint.rotation);
+        return true;
+    }
+
     public void AddBehaviour(PlayerState state, SimpleBehaviour behaviour)
     {
         if(playerBehaviours.ContainsKey(state))

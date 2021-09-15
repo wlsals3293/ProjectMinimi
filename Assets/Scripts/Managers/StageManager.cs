@@ -103,4 +103,14 @@ public class StageManager : BaseManager<StageManager>
 
         return checkpoints[currentCheckpoint].transform;
     }
+
+    public Transform GetCheckpoint(int index)
+    {
+        if(checkpoints == null || index < 0 || index >= checkpoints.Count)
+        {
+            return null;
+        }
+
+        return checkpoints[index].transform;
+    }
 }
