@@ -75,7 +75,7 @@ public class UIManager : BaseManager<UIManager>
         }
 
         // 로딩스크린 확인
-        if(loadingScreen == null)
+        if (loadingScreen == null)
         {
             loadingScreen = ResourceManager.Instance.CreatePrefab<UI_LoadingScreen>("Panel_LoadingScreen", mainCanvas, PrefabPath.UI, false);
         }
@@ -98,6 +98,16 @@ public class UIManager : BaseManager<UIManager>
         hud.Init();
     }
 
+    /// <summary>
+    /// HUD의 가시성을 바꿉니다.
+    /// </summary>
+    public void ToggleHUD()
+    {
+        if (hud.gameObject.activeSelf)
+            hud.gameObject.SetActive(false);
+        else
+            hud.gameObject.SetActive(true);
+    }
 
     public void StartTransition()
     {

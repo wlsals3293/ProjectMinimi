@@ -42,6 +42,7 @@ public partial class PlayerController : BaseCharacterController
     private void Drag_Update()
     {
         Drag_GetInput();
+        Drag_Animate();
     }
 
     private void Drag_FixedUpdate()
@@ -59,22 +60,22 @@ public partial class PlayerController : BaseCharacterController
         if (wagon != null)
         {
             wagon.transform.parent = null;
-
             wagon = null;
-
         }
         animator.SetBool("Drag", false);
         animator.SetBool("Push", false);
         animator.SetBool("Pull", false);
     }
     #endregion
+
     private void Drag_GetInput()
     {
         if (key_interact)
-        {
             ChangeState(PlayerState.Idle);
-        }
+    }
 
+    private void Drag_Animate()
+    {
         if (moveDirectionRaw.z > 0f)
             animator.SetBool("Push", true);
         else if (moveDirectionRaw.z < 0f)

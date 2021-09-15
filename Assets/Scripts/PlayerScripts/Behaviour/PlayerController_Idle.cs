@@ -115,7 +115,7 @@ public partial class PlayerController : BaseCharacterController
                 Interact_Action_Hold();
                 break;
             case InteractType.Wagon:
-                Interact_Action_Drag();
+                fsm.ChangeState(PlayerState.Drag);
                 break;
         
         }
@@ -171,19 +171,6 @@ public partial class PlayerController : BaseCharacterController
     {
         climbFaceNormal = hit.normal;
         ChangeState(PlayerState.Climb);
-    }
-
-    private void Interact_Action_Drag()
-    {
-        switch (fsm.CurState)
-        {
-            case PlayerState.Idle:
-                fsm.ChangeState(PlayerState.Drag);
-                break;
-            case PlayerState.Drag:
-                fsm.ChangeState(PlayerState.Idle);
-                break;
-        }
     }
 
     public void DrawLineRaycatAllways(float distance = 0f)
