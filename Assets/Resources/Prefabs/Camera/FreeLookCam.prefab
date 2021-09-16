@@ -143,3 +143,8 @@ MonoBehaviour:
   useRotation: 1
   smoothRotation: 1
   rotationDamping: 0.05
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 128
+  collisionRadius: 0.2
+  minDistance: 1

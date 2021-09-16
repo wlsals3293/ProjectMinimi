@@ -93,6 +93,22 @@ public class FreeLookCamController : CameraController
 
 
 
+    [Header("Collision")]
+
+    [Tooltip("충돌체크할 레이어")]
+    [SerializeField]
+    private LayerMask collisionMask = 1;
+
+    [Tooltip("카메라의 반경")]
+    [SerializeField]
+    private float collisionRadius = 0.2f;
+
+    [Tooltip("카메라가 최대로 가까워질 수 있는 거리")]
+    [SerializeField]
+    private float minDistance = 1f;
+
+
+
     public Transform Target { get => target; set => target = value; }
 
     public bool UseRotation { get => useRotation; set => useRotation = value; }
@@ -110,7 +126,7 @@ public class FreeLookCamController : CameraController
     }
 
     /// <summary>
-    /// 이전 카메라의 회전값을 받아 적용합니다
+    /// 카메라가 변경될 때 이전 카메라의 회전값을 받아 적용합니다
     /// </summary>
     /// <param name="rotation"></param>
     public override void ApplyPreMovement(Quaternion rotation)
@@ -195,7 +211,7 @@ public class FreeLookCamController : CameraController
             Vector3 deadZoneH = targetPosition - adjustedPosition;
             deadZoneH.y = 0.0f;
 
-            if(deadZoneH.magnitude > deadZoneHorizontal)
+            if (deadZoneH.magnitude > deadZoneHorizontal)
             {
                 targetPosition = adjustedPosition + (deadZoneH.normalized * deadZoneHorizontal);
             }
@@ -207,9 +223,22 @@ public class FreeLookCamController : CameraController
         }
     }
 
-    private void AvoidObstacle()
+    /// <summary>
+    /// 카메라가 충돌하는 거리를 구합니다.
+    /// </summary>
+    /// <param name="distance">카메라가 목표물로부터 떨어진 거리</param>
+    /// <returns>카메라가 충돌한 거리</returns>
+    private float GetCollisionDistance(float distance)
     {
+        Ray ray = new Ray(targetPosition, currentRotation * -Vector3.forward);
+        RaycastHit hit;
 
+        if (Physics.SphereCast(ray, collisionRadius, out hit, distance, collisionMask))
+        {
+            return Mathf.Max(hit.distance, minDistance);
+        }
+
+        return distance;
     }
 
     /// <summary>
@@ -217,7 +246,8 @@ public class FreeLookCamController : CameraController
     /// </summary>
     protected override void ApplyFinalChanges()
     {
-        Vector3 cameraDistanceVector = currentRotation * -Vector3.forward * cameraDistance;
+        Vector3 cameraDistanceVector =
+            currentRotation * -Vector3.forward * GetCollisionDistance(cameraDistance);
         Vector3 finalPosition = targetPosition + cameraDistanceVector;
 
         transform.SetPositionAndRotation(finalPosition, currentRotation);
