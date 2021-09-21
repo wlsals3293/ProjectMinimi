@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 애니메이션 커브 수정용 테스트 객체. 런타임에는 포함 안될것
+/// </summary>
 public class AnimationTest : MonoBehaviour
 {
 

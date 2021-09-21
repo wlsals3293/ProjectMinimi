@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Girl_Ribon_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 09c29ad3e5583bb41b1a355ba78f77ef, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 0199c0d4db7163b4cab679f07495680e, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -32,6 +32,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - AlphaMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - BaseMap:
         m_Texture: {fileID: 2800000, guid: 1fadf1e0f23a8be47af6bec811fbea3c, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -98,6 +102,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - BendStrength: 0.05
+    - Distortion: 1
+    - NoiseScale: 11
+    - Power: 2.8
+    - Scale: 1
+    - SideShineFactor: 1
+    - Speed: 0.03
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -127,6 +138,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Direction: {r: -0.23, g: 0.25, b: 0, a: 0}
+    - SSSColor: {r: 0.7529412, g: 0.8862745, b: 0.01960784, a: 1}
+    - Transmission: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

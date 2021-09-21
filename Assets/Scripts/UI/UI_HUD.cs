@@ -29,6 +29,7 @@ public class UI_HUD : MonoBehaviour
     public void Init()
     {
         VisibleCrossHair(false);
+        PlayerManager.Instance.PlayerChar.onHpChanged += SetLife;
     }
 
     public void VisibleCrossHair(bool isVisible)

@@ -48,6 +48,16 @@ public class StageManager : BaseManager<StageManager>
         SceneManager.Instance.ReloadScene();
     }
 
+    /// <summary>
+    /// 스테이지 끝내기
+    /// </summary>
+    public void EndStage()
+    {
+        Debug.Log("Stage End");
+        PlayerManager.Instance.PlayerCtrl.pause = true;
+        UIManager.Instance.OpenView(UIManager.EUIView.StageEnd);
+    }
+
     public void Initialize()
     {
         // 스테이지 정보 체크
@@ -89,8 +99,6 @@ public class StageManager : BaseManager<StageManager>
             return;
 
         currentCheckpoint = index;
-
-        MinimiManager.Instance.UnInstallAllMinimis();
 
         Debug.Log($"체크포인트 업데이트. index:{index}");
     }

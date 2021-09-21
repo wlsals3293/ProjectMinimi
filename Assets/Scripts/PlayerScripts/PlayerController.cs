@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ECM.Controllers;
 
@@ -55,8 +54,6 @@ public partial class PlayerController : BaseCharacterController
 
 
     private KeyInfo mainAbilityAction1;
-
-
     private KeyInfo mainAbilityAction2;
 
 
@@ -65,18 +62,21 @@ public partial class PlayerController : BaseCharacterController
     private bool key_f;         // F
 
 
+    // 부드러운 캐릭터 회전
     private bool rotationChanging;
     private Quaternion startRotation;
     private Quaternion targetRotation;
     private float elapsedChangingTime;
     private float changingTime;
 
+    // 피격이상
     private bool hitDisordering;
     private float elapsedHitDisorderTime;
 
-    private bool controlBlock = false;
-    private float controlBlockTime;
-    private float elapsedControlBlockTime;
+    // 캐릭터 제어 일시 제한
+    private bool controlStop = false;
+    private float controlStopTime;
+    private float elapsedControlStopTime;
 
 
 
@@ -239,12 +239,11 @@ public partial class PlayerController : BaseCharacterController
             y = Input.GetAxis("Mouse Y") * mouseVerticalSensitivity
         };
 
-        if (onRotationAxisInput != null)
-            onRotationAxisInput(rotationInput.x, rotationInput.y);
+        onRotationAxisInput?.Invoke(rotationInput.x, rotationInput.y);
 
 
         // 조작 불가능한 상태면 리턴
-        if (controlBlock)
+        if (controlStop)
             return;
 
         // Handle user input
@@ -391,11 +390,11 @@ public partial class PlayerController : BaseCharacterController
     /// 플레이어의 조작을 일정 시간동안 막습니다.
     /// </summary>
     /// <param name="time">막을 시간</param>
-    private void BlockControl(float time)
+    private void StopControl(float time)
     {
-        controlBlock = true;
-        elapsedControlBlockTime = 0f;
-        controlBlockTime = time;
+        controlStop = true;
+        elapsedControlStopTime = 0f;
+        controlStopTime = time;
 
 
         moveDirectionRaw = Vector3.zero;
@@ -412,14 +411,14 @@ public partial class PlayerController : BaseCharacterController
 
     private void UpdateControlBlock()
     {
-        if (!controlBlock)
+        if (!controlStop)
             return;
 
-        elapsedControlBlockTime += Time.deltaTime;
+        elapsedControlStopTime += Time.deltaTime;
 
-        if (elapsedControlBlockTime >= controlBlockTime)
+        if (elapsedControlStopTime >= controlStopTime)
         {
-            controlBlock = false;
+            controlStop = false;
         }
     }
 

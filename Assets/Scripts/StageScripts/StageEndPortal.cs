@@ -8,17 +8,7 @@ public class StageEndPortal : MonoBehaviour
     {
         if (other.gameObject.layer == Layers.Player)
         {
-            Debug.LogError("End");
-            StageEndProcess();
+            StageManager.Instance.EndStage();
         }
     }
-
-
-    private void StageEndProcess()
-    {
-        PlayerManager.Instance.PlayerCtrl.pause = true;
-        UIManager.Instance.OpenView(UIManager.EUIView.StageEnd);
-    }
-
-   
 }

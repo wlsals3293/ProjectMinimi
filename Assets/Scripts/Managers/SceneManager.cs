@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityScene = UnityEngine.SceneManagement;
 
 
@@ -17,8 +18,7 @@ public class SceneManager : BaseManager<SceneManager>
     private bool isLoading = false;
 
 
-    public delegate void LoadCompleteDelegate();
-    public LoadCompleteDelegate onLoadComplete;
+    public UnityAction onLoadComplete;
 
 
     protected override void Awake()
@@ -68,8 +68,7 @@ public class SceneManager : BaseManager<SceneManager>
         isLoading = false;
         Debug.Log("로딩 완료!");
 
-        if (onLoadComplete != null)
-            onLoadComplete();
+        onLoadComplete?.Invoke();
     }
 
     private IEnumerator UnloadSceneAsync(string sceneName)

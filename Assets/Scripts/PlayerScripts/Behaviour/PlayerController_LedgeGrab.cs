@@ -7,6 +7,7 @@ public partial class PlayerController : BaseCharacterController
 {
     [Header("Ledge Grab")]
 
+    [Tooltip("기어올라가기 애니메이션 커브")]
     [SerializeField]
     private AnimCurve3 pullUpCurve;
 
@@ -14,7 +15,9 @@ public partial class PlayerController : BaseCharacterController
     private float ledgeDistance;
     private float ledgeHeight;
 
-
+    /// <summary>
+    /// 잡고있는 물체(플랫폼같은 움직이는 물체)의 리지드바디
+    /// </summary>
     private Rigidbody grabbedRigidbody;
 
 
@@ -34,7 +37,6 @@ public partial class PlayerController : BaseCharacterController
     {
         allowVerticalMovement = true;
         movement.velocity = Vector3.zero;
-        movement.capsuleCollider.isTrigger = true;
         movement.capsuleCollider.enabled = false;
         movement.DisableGroundDetection();
 
@@ -45,7 +47,7 @@ public partial class PlayerController : BaseCharacterController
     private void LedgeGrab_Update()
     {
         LedgeGrab_GetInput();
-        if (animMovement.active)
+        if (animMovement.IsActive)
         {
             if (animMovement.UpdatePosition())
             {
@@ -61,11 +63,8 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_Exit(PlayerState next)
     {
-        //CachedRigidbody.MovePosition(ledgeUpMovePosition);
-
         grabbedRigidbody = null;
         allowVerticalMovement = false;
-        movement.capsuleCollider.isTrigger = false;
         movement.capsuleCollider.enabled = true;
         movement.EnableGroundDetection();
 
@@ -76,10 +75,9 @@ public partial class PlayerController : BaseCharacterController
 
     private void LedgeGrab_GetInput()
     {
-        if (animMovement.active)
+        if (animMovement.IsActive)
             return;
 
-        //TODO 나중에 애니메이션 추가 되면 수정
         if (moveDirection.z > 0f)
         {
             Vector3 endPos = transform.position + transform.forward * (col.radius + 0.21f) + transform.up * 1.1f;
@@ -134,7 +132,6 @@ public partial class PlayerController : BaseCharacterController
         }
     }
 
-
     private void ApplyPlatformMovement()
     {
         if (grabbedRigidbody == null)
@@ -143,5 +140,4 @@ public partial class PlayerController : BaseCharacterController
         CachedRigidbody.velocity = grabbedRigidbody.GetPointVelocity(CachedRigidbody.position);
     }
 
-    
 }

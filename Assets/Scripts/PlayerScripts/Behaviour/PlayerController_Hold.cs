@@ -35,7 +35,7 @@ public partial class PlayerController : BaseCharacterController
             Quaternion qut = Quaternion.LookRotation(lookDir);
 
             ChangeRotation(qut, 0.2f);
-            BlockControl(0.55f);
+            StopControl(0.55f);
 
             savedMoveSpeed = speed;
             speed = holdMoveSpeed;
@@ -64,7 +64,7 @@ public partial class PlayerController : BaseCharacterController
     {
         if (hold_target != null)
         {
-            BlockControl(0.6f);
+            StopControl(0.6f);
             speed = savedMoveSpeed;
         }
 

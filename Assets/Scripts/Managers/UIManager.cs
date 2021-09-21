@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UIManager : BaseManager<UIManager>
 {
@@ -24,10 +25,8 @@ public class UIManager : BaseManager<UIManager>
     private UI_HUD hud = null;
 
 
-    public delegate void TransitionDelegate();
-
-    public TransitionDelegate onScreenCoverComplete;
-    public TransitionDelegate onScreenRevealComplete;
+    public UnityAction onScreenCoverComplete;
+    public UnityAction onScreenRevealComplete;
 
 
     public UI_HUD HUD

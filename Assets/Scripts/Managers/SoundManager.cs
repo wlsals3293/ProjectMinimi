@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class SoundManager : BaseManager<SoundManager>
 {
@@ -45,10 +44,8 @@ public class SoundManager : BaseManager<SoundManager>
     //private LinkedList<SoundProvider> providers = new LinkedList<SoundProvider>();
 
 
-    public delegate void VolumeChangeDelegate(float volume);
-
-    public VolumeChangeDelegate onBgmVolumeChanged;
-    public VolumeChangeDelegate onSfxVolumeChanged;
+    public UnityAction<float> onBgmVolumeChanged;
+    public UnityAction<float> onSfxVolumeChanged;
 
 
 

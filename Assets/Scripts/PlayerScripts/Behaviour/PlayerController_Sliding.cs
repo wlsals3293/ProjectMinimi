@@ -8,10 +8,17 @@ public partial class PlayerController : BaseCharacterController
 {
     [Header("Sliding")]
 
-    [SerializeField] private float slidingSpeed = 20.0f;
+    [Tooltip("슬라이딩 속도")]
+    [SerializeField]
+    private float slidingSpeed = 20.0f;
 
-    [SerializeField] private float slidingSideSpeed = 15.0f;
+    [Tooltip("좌우 슬라이딩 속도")]
+    [SerializeField]
+    private float slidingSideSpeed = 15.0f;
 
+    /// <summary>
+    /// 다른 상태에서 슬라이딩으로 전환되는 시간
+    /// </summary>
     private float slidingEnterTime = 0.2f;
 
     private float crashSpeedFactor = 1.0f;
@@ -54,10 +61,10 @@ public partial class PlayerController : BaseCharacterController
         float sideSpeed = moveDirectionRaw.x * slidingSideSpeed;
 
         Vector3 desiredVelocity =
-            (slidingForward * slidingSpeed + slidingRight * sideSpeed)
-            * crashSpeedFactor;
+            (slidingForward * slidingSpeed + slidingRight * sideSpeed) * crashSpeedFactor;
 
-        movement.Move(desiredVelocity, slidingSpeed + Mathf.Abs(sideSpeed), true);
+        movement.Move(desiredVelocity, slidingSpeed + Mathf.Abs(sideSpeed), acceleration,
+            deceleration, groundFriction, groundFriction, !allowVerticalMovement);
 
         Jump();
     }

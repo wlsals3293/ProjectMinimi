@@ -8,9 +8,9 @@ public partial class PlayerController : BaseCharacterController
 {
     public float dragSpeed = 3.0f;
 
-    Transform wagon = null;
+    private Transform dragObject = null;
 
-    Vector3 dragDir = Vector3.zero;
+    private Vector3 dragDir = Vector3.zero;
 
 
 
@@ -24,13 +24,13 @@ public partial class PlayerController : BaseCharacterController
 
     private void Drag_Enter(PlayerState prev)
     {
-        if (wagon != null)
+        if (dragObject != null)
         {
-            transform.rotation = wagon.rotation;
-            Vector3 handle = wagon.Find("PlayerLocation").transform.position;
+            transform.rotation = dragObject.rotation;
+            Vector3 handle = dragObject.Find("PlayerLocation").transform.position;
             transform.position = new Vector3(handle.x, transform.position.y, handle.z);
-            dragDir = wagon.transform.forward;
-            wagon.parent = this.transform;
+            dragDir = dragObject.transform.forward;
+            dragObject.parent = transform;
 
             animator.SetTrigger("ToDrag");
             animator.SetBool("Drag", true);
@@ -52,15 +52,16 @@ public partial class PlayerController : BaseCharacterController
         Vector3 desiredVelocity =
             (dragDir * MoveSpd);
 
-        movement.Move(desiredVelocity, dragSpeed, true);
+        movement.Move(desiredVelocity, dragSpeed, acceleration, deceleration,
+            groundFriction, groundFriction, true);
     }
 
     private void Drag_Exit(PlayerState next)
     {
-        if (wagon != null)
+        if (dragObject != null)
         {
-            wagon.transform.parent = null;
-            wagon = null;
+            dragObject.transform.parent = null;
+            dragObject = null;
         }
         animator.SetBool("Drag", false);
         animator.SetBool("Push", false);

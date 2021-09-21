@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class PlayerCharacter : MonoBehaviour
 
 
     private PlayerController controller = null;
+
+
+    /// <summary>
+    /// 캐릭터의 HP가 변경되었을 때 호출
+    /// </summary>
+    public UnityAction<int> onHpChanged;
 
 
     public int MaxHP { get => maxHP; }
@@ -73,7 +80,7 @@ public class PlayerCharacter : MonoBehaviour
         curHP = newHP;
 
         // 현재 체력 나타내는 UI는 여기서 업데이트
-        UIManager.Instance.HUD.SetLife(curHP);
+        onHpChanged?.Invoke(curHP);
     }
 
     /// <summary>

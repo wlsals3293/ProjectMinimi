@@ -34,13 +34,11 @@ public class UI_LoadingScreen : UIView
     {
         if (type == AnimationType.Show)
         {
-            if (UIManager.Instance.onScreenCoverComplete != null)
-                UIManager.Instance.onScreenCoverComplete();
+            UIManager.Instance.onScreenCoverComplete?.Invoke();
         }
         else if (type == AnimationType.Hide)
         {
-            if (UIManager.Instance.onScreenRevealComplete != null)
-                UIManager.Instance.onScreenRevealComplete();
+            UIManager.Instance.onScreenRevealComplete?.Invoke();
 
             gameObject.SetActive(false);
         }

@@ -19,7 +19,6 @@ public partial class PlayerController : BaseCharacterController
     {
         pause = true;
         PlayerCharacter.SetHP(0);
-        MinimiManager.Instance.PutInAllMinimis();
 
         UIManager.Instance.OpenView(UIManager.EUIView.Death);
     }
@@ -34,7 +33,6 @@ public partial class PlayerController : BaseCharacterController
 
     private void Dead_Exit(PlayerState next)
     {
-        MinimiManager.Instance.UnInstallAllMinimis();
     }
     #endregion
 }
