@@ -111,7 +111,7 @@ public partial class PlayerController : BaseCharacterController
         }
     }
 
-    private Rigidbody CachedRigidbody
+    public Rigidbody CachedRigidbody
     {
         get => movement.cachedRigidbody;
     }

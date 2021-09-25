@@ -9,14 +9,14 @@ public class Door_Ctrl : Switch_C_OBJ
     public enum DoorType {Maintain, OnOff}
     public DoorType doorType;
     private Vector3 startPoint;
-    private Vector3 endPotint;
+    private Vector3 endPoint;
     private bool isOpen;
 
     public float doorSpd = 4.0f;
     void Start()
     { 
         startPoint = transform.position;
-        endPotint = startPoint - new Vector3(0, transform.lossyScale.y, 0);
+        endPoint = startPoint - new Vector3(0, transform.lossyScale.y, 0);
 
         ConnectingSwitch();
     }
@@ -30,7 +30,7 @@ public class Door_Ctrl : Switch_C_OBJ
 
         if (isOpen) //isOpen¿Ã true∏È ø≠∏≤
         {
-            transform.position = Vector3.MoveTowards(transform.position, endPotint, doorSpd * Time.deltaTime); 
+            transform.position = Vector3.MoveTowards(transform.position, endPoint, doorSpd * Time.deltaTime); 
         }
         else //isOpen¿Ã false∏È ¥›»˚
         {
