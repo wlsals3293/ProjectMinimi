@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpiritProjectile : ProjectileBase
 {
 
-    protected override void ProjectileCollision()
+    protected override void ProjectileCollision(Collider other)
     {
         Debug.Log("발사체 충돌");
         Destroy(gameObject);
