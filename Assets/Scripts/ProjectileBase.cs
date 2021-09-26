@@ -11,6 +11,9 @@ public abstract class ProjectileBase : MonoBehaviour
 
     protected float speed;
 
+    [SerializeField]
+    protected LayerMask collisionMask;
+
 
     protected Rigidbody rb;
 
@@ -22,10 +25,10 @@ public abstract class ProjectileBase : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (!Lib.IsInLayerMask(other.gameObject, LayerMasks.GO))
+        if (!Lib.IsInLayerMask(other.gameObject, collisionMask))
             return;
 
-        ProjectileCollision();
+        ProjectileCollision(other);
     }
 
 
@@ -36,7 +39,7 @@ public abstract class ProjectileBase : MonoBehaviour
         Invoke(nameof(LifetimeEnd), lifetime);
     }
 
-    protected virtual void ProjectileCollision()
+    protected virtual void ProjectileCollision(Collider other)
     {
         Debug.Log("발사체 충돌");
     }
