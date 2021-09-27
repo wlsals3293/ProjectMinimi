@@ -55,12 +55,12 @@ public partial class PlayerController : BaseCharacterController
             Interact_Action(hit, interactType);
         }
 
+        playerAbility.MainAction1(mainAbilityAction1);  // 좌클릭
+        playerAbility.MainAction2(mainAbilityAction2);  // 우클릭
 
-        // 좌클릭
-        playerAbility.MainAction1(mainAbilityAction1);
-
-        // 우클릭
-        playerAbility.MainAction2(mainAbilityAction2);
+        playerAbility.NumAction1(numAbilityAction1);    // 키보드 숫자키 1
+        playerAbility.NumAction2(numAbilityAction2);    // 키보드 숫자키 2
+        playerAbility.NumAction3(numAbilityAction3);    // 키보드 숫자키 3
 
 
         moveDirection = moveDirection.relativeTo(CameraT, !noclipEnable);

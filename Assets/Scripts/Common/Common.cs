@@ -2,10 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Lib
+
+
+public static class UnityExtensions
 {
-    public static bool IsInLayerMask(GameObject obj, LayerMask layerMask)
+    /// <summary>
+    /// Extension method to check if a layer is in a layermask
+    /// </summary>
+    /// <param name="mask"></param>
+    /// <param name="layer"></param>
+    /// <returns></returns>
+    public static bool Contains(this LayerMask mask, int layer)
     {
-        return (layerMask.value & (1 << obj.layer)) > 0;
+        return ((mask & (1 << layer)) != 0);
     }
 }

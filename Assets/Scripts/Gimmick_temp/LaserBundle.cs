@@ -72,7 +72,12 @@ public class LaserBundle : Switch_C_OBJ
 
                 if (hit.collider != null && hit.collider.CompareTag(Tags.Player))
                 {
-                    hit.collider.GetComponent<PlayerCharacter>().TakeDamage(1, -hit.collider.transform.forward);
+                    Transform playerT = hit.collider.transform;
+
+                    ExtraDamageInfo extraDamageInfo
+                        = new ExtraDamageInfo(playerT.position + playerT.forward);
+
+                    hit.collider.GetComponent<PlayerCharacter>().TakeDamage(1, extraDamageInfo);
                 }
             }
             i++;

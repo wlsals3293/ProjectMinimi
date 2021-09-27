@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerCharacter : MonoBehaviour
+public class PlayerCharacter : MonoBehaviour, IHitable
 {
     [Tooltip("최대 체력")]
     [SerializeField]
@@ -83,10 +83,7 @@ public class PlayerCharacter : MonoBehaviour
         onHpChanged?.Invoke(curHP);
     }
 
-    /// <summary>
-    /// 피해를 받습니다
-    /// </summary>
-    /// <param name="amount">피해량</param>
+    
     public void TakeDamage(int amount)
     {
         if (!isInvincibility)
@@ -99,12 +96,7 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 짧은 경직이 포함된 피해를 받습니다
-    /// </summary>
-    /// <param name="amount">피해량</param>
-    /// <param name="hitDirection">피해를 주는 방향</param>
-    public void TakeDamage(int amount, Vector3 hitDirection)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
     {
         if (!isInvincibility)
         {
@@ -112,9 +104,13 @@ public class PlayerCharacter : MonoBehaviour
 
             SetHP(newHP);
 
+            // 짧은 경직 발생
+            Vector3 hitDirection = transform.position - extraDamageInfo.hitPoint;
             controller.ActivateHitDisorder(hitDirection);
 
             isInvincibility = true;
+
+            // 데미지 입은 것에 대한 이펙트, UI 처리 등등
         }
     }
 }

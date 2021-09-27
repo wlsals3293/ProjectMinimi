@@ -37,6 +37,11 @@ public static class LayerMasks
     public static readonly LayerMask GO = LayerMask.GetMask("Ground", "Object");
 
     /// <summary>
+    /// Layers: Ground, Object, Enemy
+    /// </summary>
+    public static readonly LayerMask GOE = LayerMask.GetMask("Ground", "Object", "Enemy");
+
+    /// <summary>
     /// Layers: Player, Object
     /// </summary>
     public static readonly LayerMask PO = LayerMask.GetMask("Player", "Object");
@@ -45,4 +50,9 @@ public static class LayerMasks
     /// Layers: Player, Ground, Object
     /// </summary>
     public static readonly LayerMask PGO = LayerMask.GetMask("Player", "Ground", "Object");
+
+    /// <summary>
+    /// Layers: Object, Enemy
+    /// </summary>
+    public static readonly LayerMask OE = LayerMask.GetMask("Object", "Enemy");
 }

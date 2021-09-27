@@ -5,14 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class ProjectileBase : MonoBehaviour
 {
-
+    [Tooltip("투사체 지속 시간")]
     [SerializeField]
     protected float lifetime = 20f;
 
-    protected float speed;
-
+    [Tooltip("충돌할 레이어")]
     [SerializeField]
     protected LayerMask collisionMask;
+
+    protected float speed;
+
+    protected bool oneShot = true;
+
+    
 
 
     protected Rigidbody rb;
@@ -25,10 +30,12 @@ public abstract class ProjectileBase : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (!Lib.IsInLayerMask(other.gameObject, collisionMask))
+        if (!oneShot || !collisionMask.Contains(other.gameObject.layer))
             return;
 
-        ProjectileCollision(other);
+        oneShot = false;
+
+        Collide(other);
     }
 
 
@@ -39,7 +46,7 @@ public abstract class ProjectileBase : MonoBehaviour
         Invoke(nameof(LifetimeEnd), lifetime);
     }
 
-    protected virtual void ProjectileCollision(Collider other)
+    protected virtual void Collide(Collider other)
     {
         Debug.Log("발사체 충돌");
     }

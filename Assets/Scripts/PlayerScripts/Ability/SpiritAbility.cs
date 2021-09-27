@@ -7,12 +7,30 @@ public class SpiritAbility : PlayerAbility
     private const float PROJECTILE_DISTANCE = 50f;
 
 
+    [Tooltip("발사체 속도")]
+    [SerializeField]
     private float projectileSpeed = 30f;
 
     private int projectileindex = 0;
 
 
     private bool aiming = false;
+
+
+    [Tooltip("발사 간격")]
+    private float shotInterval = 0.5f;
+
+    /// <summary>
+    /// 발사 지연 여부
+    /// </summary>
+    private bool shotDelay = false;
+
+    /// <summary>
+    /// 발사 후 경과시간
+    /// </summary>
+    private float elapsedShotTime;
+
+
 
 
     // 아마도 임시?
@@ -27,12 +45,20 @@ public class SpiritAbility : PlayerAbility
 
     public override void AbilityUpdate()
     {
+        if (shotDelay)
+        {
+            elapsedShotTime += Time.deltaTime;
 
+            if (elapsedShotTime >= shotInterval)
+            {
+                shotDelay = false;
+            }
+        }
     }
 
     public override void MainAction1(KeyInfo key)
     {
-        if (key.down)
+        if (key.down && !shotDelay)
             MainAction1_Down();
     }
 
@@ -69,11 +95,39 @@ public class SpiritAbility : PlayerAbility
                 fireDirection = (ray.GetPoint(PROJECTILE_DISTANCE) - firePosition).normalized;
             }
 
+
+            if (projectileindex >= projectiles.Length)
+            {
+                Debug.LogError("발사체 배열 인덱스를 벗어났습니다.");
+                return;
+            }
+
             // TODO: 나중에 오브젝트 풀링으로 바꿔야할듯
             SpiritProjectile proj = Instantiate<SpiritProjectile>(
                 projectiles[projectileindex], firePosition, pc.CachedRigidbody.rotation);
 
             proj.Set(fireDirection * projectileSpeed);
+
+            shotDelay = true;
+            elapsedShotTime = 0f;
         }
+    }
+
+    public override void NumAction1(KeyInfo key)
+    {
+        if (key.down)
+            projectileindex = 0;
+    }
+
+    public override void NumAction2(KeyInfo key)
+    {
+        if (key.down)
+            projectileindex = 1;
+    }
+
+    public override void NumAction3(KeyInfo key)
+    {
+        if (key.down)
+            projectileindex = 2;
     }
 }

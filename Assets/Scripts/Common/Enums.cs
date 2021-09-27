@@ -80,3 +80,11 @@ public enum SoundType
     Ambient,
     UI
 }
+
+public enum ElementType
+{
+    None,
+    Fire,
+    Water,
+    Electricity
+}

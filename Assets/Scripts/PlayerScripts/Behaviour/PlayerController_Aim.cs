@@ -62,6 +62,10 @@ public partial class PlayerController : BaseCharacterController
         playerAbility.MainAction1(mainAbilityAction1);
         playerAbility.MainAction2(mainAbilityAction2);
 
+        playerAbility.NumAction1(numAbilityAction1);
+        playerAbility.NumAction2(numAbilityAction2);
+        playerAbility.NumAction3(numAbilityAction3);
+
         moveDirection = moveDirection.relativeTo(CameraT);
     }
 

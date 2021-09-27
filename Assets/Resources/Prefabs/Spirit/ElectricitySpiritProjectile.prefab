@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7916109538103764537}
   - component: {fileID: 7916109538103764542}
   m_Layer: 0
-  m_Name: SpiritProjectileTest
+  m_Name: ElectricitySpiritProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 03eb46477fae01c48a8c3737239b1527, type: 2}
+  - {fileID: 2100000, guid: 58c9bcf6b291c2b4ba5be20356678eb2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,3 +130,6 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 384
+  elementType: 3
+  explosionRadius: 1
+  damage: 0

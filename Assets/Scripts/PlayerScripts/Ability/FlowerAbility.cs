@@ -136,4 +136,19 @@ public class FlowerAbility : PlayerAbility
     {
 
     }
+
+    public override void NumAction1(KeyInfo key)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void NumAction2(KeyInfo key)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void NumAction3(KeyInfo key)
+    {
+        throw new System.NotImplementedException();
+    }
 }

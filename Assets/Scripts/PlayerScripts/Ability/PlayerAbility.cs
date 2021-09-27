@@ -17,5 +17,12 @@ public abstract class PlayerAbility : MonoBehaviour
     public abstract void MainAction2(KeyInfo key);
 
 
-    
+    public abstract void NumAction1(KeyInfo key);
+
+
+    public abstract void NumAction2(KeyInfo key);
+
+
+    public abstract void NumAction3(KeyInfo key);
+
 }

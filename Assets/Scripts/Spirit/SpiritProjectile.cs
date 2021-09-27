@@ -4,10 +4,31 @@ using UnityEngine;
 
 public class SpiritProjectile : ProjectileBase
 {
+    [Tooltip("원소종류")]
+    [SerializeField]
+    private ElementType elementType = ElementType.None;
 
-    protected override void ProjectileCollision(Collider other)
+    [Tooltip("폭발범위")]
+    [SerializeField]
+    private float explosionRadius = 1f;
+
+    [Tooltip("피해량")]
+    [SerializeField]
+    private int damage = 0;
+
+
+    protected override void Collide(Collider other)
     {
-        Debug.Log("발사체 충돌");
+        Collider[] overlaps = Physics.OverlapSphere(transform.position, explosionRadius,
+            LayerMasks.OE, QueryTriggerInteraction.Ignore);
+
+        ExtraDamageInfo extraDamageInfo = new ExtraDamageInfo(Vector3.zero, elementType);
+
+        foreach (Collider hitedObject in overlaps)
+        {
+            hitedObject.GetComponent<IHitable>()?.TakeDamage(damage, extraDamageInfo);
+        }
+
         Destroy(gameObject);
     }
 }

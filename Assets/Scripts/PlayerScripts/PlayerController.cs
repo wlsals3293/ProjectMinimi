@@ -57,7 +57,8 @@ public partial class PlayerController : BaseCharacterController
     private KeyInfo mainAbilityAction2;
 
 
-    private bool key_alpha1, key_alpha2, key_alpha3;    // 1, 2, 3
+    private KeyInfo numAbilityAction1, numAbilityAction2, numAbilityAction3;
+
     private bool key_interact;  // E
     private bool key_f;         // F
 
@@ -218,9 +219,6 @@ public partial class PlayerController : BaseCharacterController
 
     protected override void HandleInput()
     {
-        // Toggle pause / resume.
-        // By default, will restore character's velocity on resume (eg: restoreVelocityOnResume = true)
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.ToggleESCMenu();
@@ -259,11 +257,15 @@ public partial class PlayerController : BaseCharacterController
         mainAbilityAction1.Put(Input.GetMouseButton(0));
         mainAbilityAction2.Put(Input.GetMouseButton(1));
 
+        // 키보드 숫자키
+        numAbilityAction1.Put(Input.GetKeyDown(KeyCode.Alpha1));
+        numAbilityAction2.Put(Input.GetKeyDown(KeyCode.Alpha2));
+        numAbilityAction3.Put(Input.GetKeyDown(KeyCode.Alpha3));
+
+
         jump = Input.GetButton("Jump");
         key_interact = Input.GetKeyDown(KeyCode.E);
         key_f = Input.GetKeyDown(KeyCode.F);
-        key_alpha1 = Input.GetKeyDown(KeyCode.Alpha1);
-
     }
 
 
@@ -403,10 +405,13 @@ public partial class PlayerController : BaseCharacterController
         mainAbilityAction1.Put(false);
         mainAbilityAction2.Put(false);
 
+        numAbilityAction1.Put(false);
+        numAbilityAction2.Put(false);
+        numAbilityAction3.Put(false);
+
         jump = false;
         key_interact = false;
         key_f = false;
-        key_alpha1 = false;
     }
 
     private void UpdateControlBlock()

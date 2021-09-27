@@ -13,9 +13,9 @@ public class DamageTestBox : MonoBehaviour
 
             if(player != null)
             {
-                Vector3 hitDirection = other.transform.position - transform.position;
+                ExtraDamageInfo extraDamageInfo = new ExtraDamageInfo(transform.position);
 
-                player.TakeDamage(1, hitDirection);
+                player.TakeDamage(1, extraDamageInfo);
             }
 
         }
