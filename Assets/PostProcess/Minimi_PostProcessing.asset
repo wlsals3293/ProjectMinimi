@@ -59,6 +59,42 @@ MonoBehaviour:
     m_Value: 100
     min: -200
     max: 200
+--- !u!114 &-8330128251951090324
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
+    hdr: 0
+    showAlpha: 0
+    showEyeDropper: 1
+  center:
+    m_OverrideState: 1
+    m_Value: {x: 0.5, y: 0.5}
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.335
+    min: 0
+    max: 1
+  smoothness:
+    m_OverrideState: 1
+    m_Value: 0.536
+    min: 0.01
+    max: 1
+  rounded:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &-7456882752174921264
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -88,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90fbf49926625114084d7e0c0cffe8d1, type: 3}
   m_Name: HBAO
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   preset:
     m_OverrideState: 1
@@ -233,6 +269,7 @@ MonoBehaviour:
   - {fileID: -7456882752174921264}
   - {fileID: 7712768988505301224}
   - {fileID: -5743089456395189677}
+  - {fileID: -8330128251951090324}
 --- !u!114 &4814182297895454233
 MonoBehaviour:
   m_ObjectHideFlags: 3
