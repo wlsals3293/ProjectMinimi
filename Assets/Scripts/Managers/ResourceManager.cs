@@ -8,8 +8,8 @@ public class ResourceManager : BaseManager<ResourceManager>
         base.Awake();
     }
 
-    public GameObject CreatePrefab(string filename, Transform parent = null,
-        PrefabPath path = PrefabPath.Root, bool active = true)
+    public GameObject CreatePrefab(string filename, PrefabPath path = PrefabPath.Root,
+        Transform parent = null, bool active = true)
     {
         GameObject result = null;
         GameObject obj = Resources.Load<GameObject>(ResourcePath.GetPrefabPath(filename, path));
@@ -26,8 +26,8 @@ public class ResourceManager : BaseManager<ResourceManager>
         return result;
     }
 
-    public T CreatePrefab<T>(string filename, Transform parent = null,
-        PrefabPath path = PrefabPath.Root, bool active = true) where T : MonoBehaviour
+    public T CreatePrefab<T>(string filename, PrefabPath path = PrefabPath.Root,
+        Transform parent = null, bool active = true) where T : MonoBehaviour
     {
         T result = null;
         GameObject obj = Resources.Load<GameObject>(ResourcePath.GetPrefabPath(filename, path));
@@ -38,6 +38,7 @@ public class ResourceManager : BaseManager<ResourceManager>
             if(active == false)
             {
                 result.gameObject.SetActive(false);
+                
             }
         }
 

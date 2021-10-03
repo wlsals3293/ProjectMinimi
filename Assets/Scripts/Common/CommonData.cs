@@ -1,4 +1,4 @@
-
+using System.Text;
 
 
 
@@ -8,6 +8,7 @@ public static class ResourcePath
     private const string PATH_PREFAB = "Prefabs/";
     private const string PATH_CAMERA = "Camera/";
     private const string PATH_UI = "UI/";
+    private const string PATH_RAINY_CLOUD = "RainyCloud/";
 
 
     public static string GetPrefabPath(string filename, PrefabPath path)
@@ -20,6 +21,8 @@ public static class ResourcePath
                 return string.Concat(PATH_PREFAB, PATH_CAMERA, filename);
             case PrefabPath.UI:
                 return string.Concat(PATH_PREFAB, PATH_UI, filename);
+            case PrefabPath.RainyCloud:
+                return string.Concat(PATH_PREFAB, PATH_RAINY_CLOUD, filename);
             default:
                 break;
         }

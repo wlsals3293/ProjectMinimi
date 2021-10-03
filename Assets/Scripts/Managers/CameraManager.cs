@@ -86,7 +86,7 @@ public class CameraManager : BaseManager<CameraManager>
         if (freeLookCam == null)
         {
             freeLookCam = ResourceManager.Instance.CreatePrefab<FreeLookCamController>(
-                "FreeLookCam", null, PrefabPath.Camera);
+                "FreeLookCam", PrefabPath.Camera, null);
 
             freeLookCam.Target = PlayerManager.Instance.PlayerCtrl.transform;
         }
@@ -94,7 +94,7 @@ public class CameraManager : BaseManager<CameraManager>
         if (shoulderCam == null)
         {
             shoulderCam = ResourceManager.Instance.CreatePrefab<ShoulderCamController>(
-                "ShoulderCam", null, PrefabPath.Camera);
+                "ShoulderCam", PrefabPath.Camera, null);
 
             shoulderCam.Target = PlayerManager.Instance.PlayerCtrl.followTarget;
         }

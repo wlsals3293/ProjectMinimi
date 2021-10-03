@@ -53,7 +53,7 @@ public class UIManager : BaseManager<UIManager>
         // Event System 확인
         if (GameObject.Find("EventSystem") == null)
         {
-            ResourceManager.Instance.CreatePrefab("EventSystem", null, PrefabPath.UI, true);
+            ResourceManager.Instance.CreatePrefab("EventSystem", PrefabPath.UI, null, true);
         }
 
         // Main Canvas 확인
@@ -67,7 +67,7 @@ public class UIManager : BaseManager<UIManager>
             }
             else
             {
-                mainCanvas = ResourceManager.Instance.CreatePrefab("MainCanvas", null, PrefabPath.UI, true).transform;
+                mainCanvas = ResourceManager.Instance.CreatePrefab("MainCanvas", PrefabPath.UI, null, true).transform;
             }
 
             DontDestroyOnLoad(mainCanvas.gameObject);
@@ -76,7 +76,7 @@ public class UIManager : BaseManager<UIManager>
         // 로딩스크린 확인
         if (loadingScreen == null)
         {
-            loadingScreen = ResourceManager.Instance.CreatePrefab<UI_LoadingScreen>("Panel_LoadingScreen", mainCanvas, PrefabPath.UI, false);
+            loadingScreen = ResourceManager.Instance.CreatePrefab<UI_LoadingScreen>("Panel_LoadingScreen", PrefabPath.UI, mainCanvas, false);
         }
 
     }
@@ -93,7 +93,7 @@ public class UIManager : BaseManager<UIManager>
         }
 
         // HUD
-        hud = ResourceManager.Instance.CreatePrefab<UI_HUD>("HUDCanvas", null, PrefabPath.UI);
+        hud = ResourceManager.Instance.CreatePrefab<UI_HUD>("HUDCanvas", PrefabPath.UI, null);
         hud.Init();
     }
 
@@ -173,13 +173,13 @@ public class UIManager : BaseManager<UIManager>
         switch (view)
         {
             case EUIView.StageEnd:
-                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_EndStage", mainCanvas, PrefabPath.UI, false);
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_EndStage", PrefabPath.UI, mainCanvas, false);
                 break;
             case EUIView.Death:
-                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_Death", mainCanvas, PrefabPath.UI, false);
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_Death", PrefabPath.UI, mainCanvas, false);
                 break;
             case EUIView.EscMenu:
-                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_ESC", mainCanvas, PrefabPath.UI, false);
+                newView = ResourceManager.Instance.CreatePrefab<UIView>("Panel_ESC", PrefabPath.UI, mainCanvas, false);
                 break;
             default:
                 return null;

@@ -69,7 +69,8 @@ public enum PrefabPath
 {
     Root,
     Camera,
-    UI
+    UI,
+    RainyCloud
 }
 
 public enum SoundType
