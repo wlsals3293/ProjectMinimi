@@ -95,6 +95,7 @@ Material:
     - NoiseScale: 11
     - Power: 2.8
     - Scale: 1
+    - ShadowStrength: 0.3
     - Speed: 0.03
     - _AlphaClip: 1
     - _Blend: 0
