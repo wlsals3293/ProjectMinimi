@@ -18,4 +18,10 @@ public struct ExtraDamageInfo
         elementType = inElementType;
     }
 
+    public ExtraDamageInfo(ElementType inElementType)
+    {
+        hitPoint = Vector3.zero;
+        elementType = inElementType;
+    }
+
 }

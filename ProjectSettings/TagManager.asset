@@ -11,6 +11,7 @@ TagManager:
   - SwallowableObject
   - DistructibleObject
   - Wagon
+  - Conductor
   layers:
   - Default
   - TransparentFX

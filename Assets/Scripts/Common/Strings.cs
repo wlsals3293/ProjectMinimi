@@ -12,6 +12,7 @@ public static class Tags
     public const string SwallowableObject = "SwallowableObject";
     public const string DistructibleObject = "DistructibleObject";
     public const string Wagon = "Wagon";
+    public const string Conductor = "Conductor";
 }
 
 public static class Layers
@@ -31,6 +32,12 @@ public static class LayerMasks
     public static readonly LayerMask Object = LayerMask.GetMask("Object");
     public static readonly LayerMask Enemy = LayerMask.GetMask("Enemy");
 
+
+    /// <summary>
+    /// Layers: Player, Ground, Object, Enemy
+    /// </summary>
+    public static readonly LayerMask All = LayerMask.GetMask("Player", "Ground", "Object", "Enemy");
+
     /// <summary>
     /// Layers: Ground, Object
     /// </summary>
@@ -45,6 +52,11 @@ public static class LayerMasks
     /// Layers: Player, Object
     /// </summary>
     public static readonly LayerMask PO = LayerMask.GetMask("Player", "Object");
+
+    /// <summary>
+    /// Layers: Player, Object, Enemy
+    /// </summary>
+    public static readonly LayerMask POE = LayerMask.GetMask("Player", "Object", "Enemy");
 
     /// <summary>
     /// Layers: Player, Ground, Object

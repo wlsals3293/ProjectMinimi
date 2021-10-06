@@ -16,4 +16,11 @@ public static class UnityExtensions
     {
         return ((mask & (1 << layer)) != 0);
     }
+
+
+}
+
+public static class Lib
+{
+
 }

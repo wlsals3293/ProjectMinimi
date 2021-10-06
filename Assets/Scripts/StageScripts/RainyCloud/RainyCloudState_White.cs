@@ -9,8 +9,6 @@ public class RainyCloudState_White : RainyCloudState
     {
         cloudType = CloudType.White;
         cloud = inCloud;
-
-
     }
 
     public override void Enter()
