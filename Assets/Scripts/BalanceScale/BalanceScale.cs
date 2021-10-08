@@ -23,8 +23,8 @@ public class BalanceScale : MonoBehaviour
     [SerializeField] private float rightDefaultMass = 0f;
 
 
-    private Dictionary<int, Minimi> leftMinimiDic = new Dictionary<int, Minimi>();
-    private Dictionary<int, Minimi> rightMinimiDic = new Dictionary<int, Minimi>();
+    //private Dictionary<int, Minimi> leftMinimiDic = new Dictionary<int, Minimi>();
+    //private Dictionary<int, Minimi> rightMinimiDic = new Dictionary<int, Minimi>();
 
     private float prevLeftMass = 0f;
     private float prevRightMass = 0f;
@@ -54,7 +54,7 @@ public class BalanceScale : MonoBehaviour
         UpdateMass(true);
     }
 
-    public void AddMinimi(Collider minimi, bool left)
+    /*public void AddMinimi(Collider minimi, bool left)
     {
         if (minimi == null)
             return;
@@ -90,7 +90,7 @@ public class BalanceScale : MonoBehaviour
         {
             dic.Remove(key);
         }
-    }
+    }*/
 
     private void Update()
     {
@@ -99,13 +99,13 @@ public class BalanceScale : MonoBehaviour
 
     private void UpdateMass(bool quick = false)
     {
-        float curLeftMass = CalcTotalMass(leftMinimiDic, leftDefaultMass);
-        float curRightMass = CalcTotalMass(rightMinimiDic, rightDefaultMass);
+        //float curLeftMass = CalcTotalMass(leftMinimiDic, leftDefaultMass);
+        //float curRightMass = CalcTotalMass(rightMinimiDic, rightDefaultMass);
 
-        if (prevLeftMass != curLeftMass || prevRightMass != curRightMass)
+        if (prevLeftMass != leftDefaultMass || prevRightMass != rightDefaultMass)
         {
-            prevLeftMass = curLeftMass;
-            prevRightMass = curRightMass;
+            prevLeftMass = leftDefaultMass;
+            prevRightMass = rightDefaultMass;
 
             startLeftY = leftMoveTarget.localPosition.y;
             startRightY = rightMoveTarget.localPosition.y;
@@ -123,19 +123,19 @@ public class BalanceScale : MonoBehaviour
 
 
         bool leftDown = false;
-        if (curLeftMass > curRightMass)         // Left Down
+        if (leftDefaultMass > rightDefaultMass)         // Left Down
         {
             leftDown = true;
         }
-        else if (curLeftMass < curRightMass)    // Left Up
+        else if (leftDefaultMass < rightDefaultMass)    // Left Up
         {
             leftDown = false;
         }
 
-        float mass = Mathf.Abs(curLeftMass - curRightMass);
+        float mass = Mathf.Abs(leftDefaultMass - rightDefaultMass);
         mass = Mathf.Min(mass, maxMass);
         Transform lowT, highT;
-        Dictionary<int, Minimi> lowDic, highDic;
+        //Dictionary<int, Minimi> lowDic, highDic;
 
         float lowY, highY = 0f;
 
@@ -147,8 +147,8 @@ public class BalanceScale : MonoBehaviour
             lowY = startLeftY;
             highY = startRightY;
 
-            lowDic = leftMinimiDic;
-            highDic = rightMinimiDic;
+            //lowDic = leftMinimiDic;
+            //highDic = rightMinimiDic;
         }
         else
         {
@@ -158,8 +158,8 @@ public class BalanceScale : MonoBehaviour
             lowY = startRightY;
             highY = startLeftY;
 
-            lowDic = rightMinimiDic;
-            highDic = leftMinimiDic;
+            //lowDic = rightMinimiDic;
+            //highDic = leftMinimiDic;
         }
 
         if (quick == true)
@@ -171,13 +171,13 @@ public class BalanceScale : MonoBehaviour
         float ry = lowT.localPosition.y - y;
 
         lowT.localPosition = GetChangeLocalPosY(lowT, y);
-        MoveMinimi(lowDic, -ry);
+        //MoveMinimi(lowDic, -ry);
 
         y = Mathf.Lerp(highY, mass * highPerMass, timer);
         ry = highT.localPosition.y - y;
 
         highT.localPosition = GetChangeLocalPosY(highT, y);
-        MoveMinimi(highDic, -ry);
+        //MoveMinimi(highDic, -ry);
     }
 
     private Vector3 GetChangeLocalPosY(Transform trans, float y)
@@ -185,7 +185,7 @@ public class BalanceScale : MonoBehaviour
         return new Vector3(trans.localPosition.x, y, trans.localPosition.z);
     }
 
-    private void MoveMinimi(Dictionary<int, Minimi> dic, float y)
+    /*private void MoveMinimi(Dictionary<int, Minimi> dic, float y)
     {
         foreach (var item in dic.Values)
         {
@@ -229,6 +229,6 @@ public class BalanceScale : MonoBehaviour
         }
 
         return totalMass;
-    }
+    }*/
 
 }

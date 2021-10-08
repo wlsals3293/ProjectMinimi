@@ -18,13 +18,8 @@ public class Scale_Side : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (
-           other.gameObject.CompareTag("Player") ||
-           other.gameObject.CompareTag("Minimi") ||
-           other.gameObject.CompareTag("Object")
-           )
+        if (LayerMasks.PO.Contains(other.gameObject.layer))
         {
-            
             onActivateCort = StartCoroutine(OnActivate());
         }
     }
@@ -44,7 +39,7 @@ public class Scale_Side : MonoBehaviour
 
             foreach (Collider col in cols)
             {
-                if (col.CompareTag("Player") || col.CompareTag("Minimi") || col.CompareTag("Object"))
+                if (LayerMasks.PO.Contains(col.gameObject.layer))
                 {
                     isEmpty = false;
                     otherWeight += col.gameObject.GetComponent<Rigidbody>().mass;

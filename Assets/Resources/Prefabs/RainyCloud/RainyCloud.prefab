@@ -9900,3 +9900,4 @@ MonoBehaviour:
   - 13
   currentType: 0
   temp_rain: {fileID: 6933680532726989550}
+  lightningExplosionRadius: 3

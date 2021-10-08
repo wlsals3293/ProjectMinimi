@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[Obsolete]
 public class MinimiManager : BaseManager<MinimiManager>
 {
     /// <summary>
@@ -441,7 +442,7 @@ public class MinimiManager : BaseManager<MinimiManager>
         Vector3 center = targetPosition + Vector3.up * halfExt.y;
 
         return Physics.CheckBox(center, halfExt, targetRotation,
-            LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
+            LayerMasks.GO, QueryTriggerInteraction.Ignore);
     }
 
     private bool FindGroundPos(ref Vector3 targetPosition)
@@ -450,7 +451,7 @@ public class MinimiManager : BaseManager<MinimiManager>
         RaycastHit hit;
 
         bool result = Physics.SphereCast(origin, 0.1f, Vector3.down, out hit, INSTALL_HEIGHT_TOLERANCE,
-            LayerMask.GetMask("Ground", "Object"), QueryTriggerInteraction.Ignore);
+            LayerMasks.GO, QueryTriggerInteraction.Ignore);
 
         if(result)
             targetPosition = origin + Vector3.down * hit.distance;

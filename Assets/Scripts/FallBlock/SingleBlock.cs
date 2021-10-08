@@ -51,16 +51,11 @@ public class SingleBlock : MonoBehaviour
     private float timer = 0f;
     private float endTimer = 9999f;
 
-    private LayerMask layerMask;
+
     private void Awake()
     {
         // 일괄처리시 빼야됨 그냥이렇게..
         Init(fallDirection, 0f, 0f, 0f, 0f, 0f, 0f, true);
-    }
-
-    private void Start()
-    {
-        layerMask = LayerMask.GetMask("Object", "Ground");
     }
 
     public void Init(
@@ -294,10 +289,6 @@ public class SingleBlock : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == Tags.Minimi)
-        { 
-            OnHit();
-        }
         //else if (collision.collider.tag == Tags.obj)
         //{
         //    OnHit();
@@ -318,7 +309,7 @@ public class SingleBlock : MonoBehaviour
                 new Vector3(collision.transform.position.x, collision.transform.position.y + 0.4f, collision.transform.position.z),
                 0.5f,
                 buffers,
-                layerMask,
+                LayerMasks.GO,
                 QueryTriggerInteraction.Ignore
                 );
 

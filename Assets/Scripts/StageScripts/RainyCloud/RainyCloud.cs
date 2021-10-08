@@ -156,11 +156,11 @@ public class RainyCloud : MonoBehaviour, IHitable
                 // 번개구름일때는 피해무시
 
                 // 테스트로 용 임시 변환
-                if (damageElement == ElementType.Fire)
+                /*if (damageElement == ElementType.Fire)
                 {
                     // 흰구름으로 변화
                     ChangeState(CloudType.White);
-                }
+                }*/
                 break;
         }
     }

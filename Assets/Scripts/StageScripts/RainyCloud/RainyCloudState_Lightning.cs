@@ -38,9 +38,7 @@ public class RainyCloudState_Lightning : RainyCloudState
 
         foreach (Collider col in colliders)
         {
-            // 전도체가 아니라면 다음으로
-            if (!col.CompareTag(Tags.Conductor))
-                continue;
+            // TODO : 전도체 판별하는 구간 추가
 
             Vector3 closestPoint = col.ClosestPoint(cloud.transform.position);
             Vector3 distanceVector = closestPoint - cloud.transform.position;

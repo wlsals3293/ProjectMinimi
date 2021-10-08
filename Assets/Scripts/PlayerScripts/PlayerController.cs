@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using ECM.Controllers;
@@ -100,25 +101,12 @@ public partial class PlayerController : BaseCharacterController
     public TwoAxisDelegate onRotationAxisInput;
 
 
-    private bool RotationChanging
-    {
-        get
-        {
-            return rotationChanging;
-        }
-        set
-        {
-            rotationChanging = value;
-        }
-    }
-
     public Rigidbody CachedRigidbody
     {
         get => movement.cachedRigidbody;
     }
 
     private Transform cameraT;
-
     private Transform CameraT
     {
         get
@@ -475,26 +463,26 @@ public partial class PlayerController : BaseCharacterController
         animEventListener.OnEventEmitted[1] = PutObject;
     }
 
-    private RaycastHit Raycast(float distance)
-    {
-        RaycastHit hit;
-        Vector3 pos = trans.position + (Vector3.up * 0.7f);
-
-        if (Physics.Raycast(pos, trans.TransformDirection(Vector3.forward), out hit, RAY_DISTANCE))
-        {
-#if UNITY_EDITOR
-            Debug.DrawLine(pos, pos + (trans.TransformDirection(Vector3.forward) * hit.distance), Color.red);
-#endif
-        }
-
-        return hit;
-    }
-
+    /// <summary>
+    /// 캐릭터의 중앙으로부터 캐릭터의 전방으로 레이캐스트를 합니다
+    /// </summary>
+    /// <param name="hitInfo">레이히트정보</param>
+    /// <param name="maxDistance">최대거리</param>
+    /// <param name="layerMask">레이어 마스크</param>
+    /// <returns>레이캐스트 성공여부</returns>
     private bool RaycastForward(out RaycastHit hitInfo, float maxDistance, LayerMask layerMask)
     {
         Vector3 pos = transform.position + (transform.up * (col.height * 0.5f));
 
-        return Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
+        bool result = Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
+
+#if UNITY_EDITOR
+        if (result)
+        {
+            Debug.DrawLine(pos, pos + (transform.forward * hitInfo.distance), Color.red);
+        }
+#endif
+        return result;
     }
 
 
@@ -541,7 +529,7 @@ public partial class PlayerController : BaseCharacterController
     {
         while (true)
         {
-            float randomTime = Random.Range(10.0f, 40.0f);
+            float randomTime = UnityEngine.Random.Range(10.0f, 40.0f);
             yield return new WaitForSeconds(randomTime);
             animator.SetTrigger("RandomMotion");
         }

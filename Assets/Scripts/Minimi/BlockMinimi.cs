@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Obsolete]
 public class BlockMinimi : Minimi
 {
     private const float STACK_HEIGHT = 2.0f;

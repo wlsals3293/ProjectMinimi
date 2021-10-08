@@ -28,23 +28,18 @@ public partial class PlayerController : BaseCharacterController
 
     private void Hold_Enter(PlayerState prev)
     {
-        if (hold_target != null)
-        {
-            Vector3 lookDir = hold_target.position - transform.position;
-            lookDir = Vector3.ProjectOnPlane(lookDir, Vector3.up).normalized;
-            Quaternion qut = Quaternion.LookRotation(lookDir);
+        Vector3 lookDir = hold_target.position - transform.position;
+        lookDir = Vector3.ProjectOnPlane(lookDir, Vector3.up).normalized;
+        Quaternion qut = Quaternion.LookRotation(lookDir);
 
-            ChangeRotation(qut, 0.2f);
-            StopControl(0.55f);
+        ChangeRotation(qut, 0.2f);
+        StopControl(0.55f);
 
-            savedMoveSpeed = speed;
-            speed = holdMoveSpeed;
+        savedMoveSpeed = speed;
+        speed = holdMoveSpeed;
 
-            animator.SetTrigger("Pickup");
-            animator.SetBool("Hold", true);
-        }
-        else
-            ChangeState(PlayerState.Idle);
+        animator.SetTrigger("Pickup");
+        animator.SetBool("Hold", true);
     }
 
     private void Hold_Update()
@@ -62,12 +57,8 @@ public partial class PlayerController : BaseCharacterController
 
     private void Hold_Exit(PlayerState next)
     {
-        if (hold_target != null)
-        {
-            StopControl(0.6f);
-            speed = savedMoveSpeed;
-        }
-
+        StopControl(0.6f);
+        speed = savedMoveSpeed;
         animator.SetBool("Hold", false);
     }
     #endregion
@@ -77,10 +68,19 @@ public partial class PlayerController : BaseCharacterController
     {
         if (key_interact)
         {
-            ChangeState(PlayerState.Idle);
+            fsm.ChangeState(PlayerState.Idle);
         }
 
         moveDirection = moveDirection.relativeTo(CameraT);
+    }
+
+    public void Hold(Transform target)
+    {
+        if (target != null)
+        {
+            hold_target = target;
+            fsm.ChangeState(PlayerState.Hold);
+        }
     }
 
     private void HoldObject()

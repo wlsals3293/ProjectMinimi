@@ -1,18 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public static class Tags
 {
+    [Obsolete]
     public const string Minimi = "Minimi";
     public const string Enemy = "Enemy";
     public const string Player = "Player";
-    public const string Object = "Object";
     public const string StageInfo = "StageInfo";
     public const string SwallowableObject = "SwallowableObject";
     public const string DistructibleObject = "DistructibleObject";
-    public const string Wagon = "Wagon";
-    public const string Conductor = "Conductor";
+    //public const string Conductor = "Conductor";    // º¸·ù
 }
 
 public static class Layers
@@ -21,7 +21,6 @@ public static class Layers
     public static readonly int Enemy = LayerMask.NameToLayer("Enemy");
     public static readonly int Player = LayerMask.NameToLayer("Player");
 
-    public static readonly int Minimi = LayerMask.NameToLayer("Minimi");
     public static readonly int Obj = LayerMask.NameToLayer("Object");
 }
 

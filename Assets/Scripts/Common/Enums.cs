@@ -43,18 +43,6 @@ public enum PlayerState
     LedgeGrab
 }
 
-/// <summary>
-/// 활용키(E) 에 따른 행동
-/// </summary>
-public enum InteractType
-{
-    None,
-    Block,
-    Hold,
-    Wagon
-}
-
-
 [System.Serializable]
 public enum DirectionType
 {

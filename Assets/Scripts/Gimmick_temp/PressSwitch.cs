@@ -20,7 +20,7 @@ public class PressSwitch : SwitchBase
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Object"))
+        if (other.gameObject.layer == Layers.Obj)
         {
             IsActivate = true;
 
@@ -40,7 +40,7 @@ public class PressSwitch : SwitchBase
 
             foreach (Collider col in cols)
             {
-                if (col.CompareTag("Object"))
+                if (col.gameObject.layer == Layers.Obj)
                 {
                     isEmpty = false;
                     break;

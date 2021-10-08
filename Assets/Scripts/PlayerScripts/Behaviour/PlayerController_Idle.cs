@@ -4,8 +4,6 @@ using UnityEngine;
 
 public partial class PlayerController : BaseCharacterController
 {
-    private InteractType interactType = InteractType.None;
-
 
     #region <행동 추가시 디폴트 작업>
     private void Idle_SetState()
@@ -47,12 +45,9 @@ public partial class PlayerController : BaseCharacterController
 
     private void Idle_GetInput()
     {
-        RaycastHit hit = Raycast(RAY_DISTANCE);
-        interactType = UpdateInteractActionType(hit);
-
         if (key_interact)
         {
-            Interact_Action(hit, interactType);
+            Interact();
         }
 
         playerAbility.MainAction1(mainAbilityAction1);  // 좌클릭
@@ -66,67 +61,11 @@ public partial class PlayerController : BaseCharacterController
         moveDirection = moveDirection.relativeTo(CameraT, !noclipEnable);
     }
 
-    public void Interact_Action(RaycastHit hit, InteractType keyType)
+    public void Interact()
     {
-        switch (keyType)
+        if (RaycastForward(out RaycastHit hit, RAY_DISTANCE, LayerMasks.Object))
         {
-            case InteractType.None:
-                break;
-            case InteractType.Block:
-                climbFaceNormal = hit.normal;
-                fsm.ChangeState(PlayerState.Climb);
-                break;
-            case InteractType.Hold:
-                fsm.ChangeState(PlayerState.Hold);
-                break;
-            case InteractType.Wagon:
-                fsm.ChangeState(PlayerState.Drag);
-                break;
-        }
-    }
-
-    private InteractType UpdateInteractActionType(RaycastHit hit)
-    {
-        int layer = -1;
-
-        if (hit.collider != null)
-        {
-            layer = hit.collider.gameObject.layer;
-        }
-
-        if (layer == Layers.Minimi)
-        {
-            return InteractType.Block;
-        }
-        else if (layer == Layers.Obj)
-        {
-            if (hit.collider.CompareTag(Tags.Object))
-            {
-                hold_target = hit.transform;
-
-                return InteractType.Hold;
-            }
-
-            else if (hit.collider.CompareTag(Tags.Wagon))
-            {
-                dragObject = hit.transform;
-
-                return InteractType.Wagon;
-            }
-        }
-
-        return InteractType.None;
-    }
-
-    public void DrawLineRaycatAllways(float distance = 0f)
-    {
-        if (distance != 0)
-        {
-            Raycast(distance);
-        }
-        else
-        {
-            Raycast(RAY_DISTANCE);
+            hit.collider.GetComponent<IInteractable>()?.Interact(this);
         }
     }
 

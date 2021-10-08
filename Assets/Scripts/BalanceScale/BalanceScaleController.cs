@@ -9,10 +9,10 @@ public class BalanceScaleController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == Tags.Minimi) 
+        /*if (other.tag == Tags.Minimi) 
         {
             balanceScale.AddMinimi(other, isLeft);
-        }
+        }*/
     }
 
 }
