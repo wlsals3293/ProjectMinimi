@@ -93,6 +93,8 @@ public partial class PlayerController : BaseCharacterController
 
     private PlayerAbility playerAbility = null;
 
+    private Transform hold_target = null;
+
 
 
 

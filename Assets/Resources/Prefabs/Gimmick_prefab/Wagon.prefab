@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 250707614633729382}
   - component: {fileID: 250707614633729385}
   - component: {fileID: 250707614633729384}
-  - component: {fileID: 4175278026264661546}
+  - component: {fileID: 8586873601164168081}
   m_Layer: 8
   m_Name: Wagon
   m_TagString: Untagged
@@ -129,7 +129,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4175278026264661546
+--- !u!114 &8586873601164168081
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 250707614633729387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 256cd439a8767e44caaf68d12b7a518b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a769942e48078a418a5b370d6bf0395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &250707614752650421

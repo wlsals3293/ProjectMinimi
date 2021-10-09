@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using ECM.Controllers;
-using ECM.Common;
+using UnityEngine;
 
 public partial class PlayerController : BaseCharacterController
 {
     public float dragSpeed = 3.0f;
-
-    private Transform dragObject = null;
 
     private Vector3 dragDir = Vector3.zero;
 
@@ -24,19 +19,14 @@ public partial class PlayerController : BaseCharacterController
 
     private void Drag_Enter(PlayerState prev)
     {
-        if (dragObject != null)
-        {
-            transform.rotation = dragObject.rotation;
-            Vector3 handle = dragObject.Find("PlayerLocation").transform.position;
-            transform.position = new Vector3(handle.x, transform.position.y, handle.z);
-            dragDir = dragObject.transform.forward;
-            dragObject.parent = transform;
+        transform.rotation = hold_target.rotation;
+        Vector3 handle = hold_target.Find("PlayerLocation").transform.position;
+        transform.position = new Vector3(handle.x, transform.position.y, handle.z);
+        dragDir = hold_target.transform.forward;
+        hold_target.parent = transform;
 
-            animator.SetTrigger("ToDrag");
-            animator.SetBool("Drag", true);
-        }
-        else
-            ChangeState(PlayerState.Idle);
+        animator.SetTrigger("ToDrag");
+        animator.SetBool("Drag", true);
     }
 
     private void Drag_Update()
@@ -58,10 +48,10 @@ public partial class PlayerController : BaseCharacterController
 
     private void Drag_Exit(PlayerState next)
     {
-        if (dragObject != null)
+        if (hold_target != null)
         {
-            dragObject.transform.parent = null;
-            dragObject = null;
+            hold_target.transform.parent = null;
+            hold_target = null;
         }
         animator.SetBool("Drag", false);
         animator.SetBool("Push", false);
@@ -69,10 +59,19 @@ public partial class PlayerController : BaseCharacterController
     }
     #endregion
 
+    public void Drag(Transform target)
+    {
+        if (target != null)
+        {
+            hold_target = target;
+            fsm.ChangeState(PlayerState.Drag);
+        }
+    }
+
     private void Drag_GetInput()
     {
         if (key_interact)
-            ChangeState(PlayerState.Idle);
+            fsm.ChangeState(PlayerState.Idle);
     }
 
     private void Drag_Animate()

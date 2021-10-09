@@ -16,7 +16,6 @@ public partial class PlayerController : BaseCharacterController
     private float savedMoveSpeed;
 
 
-    private Transform hold_target = null;
 
     #region <행동 추가시 디폴트 작업>
     private void Hold_SetState()
@@ -67,9 +66,7 @@ public partial class PlayerController : BaseCharacterController
     private void Hold_GetInput()
     {
         if (key_interact)
-        {
             fsm.ChangeState(PlayerState.Idle);
-        }
 
         moveDirection = moveDirection.relativeTo(CameraT);
     }
