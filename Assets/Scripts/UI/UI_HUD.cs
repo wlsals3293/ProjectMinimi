@@ -9,8 +9,8 @@ public class UI_HUD : MonoBehaviour
     [SerializeField]
     private GameObject crossHair;
 
-    [SerializeField]
-    private GameObject[] life;
+    //[SerializeField]
+    //private GameObject[] life;
 
     [SerializeField]
     private GameObject behaviourDesc;
@@ -29,7 +29,7 @@ public class UI_HUD : MonoBehaviour
     public void Init()
     {
         VisibleCrossHair(false);
-        PlayerManager.Instance.PlayerChar.onHpChanged += SetLife;
+        //PlayerManager.Instance.PlayerChar.onHpChanged += SetLife;
     }
 
     public void VisibleCrossHair(bool isVisible)
@@ -39,10 +39,10 @@ public class UI_HUD : MonoBehaviour
 
     public void SetLife(int amount)
     {
-        for (int i = 0; i < 3; i++)
+        /*for (int i = 0; i < 3; i++)
         {
             life[i].SetActive(i + 1 <= amount);
-        }
+        }*/
     }
 
     private void UpdateKeyDisplay()
