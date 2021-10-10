@@ -10,14 +10,11 @@ public class HitSwitch : SwitchBase
 
     bool isInvincibility = false;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag(Tags.SwallowableObject) && !isInvincibility)
-        {
             isInvincibility = true;
             if (!IsActivate) IsActivate = true;
             else IsActivate = false;
-        }
     }
 
     private void Update()
