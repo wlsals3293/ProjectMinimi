@@ -10,13 +10,15 @@ public class Bramble : MonoBehaviour, IHitable
     private bool isBurn = false;
     private bool isDigestion = false;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
+        SpiritProjectile projectile = other.gameObject.GetComponent<SpiritProjectile>();
+
         ExtraDamageInfo extraDamageInfo;
 
-        if (collision.gameObject.layer == Layers.Player)
+        if (other.gameObject.layer == Layers.Player)
         {
-            PlayerCharacter player = collision.gameObject.GetComponent<PlayerCharacter>();
+            PlayerCharacter player = other.gameObject.GetComponent<PlayerCharacter>();
 
             if (player != null)
             {
@@ -24,28 +26,47 @@ public class Bramble : MonoBehaviour, IHitable
                 player.TakeDamage(1, extraDamageInfo);
             }
         }
+        else if (other.gameObject == projectile.gameObject)
+        {
+            if (projectile != null)
+            {
+                if(other.gameObject.name == "FireSpiritProjectile(Clone)")
+                {
+                    Debug.Log("Create is fire effect & UI processing");
+                    extraDamageInfo = new ExtraDamageInfo(ElementType.Fire);
+                    this.TakeDamage(0, extraDamageInfo);
+                }
+                else if (other.gameObject.name == "WaterSpiritProjectile(Clone)")
+                {
+                    Debug.Log("Create is water effect & UI processing");
+                    extraDamageInfo = new ExtraDamageInfo(ElementType.Water);
+                    this.TakeDamage(0, extraDamageInfo);
+                }
+
+                Destroy(projectile.gameObject);
+            }
+        }
     }
 
     private void Update()
     {
-        if (isBurn == true)
+        if (isBurn)
         {
             burning -= Time.deltaTime;
         }
 
-        if(burning > 0.0f)
+        if (burning > 0.0f)
         {
-            Debug.Log("Create is Water effect & UI processing");
-            if (isDigestion == true)
+            if (isDigestion)
             {
                 Destroy(this.gameObject);
             }
         }
         else if (burning < 0.0f)
         {
-            Debug.Log("Create is fire effect & UI processing");
             Destroy(this.gameObject);
             isBurn = false;
+            isDigestion = false;
         }
     }
 
