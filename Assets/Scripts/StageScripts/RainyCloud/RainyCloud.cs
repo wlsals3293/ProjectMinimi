@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 
 public enum CloudType
@@ -180,7 +181,7 @@ public class RainyCloud : MonoBehaviour, IHitable
 
         step++;
         effectRadius = cloudSizeList[step] * effectRangeRate * 0.5f;
-        transform.localScale = new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]);
+        transform.DOScale(new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]), 1f).SetEase(Ease.OutElastic);
     }
 
     /// <summary>
@@ -194,7 +195,7 @@ public class RainyCloud : MonoBehaviour, IHitable
 
         step--;
         effectRadius = cloudSizeList[step] * effectRangeRate * 0.5f;
-        transform.localScale = new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]);
+        transform.DOScale(new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]), 1f).SetEase(Ease.OutElastic);
     }
 
     public void SetRainActive(bool active)
