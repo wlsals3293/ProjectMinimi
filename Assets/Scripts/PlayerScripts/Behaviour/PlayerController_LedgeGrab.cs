@@ -100,14 +100,14 @@ public partial class PlayerController : BaseCharacterController
             return;
 
         // 캐릭터 전방으로 레이를 쏴서 히트했는지 체크
-        if (RaycastForward(out RaycastHit hit, ledgeDistance, LayerMasks.Ground))
+        if (RaycastForward(out RaycastHit hit, ledgeDistance, LayerMasks.GO))
         {
             Vector3 grabForward = Vector3.ProjectOnPlane(-hit.normal, Vector3.up).normalized;
             Vector3 pos = hit.point + (grabForward * 0.2f) + (transform.up * ledgeHeight);
 
 
             // 첫번째 레이가 히트한 위치를 기준으로 위에서 아래로 다시 레이를 쏴 히트했는지 체크
-            if (Physics.Raycast(pos, -transform.up, out RaycastHit hit2, 0.3f, LayerMasks.Ground))
+            if (Physics.Raycast(pos, -transform.up, out RaycastHit hit2, 0.3f, LayerMasks.GO))
             {
                 // 히트한 땅의 각도가 대략 45도보다 크면 리턴
                 float dot = Vector3.Dot(hit2.normal, Vector3.up);

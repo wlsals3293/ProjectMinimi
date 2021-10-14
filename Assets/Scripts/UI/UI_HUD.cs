@@ -18,11 +18,25 @@ public class UI_HUD : MonoBehaviour
     [SerializeField]
     private Image[] keyDisplay;
 
+    [SerializeField]
+    private RectTransform joystickBackground;
 
+    [SerializeField]
+    private RectTransform joystickCenterCircle;
+
+    private float joystickMoveRadius;
+
+
+    private void Awake()
+    {
+        Rect joystickSize = joystickBackground.rect;
+        joystickMoveRadius = joystickSize.width * 0.5f * 0.8f;
+    }
 
     private void Update()
     {
-        UpdateKeyDisplay();
+        UpdateInputDisplay();
+        UpdateJoystick();
     }
 
 
@@ -45,30 +59,6 @@ public class UI_HUD : MonoBehaviour
         }*/
     }
 
-    private void UpdateKeyDisplay()
-    {
-        if (keyDisplay.Length < 8)
-            return;
-
-        SetKeyDisplay(0, Input.GetMouseButton(0));
-        SetKeyDisplay(1, Input.GetMouseButton(1));
-
-        SetKeyDisplay(2, Input.GetKey(KeyCode.Space));
-        SetKeyDisplay(3, Input.GetKey(KeyCode.W));
-        SetKeyDisplay(4, Input.GetKey(KeyCode.A));
-        SetKeyDisplay(5, Input.GetKey(KeyCode.S));
-        SetKeyDisplay(6, Input.GetKey(KeyCode.D));
-        SetKeyDisplay(7, Input.GetKey(KeyCode.E));
-
-    }
-
-    private void SetKeyDisplay(int idx, bool isActive)
-    {
-        Color btnColor = isActive ? Color.gray : Color.white;
-
-        keyDisplay[idx].color = btnColor;
-    }
-
     public void SetBehaviourDesc(bool isActive)
     {
         if (behaviourDesc == null)
@@ -76,4 +66,38 @@ public class UI_HUD : MonoBehaviour
 
         behaviourDesc.SetActive(isActive);
     }
+
+    private void UpdateInputDisplay()
+    {
+        SetKeyDisplay(0, Input.GetMouseButton(0));
+        SetKeyDisplay(1, Input.GetMouseButton(1));
+
+        SetKeyDisplay(2, Input.GetKey(KeyCode.Space));
+        SetKeyDisplay(3, Input.GetKey(KeyCode.E));
+    }
+
+    private void UpdateJoystick()
+    {
+        Vector2 direction = new Vector2
+        {
+            x = Input.GetAxisRaw("Horizontal"),
+            y = Input.GetAxisRaw("Vertical")
+        };
+        direction.Normalize();
+        direction *= joystickMoveRadius;
+
+        joystickCenterCircle.anchoredPosition = direction;
+    }
+
+    private void SetKeyDisplay(int idx, bool isActive)
+    {
+        if (keyDisplay[idx] == null)
+            return;
+
+        Color btnColor = isActive ? Color.gray : Color.white;
+
+        keyDisplay[idx].color = btnColor;
+    }
+
+    
 }

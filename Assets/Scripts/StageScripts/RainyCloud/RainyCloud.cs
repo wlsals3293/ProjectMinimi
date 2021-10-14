@@ -1,7 +1,6 @@
-using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 
 public enum CloudType
@@ -16,16 +15,25 @@ public class RainyCloud : MonoBehaviour, IHitable
 {
     [Header("Cloud")]
 
+    [Tooltip("현재 구름 유형")]
+    [SerializeField, ReadOnly]
+    private CloudType currentType = CloudType.None;
+
     [Tooltip("효과가 미치는 범위의 비율. 구름 크기에 비례")]
-    public float effectRangeRate = 1f;
+    [SerializeField, Range(0f, 1.5f)]
+    private float effectRangeRate = 1f;
+
+    [Tooltip("구름크기 변경시간")]
+    [SerializeField, Range(0f, 5f)]
+    private float sizeTransitionTime = 1f;
 
     [Tooltip("구름의 단계별 사이즈 (X, Z 축 통합)")]
     [SerializeField]
     private float[] cloudSizeList;
 
-    [Tooltip("현재 구름 유형")]
-    [SerializeField, ReadOnly]
-    private CloudType currentType = CloudType.None;
+    
+
+    
 
     private RainyCloudState currentState = null;
 
@@ -57,6 +65,8 @@ public class RainyCloud : MonoBehaviour, IHitable
     private float lightningExplosionRadius = 3f;
 
 
+
+    public Puddle ParentPuddle { get => parentPuddle; set => parentPuddle = value; }
 
     public float CloudSize { get => cloudSizeList[step]; }
 
@@ -155,13 +165,6 @@ public class RainyCloud : MonoBehaviour, IHitable
 
             case CloudType.Lightning:
                 // 번개구름일때는 피해무시
-
-                // 테스트로 용 임시 변환
-                /*if (damageElement == ElementType.Fire)
-                {
-                    // 흰구름으로 변화
-                    ChangeState(CloudType.White);
-                }*/
                 break;
         }
     }
@@ -180,8 +183,13 @@ public class RainyCloud : MonoBehaviour, IHitable
             return;
 
         step++;
+
+        // 효과범위 변경
         effectRadius = cloudSizeList[step] * effectRangeRate * 0.5f;
-        transform.DOScale(new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]), 1f).SetEase(Ease.OutElastic);
+
+        // 크기 변경
+        Vector3 cloudSize = new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]);
+        transform.DOScale(cloudSize, sizeTransitionTime).SetEase(Ease.OutElastic);
     }
 
     /// <summary>
@@ -194,8 +202,13 @@ public class RainyCloud : MonoBehaviour, IHitable
             return;
 
         step--;
+
+        // 효과범위 변경
         effectRadius = cloudSizeList[step] * effectRangeRate * 0.5f;
-        transform.DOScale(new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]), 1f).SetEase(Ease.OutElastic);
+
+        // 크기 변경
+        Vector3 cloudSize = new Vector3(cloudSizeList[step], 1f, cloudSizeList[step]);
+        transform.DOScale(cloudSize, sizeTransitionTime).SetEase(Ease.OutElastic);
     }
 
     public void SetRainActive(bool active)
@@ -203,15 +216,13 @@ public class RainyCloud : MonoBehaviour, IHitable
         temp_rain.SetActive(active);
     }
 
+    /// <summary>
+    /// 첫 활성화시 실행됨
+    /// </summary>
     public void Activate()
     {
         ChangeState(CloudType.White);
         IncreaseStep();
-    }
-
-    public void SetParent(Puddle parent)
-    {
-        parentPuddle = parent;
     }
 
     public Collider[] GetBoundingBoxObjects()
