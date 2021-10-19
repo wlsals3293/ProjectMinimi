@@ -1,18 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class Tags
 {
     [Obsolete]
-    public const string Minimi = "Minimi";
-    public const string Enemy = "Enemy";
+    public const string Minimi = "Minimi";      // 삭제 예정
+    //public const string Enemy = "Enemy";      // 보류
     public const string Player = "Player";
     public const string StageInfo = "StageInfo";
-    public const string SwallowableObject = "SwallowableObject";
-    public const string DistructibleObject = "DistructibleObject";
-    //public const string Conductor = "Conductor";    // 보류
+    public const string Conductor = "Conductor";
 }
 
 public static class Layers

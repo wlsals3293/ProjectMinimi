@@ -1,8 +1,6 @@
 using System.Text;
 
 
-
-
 public static class ResourcePath
 { 
     private const string PATH_PREFAB = "Prefabs/";
@@ -37,7 +35,6 @@ public static class ResourcePath
 /// </summary>
 public static class PrefabNames
 {
-    public const string Minimi_Dump = "Minimi_dump";
     public const string Player = "Player";
     public const string BlockMinimi = "BlockMinimi";
 }

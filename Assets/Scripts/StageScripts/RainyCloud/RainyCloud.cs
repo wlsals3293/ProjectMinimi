@@ -33,8 +33,6 @@ public class RainyCloud : MonoBehaviour, IHitable
 
     
 
-    
-
     private RainyCloudState currentState = null;
 
     private Dictionary<CloudType, RainyCloudState> states = new Dictionary<CloudType, RainyCloudState>();
@@ -47,7 +45,8 @@ public class RainyCloud : MonoBehaviour, IHitable
     /// <summary>
     /// 부모 웅덩이
     /// </summary>
-    private Puddle parentPuddle = null;
+    [HideInInspector]
+    public Puddle parentPuddle = null;
 
 
 
@@ -65,8 +64,6 @@ public class RainyCloud : MonoBehaviour, IHitable
     private float lightningExplosionRadius = 3f;
 
 
-
-    public Puddle ParentPuddle { get => parentPuddle; set => parentPuddle = value; }
 
     public float CloudSize { get => cloudSizeList[step]; }
 
@@ -211,6 +208,10 @@ public class RainyCloud : MonoBehaviour, IHitable
         transform.DOScale(cloudSize, sizeTransitionTime).SetEase(Ease.OutElastic);
     }
 
+    /// <summary>
+    /// 비 내리는 이펙트 활성화. 일단 임시
+    /// </summary>
+    /// <param name="active"></param>
     public void SetRainActive(bool active)
     {
         temp_rain.SetActive(active);

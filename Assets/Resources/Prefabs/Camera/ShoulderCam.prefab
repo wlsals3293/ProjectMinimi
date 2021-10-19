@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3441336770631161294}
   - component: {fileID: 3441336770631161295}
   - component: {fileID: 8867003861791710120}
+  - component: {fileID: 1649590397822155743}
   m_Layer: 0
   m_Name: ShoulderCam
   m_TagString: Untagged
@@ -87,6 +88,22 @@ MonoBehaviour:
   pitch: 0
   yaw: 0
   pitchMinMax: {x: -70, y: 89}
+--- !u!114 &1649590397822155743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3441336770631161288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
 --- !u!1 &3441336771199970320
 GameObject:
   m_ObjectHideFlags: 0

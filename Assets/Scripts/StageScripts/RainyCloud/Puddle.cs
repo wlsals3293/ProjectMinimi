@@ -37,7 +37,7 @@ public class Puddle : MonoBehaviour, IHitable
                     "RainyCloud", PrefabPath.RainyCloud, null);
 
                 cloud.transform.position = transform.position + Vector3.up * cloudHeight;
-                cloud.ParentPuddle = this;
+                cloud.parentPuddle = this;
 
                 // TODO: 임시로 2초후 활성화, 나중에 일종의 발사체인 연기가 구름 위치에
                 //       다다르면 활성화 하도록 변경할 예정

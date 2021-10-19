@@ -7,8 +7,6 @@ TagManager:
   - Minimi
   - SubCamera
   - StageInfo
-  - SwallowableObject
-  - DistructibleObject
   - Conductor
   layers:
   - Default
