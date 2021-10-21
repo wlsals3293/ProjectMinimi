@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class FreeLookCamController : CameraController
 {
     [Header("FreeLook")]
@@ -146,6 +147,8 @@ public class FreeLookCamController : CameraController
 
         targetEulerAngles.x = pitch;
         targetEulerAngles.y = yaw;
+
+        currentRotation.eulerAngles = targetEulerAngles;
     }
 
     /// <summary>

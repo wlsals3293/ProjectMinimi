@@ -1,11 +1,12 @@
 using UnityEngine;
 
+
 public class ShoulderCamController : CameraController
 {
 
-
-    [Tooltip("카메라 상하회전 최소, 최대값")]
-    public Vector2 pitchMinMax = new Vector2(-70.0f, 89.9f);
+    [Tooltip("카메라 상하회전 최소, 최대각도")]
+    [SerializeField]
+    private AngleLimit pitchLimit = new AngleLimit(-70.0f, 89.9f);
 
 
     /// <summary>
@@ -42,6 +43,8 @@ public class ShoulderCamController : CameraController
 
         if (pitch > 180.0f) pitch -= 360.0f;
         else if (pitch < -180.0f) pitch += 360.0f;
+
+        currentRotation = Quaternion.Euler(pitch, yaw, 0.0f);
     }
 
     /// <summary>
@@ -57,7 +60,7 @@ public class ShoulderCamController : CameraController
         else if (yaw > 180.0f)
             yaw -= 360.0f;
 
-        pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
+        pitch = Mathf.Clamp(pitch, pitchLimit.min, pitchLimit.max);
 
         currentRotation = Quaternion.Euler(pitch, yaw, 0.0f);
     }

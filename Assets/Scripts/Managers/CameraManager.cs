@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CameraManager : BaseManager<CameraManager>
 {
     private const int CAMERA_PRIORITY_DEFAULT = 10;
@@ -15,11 +16,18 @@ public class CameraManager : BaseManager<CameraManager>
     /// </summary>
     private Camera mainCam;
 
+    private CinemachineBrain brain;
+
 
     /// <summary>
     /// 현재 활성화되어있는 카메라 컨트롤러
     /// </summary>
     private CameraController curCameraCtrl = null;
+
+    /// <summary>
+    /// 바로 이전에 활성화됐었던 카메라 컨트롤러
+    /// </summary>
+    private CameraController preCameraCtrl = null;
 
     /// <summary>
     /// 자유시점 카메라 컨트롤러
@@ -53,6 +61,8 @@ public class CameraManager : BaseManager<CameraManager>
 
     public CameraController CurrentCameraCtrl { get => curCameraCtrl; }
 
+    public bool IsBlending { get => brain.IsBlending; }
+
 
 
     protected override void Awake()
@@ -72,6 +82,10 @@ public class CameraManager : BaseManager<CameraManager>
         {
             curCameraCtrl.CameraUpdate();
         }
+        if (preCameraCtrl != null && brain.IsBlending)
+        {
+            preCameraCtrl.CameraUpdate();
+        }
 
         TempInputCamera();
     }
@@ -82,6 +96,7 @@ public class CameraManager : BaseManager<CameraManager>
     public void Initialize()
     {
         mainCam = Camera.main;
+        brain = mainCam.GetComponent<CinemachineBrain>();
 
         if (freeLookCam == null)
         {
@@ -135,7 +150,10 @@ public class CameraManager : BaseManager<CameraManager>
         if (customCameraDic.ContainsKey(idx))
         {
             if (curCameraCtrl != null)
-                curCameraCtrl.Priority = CAMERA_PRIORITY_DEFAULT;
+            {
+                preCameraCtrl = curCameraCtrl;
+                preCameraCtrl.Priority = CAMERA_PRIORITY_DEFAULT;
+            }
 
             curCameraCtrl = customCameraDic[idx];
             curCameraCtrl.Priority = CAMERA_PRIORITY_PLAYER;
