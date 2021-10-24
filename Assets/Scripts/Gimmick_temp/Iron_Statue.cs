@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Iron_Statue : IronObjectBase, IHitable, IInteractable
+public class Iron_Statue : ConductorBase, IHitable
 {
     protected override void Awake()
     {
         base.Awake();
 
+        overlapSize = new Vector3(1.5f, 1.5f, 1.5f);
         overlapLayer = LayerMasks.PO;
     }
 
-    public void TakeDamage(int amount)
-    {
-
-    }
+    public void TakeDamage(int amount) { }
 
     public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
     {
@@ -23,7 +21,7 @@ public class Iron_Statue : IronObjectBase, IHitable, IInteractable
             if (extraDamageInfo.damageCauser == null) 
             {
                 electricityEventInfo.source = this.transform;
-                electricityEventInfo.EventNum++;
+                ElectricityManager.Instance.AddEventNum(out electricityEventInfo.EventNum);
             }
 
             if (!IsActivate)
@@ -35,11 +33,5 @@ public class Iron_Statue : IronObjectBase, IHitable, IInteractable
                 curElectricityTime = Time.time;
             }
         }
-    }
-
-    public void Interact(PlayerController player)
-    {
-        player.Hold(this.transform);
-        
     }
 }

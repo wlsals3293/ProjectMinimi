@@ -2,25 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IronObjectBase : MonoBehaviour
+public class ConductorBase : MonoBehaviour
 {
-    public Renderer rendererComponent;
-    public Vector3 overlapCenter;
-    public Vector3 overlapSize;
     public LayerMask overlapLayer;
 
     public ElementType curElementType;
     public float electricity_Interval = 0;
+    public float knockbackForce = 0;
 
     public ElectricityEventInfo electricityEventInfo;
 
-    [SerializeField]
-    bool isActivate = false;
-    bool isTakeDamaged = false;
-
+    [Header("디버그용. 전도 시간 표시")]
     public bool DebugFlag = false;
 
     protected float curElectricityTime = 0;
+    protected Vector3 overlapSize;
+
+    private Renderer rendererComponent;
+    private bool isActivate = false;
+    private bool isTakeDamaged = false;
 
     public bool IsActivate
     {
@@ -31,9 +31,9 @@ public class IronObjectBase : MonoBehaviour
 
             if (isActivate)
             {
-                curElectricityTime = Time.time;
                 rendererComponent.material.color = Color.yellow;
                 curElementType = ElementType.Electricity;
+                curElectricityTime = Time.time;
             }
             else
             {
@@ -50,13 +50,19 @@ public class IronObjectBase : MonoBehaviour
         curElementType = ElementType.None;
     }
 
+    private void Update()
+    {
+        if (GetComponentInChildren<TextMesh>())
+            GetComponentInChildren<TextMesh>().text = electricityEventInfo.EventNum.ToString();
+    }
+
     protected IEnumerator OnActivateElectricity()
     {
         IsActivate = true;
 
         while (true)
         {
-            if(DebugFlag)
+            if (DebugFlag)
                 Debug.LogWarning("Name: " + this.gameObject.name + "  Electricity Remain: " + (Time.time - curElectricityTime));
 
             if (Time.time - curElectricityTime >= electricity_Interval)
@@ -71,13 +77,13 @@ public class IronObjectBase : MonoBehaviour
         }
     }
 
-    void DetectOtherColliders()
+    private void DetectOtherColliders()
     {
         Collider[] _overlapedCols = Physics.OverlapBox
         (
             transform.position,
             overlapSize / 2,
-            Quaternion.identity,
+            transform.rotation,
             overlapLayer
         );
 
@@ -86,17 +92,20 @@ public class IronObjectBase : MonoBehaviour
             if (_overlapedCols[i].transform == this.transform)
                 continue;
 
-            if (_overlapedCols[i].GetComponent<IronObjectBase>())
+            if (_overlapedCols[i].CompareTag("Conductor"))
             {
                 ElectricityManager.Instance.TestFlow(this.transform, _overlapedCols[i].transform);
             }
-            else if (_overlapedCols[i].GetComponent<PlayerCharacter>())
+            else if (_overlapedCols[i].gameObject.layer == Layers.Player)
             {
                 PlayerCharacter _other = _overlapedCols[i].GetComponent<PlayerCharacter>();
 
                 if (!isTakeDamaged)
                 {
                     isTakeDamaged = true;
+
+                    Vector3 forceDir = _other.transform.forward * -1 * knockbackForce;
+                    _other.GetComponent<Rigidbody>().AddForce(forceDir, ForceMode.Impulse);
                     _other.TakeDamage(1);
                 }
             }
@@ -105,7 +114,7 @@ public class IronObjectBase : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerCharacter>())
+        if (other.gameObject.layer == Layers.Player)
         {
             isTakeDamaged = false;
         }
@@ -116,5 +125,4 @@ public class IronObjectBase : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position, overlapSize);
     }
-
 }
