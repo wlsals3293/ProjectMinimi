@@ -476,7 +476,8 @@ public partial class PlayerController : BaseCharacterController
     {
         Vector3 pos = transform.position + (transform.up * (col.height * 0.5f));
 
-        bool result = Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance, layerMask);
+        bool result = Physics.Raycast(pos, transform.forward, out hitInfo, maxDistance,
+            layerMask, QueryTriggerInteraction.Ignore);
 
 #if UNITY_EDITOR
         if (result)
