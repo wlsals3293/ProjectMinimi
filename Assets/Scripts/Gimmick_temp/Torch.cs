@@ -6,12 +6,26 @@ public class Torch : MonoBehaviour, IHitable
 {
     [Tooltip("활성화 여부")]
     [SerializeField]
-    private bool active = false;
+    private bool activate = false;
+
+    [Tooltip("일반 = 체크 해제 / 특수 = 체크")]
+    [SerializeField]
+    private bool isSpecial = false;
     private bool burn = false;
 
-    private void TorchStatus(bool set_Active)
+    private TimerInstance timer;
+
+    private void Awake()
     {
-        if(set_Active)
+        if(activate)
+        {
+            SetBurningTorch(true);
+        }
+    }
+
+    private void SetBurningTorch(bool getActive)
+    {
+        if(getActive)
         {
             burn = true;
             Debug.Log("Create fire effect");
@@ -23,9 +37,10 @@ public class Torch : MonoBehaviour, IHitable
         }
     }
 
-    private void Awake()
+    private void OnSpecialType()
     {
-        TorchStatus(active);
+        SetBurningTorch(activate);
+        timer = null;
     }
 
     public void TakeDamage(int amount)
@@ -34,13 +49,28 @@ public class Torch : MonoBehaviour, IHitable
 
     public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
     {
-        if(extraDamageInfo.elementType == ElementType.Fire)
+        if(!burn && extraDamageInfo.elementType == ElementType.Fire)
         {
-            TorchStatus(true);
+            if (timer != null)
+            {
+                timer.Renew();
+            }
+
+            SetBurningTorch(true);
         }
         else if (burn && extraDamageInfo.elementType == ElementType.Water)
         {
-            TorchStatus(false);
+            if (timer != null)
+            {
+                timer.Renew();
+            }
+
+            SetBurningTorch(false);
+        }
+
+        if (isSpecial)
+        {
+            timer = Timer.SetTimer(this, OnSpecialType, 2.0f);
         }
     }
 }

@@ -10,15 +10,24 @@ public struct ElectricityEventInfo
 
 public class ElectricityManager : BaseManager<ElectricityManager>
 {
+    //Queue<ElectricityEventInfo> electricityEventQueue;
+    int latestEventNum = 0;
+
     protected override void Awake()
     {
         base.Awake();
     }
 
+    public void AddEventNum(out int _eventNum)
+    {
+        latestEventNum++;
+        _eventNum = latestEventNum;
+    }
+
     public void TestFlow(Transform giver, Transform taker)
     {
-        IronObjectBase _giver = giver.GetComponent<IronObjectBase>();
-        IronObjectBase _taker = taker.GetComponent<IronObjectBase>();
+        ConductorBase _giver = giver.GetComponent<ConductorBase>();
+        ConductorBase _taker = taker.GetComponent<ConductorBase>();
 
         if (_giver.electricityEventInfo.EventNum == _taker.electricityEventInfo.EventNum)
         {
@@ -35,7 +44,6 @@ public class ElectricityManager : BaseManager<ElectricityManager>
             }
             else
                 return;
-
         }
     }
 }

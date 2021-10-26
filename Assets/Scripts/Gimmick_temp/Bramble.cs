@@ -7,19 +7,17 @@ public class Bramble : MonoBehaviour, IHitable
     [SerializeField]
     private float burningTime = 3.0f;
 
-    private Coroutine burning;
+    private TimerInstance burning;
 
     private void OnCollisionEnter(Collision collision)
     {
-        ExtraDamageInfo extraDamageInfo;
-
         if (collision.gameObject.layer == Layers.Player)
         {
             PlayerCharacter player = collision.gameObject.GetComponent<PlayerCharacter>();
 
             if (player != null)
             {
-                extraDamageInfo = new ExtraDamageInfo(transform.position);
+                ExtraDamageInfo extraDamageInfo = new ExtraDamageInfo(transform.position);
                 player.TakeDamage(1, extraDamageInfo);
             }
         }
@@ -35,7 +33,7 @@ public class Bramble : MonoBehaviour, IHitable
         {
             Debug.Log("Create is fire effect & UI processing");
 
-            burning = StartCoroutine(Burning());
+            burning = Timer.SetTimer(this, Burning, 3.0f);
         }
         else if (extraDamageInfo.elementType == ElementType.Water)
         {
@@ -43,16 +41,15 @@ public class Bramble : MonoBehaviour, IHitable
 
             if (burning != null)
             {
-                StopCoroutine(burning);
-                Destroy(this.gameObject);
+                burning.Cancel();
+                Burning();
             }
         }
     }
 
-    private IEnumerator Burning()
+    private void Burning()
     {
-        yield return new WaitForSeconds(burningTime);
-
+        burning = null;
         Destroy(this.gameObject);
     }
 }

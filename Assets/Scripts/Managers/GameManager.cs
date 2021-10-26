@@ -28,9 +28,12 @@ public class GameManager : BaseManager<GameManager>
             SceneManager.Instance.onLoadComplete += InGameInit;
             InGameInit();
         }
-
     }
 
+    private void Update()
+    {
+        Timer.UpdateTimers(Time.deltaTime);
+    }
 
     // юс╫ц
     public void StartGame(ref string stageName)
@@ -44,6 +47,7 @@ public class GameManager : BaseManager<GameManager>
     /// </summary>
     public void InGameInit()
     {
+        Timer.Initialize();
         StageManager.Instance.Initialize();
         PlayerManager.Instance.Initialize();
         UIManager.Instance.SceneInit();
