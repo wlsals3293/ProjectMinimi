@@ -13,12 +13,13 @@ public class GameManager : BaseManager<GameManager>
     private bool escMenuOpened = false;
 
 
-
     protected override void Awake()
     {
         base.Awake();
 
         DontDestroyOnLoad(gameObject);
+
+        Timer.Initialize();
     }
 
     private void Start()

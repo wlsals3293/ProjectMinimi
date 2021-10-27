@@ -41,7 +41,6 @@ public class Puddle : MonoBehaviour, IHitable
 
                 // TODO: 임시로 2초후 활성화, 나중에 일종의 발사체인 연기가 구름 위치에
                 //       다다르면 활성화 하도록 변경할 예정
-                //cloud.Invoke("Activate", 2f);
                 Timer.SetTimer(cloud, cloud.Activate, 2f);
             }
             else

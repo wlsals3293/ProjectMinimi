@@ -64,6 +64,11 @@ public class RainyCloud : MonoBehaviour, IHitable
     private float lightningExplosionRadius = 3f;
 
 
+    [Tooltip("임시 번개 표시용 라인 렌더러")]
+    [HideInInspector]
+    public LineRenderer temp_LineRenderer;
+
+
 
     public float CloudSize { get => cloudSizeList[step]; }
 
@@ -93,6 +98,7 @@ public class RainyCloud : MonoBehaviour, IHitable
     private void Awake()
     {
         cachedCollider = GetComponent<Collider>();
+        temp_LineRenderer = GetComponent<LineRenderer>();
 
         AddState(CloudType.White, new RainyCloudState_White());
         AddState(CloudType.Rain, new RainyCloudState_Rain());
@@ -236,7 +242,8 @@ public class RainyCloud : MonoBehaviour, IHitable
         Vector3 boxCenter = transform.position + Vector3.down * (boxHalfExt.y + 1f);
 
         Collider[] results =
-            Physics.OverlapBox(boxCenter, boxHalfExt, transform.rotation, LayerMasks.Object);
+            Physics.OverlapBox(boxCenter, boxHalfExt, transform.rotation,
+            LayerMasks.Object, QueryTriggerInteraction.Ignore);
 
 
         // 웅덩이 콜라이더 다시 활성화

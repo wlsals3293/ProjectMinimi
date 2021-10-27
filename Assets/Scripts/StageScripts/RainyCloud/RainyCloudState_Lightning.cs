@@ -38,7 +38,9 @@ public class RainyCloudState_Lightning : RainyCloudState
 
         foreach (Collider col in colliders)
         {
-            // TODO : 전도체 판별하는 구간 추가
+            // 전도체가 아니라면 다음으로
+            if (!col.CompareTag(Tags.Conductor))
+                continue;
 
             Vector3 closestPoint = col.ClosestPoint(cloud.transform.position);
             Vector3 distanceVector = closestPoint - cloud.transform.position;
@@ -76,11 +78,14 @@ public class RainyCloudState_Lightning : RainyCloudState
 
         ExtraDamageInfo damageInfo = new ExtraDamageInfo(lightningPoint, ElementType.Electricity);
 
-        colliders = Physics.OverlapSphere(
-            lightningPoint, cloud.LightningExplosionRadius, LayerMasks.POE);
+        colliders = Physics.OverlapSphere(lightningPoint, cloud.LightningExplosionRadius,
+            LayerMasks.POE, QueryTriggerInteraction.Ignore);
 
-        // 디버그용 임시 표시
-        Debug.DrawLine(cloud.transform.position, lightningPoint, Color.yellow, 5f);
+
+        // 임시 번개 표시
+        cloud.temp_LineRenderer.SetPosition(0, cloud.transform.position);
+        cloud.temp_LineRenderer.SetPosition(1, lightningPoint);
+
 
         foreach (Collider col in colliders)
         {
@@ -90,6 +95,11 @@ public class RainyCloudState_Lightning : RainyCloudState
 
 
         yield return new WaitForSeconds(0.3f);
+
+        // 임시 번개 표시
+        cloud.temp_LineRenderer.SetPosition(0, cloud.transform.position);
+        cloud.temp_LineRenderer.SetPosition(1, cloud.transform.position);
+
 
         cloud.ChangeState(CloudType.White);
         cloud.DecreaseStep();
