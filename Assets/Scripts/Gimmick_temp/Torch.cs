@@ -11,7 +11,8 @@ public class Torch : MonoBehaviour, IHitable
     [Tooltip("일반 = 체크 해제 / 특수 = 체크")]
     [SerializeField]
     private bool isSpecial = false;
-    private bool burn = false;
+    [HideInInspector]
+    public bool burn = false;
 
     private TimerInstance timer;
 
