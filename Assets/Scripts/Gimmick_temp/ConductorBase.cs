@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class ConductorBase : MonoBehaviour
 {
-    public LayerMask overlapLayer;
-
-    public ElementType curElementType;
+    [HideInInspector] public LayerMask overlapLayer;
+    [HideInInspector] public ElementType curElementType;
     public float electricity_Interval = 0;
     public float knockbackForce = 0;
 
@@ -17,8 +16,8 @@ public class ConductorBase : MonoBehaviour
 
     protected float curElectricityTime = 0;
     protected Vector3 overlapSize;
+    protected Renderer rendererComponent;
 
-    private Renderer rendererComponent;
     private bool isActivate = false;
     private bool isTakeDamaged = false;
 
@@ -50,13 +49,7 @@ public class ConductorBase : MonoBehaviour
         curElementType = ElementType.None;
     }
 
-    private void Update()
-    {
-        if (GetComponentInChildren<TextMesh>())
-            GetComponentInChildren<TextMesh>().text = electricityEventInfo.EventNum.ToString();
-    }
-
-    protected IEnumerator OnActivateElectricity()
+    protected virtual IEnumerator OnActivateElectricity()
     {
         IsActivate = true;
 
@@ -77,7 +70,7 @@ public class ConductorBase : MonoBehaviour
         }
     }
 
-    private void DetectOtherColliders()
+    protected virtual void DetectOtherColliders()
     {
         Collider[] _overlapedCols = Physics.OverlapBox
         (
@@ -94,7 +87,7 @@ public class ConductorBase : MonoBehaviour
 
             if (_overlapedCols[i].CompareTag("Conductor"))
             {
-                ElectricityManager.Instance.TestFlow(this.transform, _overlapedCols[i].transform);
+                ElectricityManager.Instance.ElectricityProcess(this.transform, _overlapedCols[i].transform);
             }
             else if (_overlapedCols[i].gameObject.layer == Layers.Player)
             {
@@ -118,11 +111,5 @@ public class ConductorBase : MonoBehaviour
         {
             isTakeDamaged = false;
         }
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position, overlapSize);
     }
 }

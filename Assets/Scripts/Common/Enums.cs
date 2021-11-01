@@ -77,3 +77,9 @@ public enum ElementType
     Water,
     Electricity
 }
+
+public enum ElectricSwitchDurationType
+{
+    Continuation,
+    OnOff,
+}

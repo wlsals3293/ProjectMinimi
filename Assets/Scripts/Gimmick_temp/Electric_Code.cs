@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Electric_Code : ConductorBase, IHitable
 {
+    [Header("전기 전달할 회로")]
     public Transform Wire;
 
     public void TakeDamage(int amount) { }
@@ -11,6 +12,6 @@ public class Electric_Code : ConductorBase, IHitable
     public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
     {
         ElectricityManager.Instance.AddEventNum(out electricityEventInfo.EventNum);
-        Wire.GetComponent<Electric_Wire>().ActivateElectricity(this.transform, electricityEventInfo.EventNum);
+        Wire.GetComponent<Electric_Wire>().ActivateElectricWire(this.transform, electricityEventInfo.EventNum);
     }
 }
