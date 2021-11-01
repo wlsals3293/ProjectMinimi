@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : BaseManager<StageManager>
+public class StageManager : ManagerBase<StageManager>
 {
 
     /// <summary>

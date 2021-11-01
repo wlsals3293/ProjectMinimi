@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UIManager : BaseManager<UIManager>
+public class UIManager : ManagerBase<UIManager>
 {
     public enum EUIView
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Obsolete]
-public class MinimiManager : BaseManager<MinimiManager>
+public class MinimiManager : ManagerBase<MinimiManager>
 {
     /// <summary>
     /// 설치 높이 오차 허용값

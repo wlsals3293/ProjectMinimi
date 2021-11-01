@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class GameManager : BaseManager<GameManager>
+public class GameManager : ManagerBase<GameManager>
 {
     /// <summary>
     /// 스테이지 씬에서 바로 플레이할 때 체크. Editor Only

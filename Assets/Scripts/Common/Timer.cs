@@ -14,11 +14,6 @@ public static class Timer
     /// </summary>
     private static List<TimerInstance> timers = new List<TimerInstance>();
 
-    /// <summary>
-    /// 매 프레임 업데이트시 호출
-    /// </summary>
-    public static UnityAction<float> onUpdate;
-
 
     /// <summary>
     /// 타이머 인스턴스들을 비우고 초기화시킵니다. 씬이 변경됐을 때 호출하면 됩니다.
@@ -27,7 +22,6 @@ public static class Timer
     public static void Initialize()
     {
         curIndex = 0;
-        onUpdate = null;
         timers.Clear();
         timers.Add(new TimerInstance());
     }
@@ -85,7 +79,17 @@ public static class Timer
     /// <param name="deltaTime">델타 타임</param>
     public static void UpdateTimers(float deltaTime)
     {
-        onUpdate?.Invoke(deltaTime);
+        for (int i = 0; i < timers.Count; i++)
+        {
+            if (timers[i].IsRunning)
+            {
+                timers[i].ElapsedTime += deltaTime;
+                if (timers[i].ElapsedTime >= timers[i].TargetTime)
+                {
+                    timers[i].Finish();
+                }
+            }
+        }
     }
 
 }
@@ -127,7 +131,7 @@ public class TimerInstance
     /// <summary>
     /// 경과시간을 반환합니다.
     /// </summary>
-    public float ElapsedTime { get => elapsedTime; }
+    public float ElapsedTime { get => elapsedTime; set => elapsedTime = value; }
 
     /// <summary>
     /// 목표시간을 반환합니다.
@@ -149,20 +153,6 @@ public class TimerInstance
         onComplete = callback;
         targetTime = time;
         elapsedTime = 0f;
-        Timer.onUpdate += Update;
-    }
-
-    /// <summary>
-    /// 타이머를 업데이트 시킵니다. GameManager를 통해 자동으로 호출되어 처리됩니다.
-    /// </summary>
-    /// <param name="deltaTime"></param>
-    public void Update(float deltaTime)
-    {
-        elapsedTime += deltaTime;
-        if (elapsedTime >= targetTime)
-        {
-            Finish();
-        }
     }
 
     /// <summary>
@@ -170,7 +160,6 @@ public class TimerInstance
     /// </summary>
     public void Cancel()
     {
-        Timer.onUpdate -= Update;
         onComplete = null;
         caller = null;
         isRunning = false;
@@ -186,11 +175,10 @@ public class TimerInstance
 
     /// <summary>
     /// 타이머가 목표시간에 도달했을 때 처리를 위해 호출하는 메서드입니다.
+    /// 목표시간을 넘기면 자동으로 호출됩니다.
     /// </summary>
-    private void Finish()
+    public void Finish()
     {
-        Timer.onUpdate -= Update;
-
         if (caller != null && caller.isActiveAndEnabled)
             onComplete?.Invoke();
 

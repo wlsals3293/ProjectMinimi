@@ -8,7 +8,7 @@ public struct ElectricityEventInfo
     public int EventNum;
 }
 
-public class ElectricityManager : BaseManager<ElectricityManager>
+public class ElectricityManager : ManagerBase<ElectricityManager>
 {
     //Queue<ElectricityEventInfo> electricityEventQueue;
     int latestEventNum = 0;

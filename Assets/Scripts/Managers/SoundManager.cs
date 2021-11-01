@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
 
-public class SoundManager : BaseManager<SoundManager>
+public class SoundManager : ManagerBase<SoundManager>
 {
     [Tooltip("메인 오디오 믹서")]
     [SerializeField]

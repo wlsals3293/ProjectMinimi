@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class CameraManager : BaseManager<CameraManager>
+public class CameraManager : ManagerBase<CameraManager>
 {
     private const int CAMERA_PRIORITY_DEFAULT = 10;
     private const int CAMERA_PRIORITY_PLAYER = 100;

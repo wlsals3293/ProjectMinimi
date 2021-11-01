@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityScene = UnityEngine.SceneManagement;
 
 
-public class SceneManager : BaseManager<SceneManager>
+public class SceneManager : ManagerBase<SceneManager>
 {
     /// <summary>
     /// 씬 전환 준비 여부

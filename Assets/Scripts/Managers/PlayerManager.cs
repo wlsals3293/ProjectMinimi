@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : BaseManager<PlayerManager>
+public class PlayerManager : ManagerBase<PlayerManager>
 {
     
 
