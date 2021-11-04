@@ -18,7 +18,7 @@ public class ConductorBase : MonoBehaviour
     protected Vector3 overlapSize;
     protected Renderer rendererComponent;
 
-    private bool isActivate = false;
+    public bool isActivate = false;
     private bool isTakeDamaged = false;
 
     public bool IsActivate
