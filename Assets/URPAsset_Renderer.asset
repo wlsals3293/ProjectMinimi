@@ -37,7 +37,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 2960091035820944496}
   - {fileID: -1591894003751998502}
-  m_RendererFeatureMap: 70ecec241d5b1429daab497ad674e8e9
+  - {fileID: 4437025215397658754}
+  m_RendererFeatureMap: 70ecec241d5b1429daab497ad674e8e982803acfec7a933d
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
@@ -117,3 +118,19 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &4437025215397658754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa505740ea8d40c458a35c67fc1a9ab7, type: 3}
+  m_Name: RadialBlurFilter
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    renderPassEvent: 550
+    blitMaterial: {fileID: 2100000, guid: 9e454dbb060949d4bbb781206e3f2cbf, type: 2}

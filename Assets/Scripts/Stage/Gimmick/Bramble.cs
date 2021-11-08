@@ -31,13 +31,13 @@ public class Bramble : MonoBehaviour, IHitable
     {
         if (extraDamageInfo.elementType == ElementType.Fire)
         {
-            Debug.Log("Create is fire effect & UI processing");
+            //Debug.Log("Create is fire effect & UI processing");
 
-            burning = Timer.SetTimer(this, Burning, 3.0f);
+            burning = Timer.SetTimer(this, Burning, burningTime);
         }
         else if (extraDamageInfo.elementType == ElementType.Water)
         {
-            Debug.Log("Create is water effect & UI processing");
+            //Debug.Log("Create is water effect & UI processing");
 
             if (burning != null)
             {

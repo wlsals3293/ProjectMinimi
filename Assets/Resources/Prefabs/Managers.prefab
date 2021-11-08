@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039ff54d0c58e384e9b4c469808c0bdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rendererData: {fileID: 11400000, guid: 7d3597b24f9fb0d40934451590b9dca8, type: 2}
   lockCursor: 0
 --- !u!114 &115909478934908855
 MonoBehaviour:

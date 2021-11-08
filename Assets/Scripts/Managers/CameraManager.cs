@@ -1,6 +1,8 @@
 ﻿using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+
 
 
 public class CameraManager : ManagerBase<CameraManager>
@@ -9,6 +11,7 @@ public class CameraManager : ManagerBase<CameraManager>
     private const int CAMERA_PRIORITY_PLAYER = 100;
     private const int CAMERA_PRIORITY_SCENE = 500;
     private const int CAMERA_PRIORITY_CINEMATIC = 1000;
+
 
 
     /// <summary>
@@ -51,6 +54,17 @@ public class CameraManager : ManagerBase<CameraManager>
     private ICinemachineCamera curSceneCamera;
 
 
+
+
+    [SerializeField]
+    private ForwardRendererData rendererData;
+
+
+
+    private RadialBlurFilter radialBlurFilter = new RadialBlurFilter();
+
+
+
     [Tooltip("마우스 잠금")]
     [SerializeField]
     private bool lockCursor;
@@ -62,6 +76,10 @@ public class CameraManager : ManagerBase<CameraManager>
     public CameraController CurrentCameraCtrl { get => curCameraCtrl; }
 
     public bool IsBlending { get => brain.IsBlending; }
+
+    public ForwardRendererData RendererData { get => rendererData; }
+
+    public RadialBlurFilter RadialBlurFilter { get => radialBlurFilter; }
 
 
 
@@ -87,7 +105,6 @@ public class CameraManager : ManagerBase<CameraManager>
             preCameraCtrl.CameraUpdate();
         }
 
-        TempInputCamera();
     }
 
     /// <summary>
@@ -186,6 +203,8 @@ public class CameraManager : ManagerBase<CameraManager>
         curSceneCamera.Priority = CAMERA_PRIORITY_DEFAULT;
         curSceneCamera = null;
     }
+
+
 
     // 임시
     private void TempInputCamera()
