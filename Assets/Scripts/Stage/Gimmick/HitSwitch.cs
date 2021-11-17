@@ -2,39 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitSwitch : SwitchBase
-{ 
-    private CapsuleCollider coll;
+public class HitSwitch : Activator, IHitable
+{
+    [Tooltip("활성화 시간")]
+    [SerializeField]
+    private float activationTime = 3.0f;
 
-    float invincibility_Interval = 0f;
+    [SerializeField]
+    private Renderer switchRenderer;
 
-    bool isInvincibility = false;
+    [SerializeField]
+    private Material[] colorTemp;
 
-    private void OnTriggerEnter(Collider other)
+
+    private TimerInstance timerInstance;
+
+
+    public override void Activate()
     {
-            isInvincibility = true;
-            if (!IsActivate) IsActivate = true;
-            else IsActivate = false;
-    }
-
-    private void Update()
-    {
-        if (isInvincibility)
+        if (!isActive)
         {
-            invincibility_Interval += Time.deltaTime;
+            isActive = true;
 
-            if (invincibility_Interval > 0.5f)
+            for (int i = 0; i < activatees.Count; i++)
             {
-                isInvincibility = false;
-                invincibility_Interval = 0f;
+                if (activatees[i] != null)
+                    activatees[i].ReceiveSignal(true);
             }
+            if (radioGroup != null)
+            {
+                radioGroup.ActivateOnly(this);
+            }
+
+            if (timerInstance == null)
+                timerInstance = Timer.SetTimer(this, () => Deactivate(), activationTime);
+
+            if (switchRenderer != null && colorTemp[1] != null)
+                switchRenderer.material = colorTemp[1];
+        }
+        else
+        {
+            if (timerInstance != null)
+                timerInstance.Restart();
         }
     }
 
-
-    void Start()
+    public override void Deactivate()
     {
-        _thisColor = GetComponent<Renderer>();
-        _thisColor.material = _color_DontTouch[1];
+        base.Deactivate();
+
+        if (timerInstance != null)
+        {
+            timerInstance.Cancel();
+            timerInstance = null;
+        }
+
+        if (switchRenderer != null && colorTemp[0] != null)
+            switchRenderer.material = colorTemp[0];
+    }
+
+    public void TakeDamage(int amount)
+    {
+        Activate();
+    }
+
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
+    {
+        Activate();
     }
 }

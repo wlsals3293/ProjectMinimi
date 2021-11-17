@@ -11,7 +11,6 @@ public class Electric_Switch : ConductorBase
     protected override void Awake()
     {
         rendererComponent = switchRenderer;
-        curElementType = ElementType.None;
     }
 
     public void ActivateElectricSwitch()

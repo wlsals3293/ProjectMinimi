@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerSwitch : SwitchBase
+public class TriggerSwitch : Activator
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.layer == Layers.Player)
         {
-            IsActivate = true;
+            Activate();
         }
     }
 }

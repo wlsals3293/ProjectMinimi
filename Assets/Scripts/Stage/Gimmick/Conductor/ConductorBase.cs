@@ -5,9 +5,7 @@ using UnityEngine;
 public class ConductorBase : MonoBehaviour
 {
     [HideInInspector] public LayerMask overlapLayer;
-    [HideInInspector] public ElementType curElementType;
     public float electricity_Interval = 0;
-    public float knockbackForce = 0;
 
     public ElectricityEventInfo electricityEventInfo;
 
@@ -19,7 +17,6 @@ public class ConductorBase : MonoBehaviour
     protected Renderer rendererComponent;
 
     public bool isActivate = false;
-    private bool isTakeDamaged = false;
 
     public bool IsActivate
     {
@@ -31,14 +28,11 @@ public class ConductorBase : MonoBehaviour
             if (isActivate)
             {
                 rendererComponent.material.color = Color.yellow;
-                curElementType = ElementType.Electricity;
                 curElectricityTime = Time.time;
             }
             else
             {
                 rendererComponent.material.color = Color.white;
-                curElementType = ElementType.None;
-                isTakeDamaged = false;
             }
         }
     }
@@ -46,7 +40,6 @@ public class ConductorBase : MonoBehaviour
     protected virtual void Awake()
     {
         rendererComponent = GetComponentInChildren<Renderer>();
-        curElementType = ElementType.None;
     }
 
     protected virtual IEnumerator OnActivateElectricity()
@@ -77,39 +70,28 @@ public class ConductorBase : MonoBehaviour
             transform.position,
             overlapSize / 2,
             transform.rotation,
-            overlapLayer
+            overlapLayer,
+            QueryTriggerInteraction.Ignore
         );
 
         for (int i = 0; i < _overlapedCols.Length; i++)
         {
-            if (_overlapedCols[i].transform == this.transform)
+            if (_overlapedCols[i].transform == transform)
                 continue;
 
-            if (_overlapedCols[i].CompareTag("Conductor"))
+            if (_overlapedCols[i].CompareTag(Tags.Conductor))
             {
-                ElectricityManager.Instance.ElectricityProcess(this.transform, _overlapedCols[i].transform);
+                ConductorBase otherConductor = _overlapedCols[i].GetComponent<ConductorBase>();
+                if(otherConductor != null)
+                    ElectricityManager.Instance.ElectricityProcess(this, otherConductor);
             }
             else if (_overlapedCols[i].gameObject.layer == Layers.Player)
             {
                 PlayerCharacter _other = _overlapedCols[i].GetComponent<PlayerCharacter>();
 
-                if (!isTakeDamaged)
-                {
-                    isTakeDamaged = true;
-
-                    Vector3 forceDir = _other.transform.forward * -1 * knockbackForce;
-                    _other.GetComponent<Rigidbody>().AddForce(forceDir, ForceMode.Impulse);
-                    _other.TakeDamage(1);
-                }
+                ExtraDamageInfo damageInfo = new ExtraDamageInfo(transform.position);
+                _other.TakeDamage(1, damageInfo);
             }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == Layers.Player)
-        {
-            isTakeDamaged = false;
         }
     }
 }

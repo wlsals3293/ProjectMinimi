@@ -2,85 +2,89 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserBundle : Switch_C_OBJ
+public class LaserBundle : Activatee
 {
-
     private LineRenderer[] lasers;
-    private Transform[] startPoints;
-    private Coroutine active;
+    //private Transform[] startPoints;
+
+    private Coroutine activeCoroutine;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         lasers = GetComponentsInChildren<LineRenderer>();
-        startPoints = GetComponentsInChildren<Transform>();
-        ConnectingSwitch();
-        active = StartCoroutine(ActiveLaser());
-        AllSwitchOn = false;
+        //startPoints = GetComponentsInChildren<Transform>();
+        //ConnectingSwitch();
+
+        //AllSwitchOn = false;
+        if (ActivateOnStart)
+            Activate();
     }
 
-    public override void Activate()
+    protected override void Activate()
     {
-        foreach (LineRenderer laser in lasers)
-        {
-            laser.enabled = !laser.enabled;
-        }
-
-    }
-
-    public override void Deactivate()
-    {
+        base.Activate();
 
         foreach (LineRenderer laser in lasers)
         {
-            laser.enabled = !laser.enabled;
+            laser.enabled = true;
         }
 
+        activeCoroutine = StartCoroutine(ActiveLaser());
     }
 
+    protected override void Deactivate()
+    {
+        base.Deactivate();
+
+        StopCoroutine(activeCoroutine);
+        activeCoroutine = null;
+
+        foreach (LineRenderer laser in lasers)
+        {
+            laser.enabled = false;
+        }
+    }
 
     IEnumerator ActiveLaser()
     {
+        var delay = new WaitForSeconds(0.03f);
+
         while (true)
         {
-            DrawLaser();
-            yield return new WaitForSeconds(0.03f);
-        }
-
-    }
-
-    void DrawLaser()
-    {
-        int i = 1;
-        foreach (LineRenderer laser in lasers)
-        {
-            if (laser.enabled)
+            foreach (LineRenderer laser in lasers)
             {
-                RaycastHit hit;
-                Physics.Raycast(
-                    startPoints[i].position,
-                    startPoints[i].forward,
-                    out hit,
+                bool result = Physics.Raycast(
+                    laser.transform.position,
+                    laser.transform.forward,
+                    out RaycastHit hit,
                     40f,
                     LayerMasks.PGO,
                     QueryTriggerInteraction.Ignore
                     );
 
-                float distance = Vector3.Distance(startPoints[i].position, hit.point);
+                float distance = result ?
+                    Vector3.Distance(laser.transform.position, hit.point)
+                    : 40f;
 
                 laser.SetPosition(0, Vector3.zero);
                 laser.SetPosition(1, new Vector3(0, 0, distance));
 
-                if (hit.collider != null && hit.collider.CompareTag(Tags.Player))
+                if (hit.collider != null && hit.transform.gameObject.layer == Layers.Player)
                 {
-                    Transform playerT = hit.collider.transform;
+                    Vector3 proj = Vector3.Project(
+                        hit.transform.position - laser.transform.position,
+                        laser.transform.forward);
+                    Vector3 hitPosition = laser.transform.position + proj;
 
                     ExtraDamageInfo extraDamageInfo
-                        = new ExtraDamageInfo(playerT.position + playerT.forward);
+                        = new ExtraDamageInfo(hitPosition);
 
-                    hit.collider.GetComponent<PlayerCharacter>().TakeDamage(1, extraDamageInfo);
+                    hit.transform.GetComponent<PlayerCharacter>().TakeDamage(1, extraDamageInfo);
                 }
             }
-            i++;
+
+            yield return delay;
         }
     }
 }

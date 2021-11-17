@@ -48,7 +48,9 @@ public class Electric_Wire : ConductorBase
 
             if (_overlapedCols[i].CompareTag("Conductor"))
             {
-                ElectricityManager.Instance.ElectricityProcess(this.transform, _overlapedCols[i].transform);
+                ConductorBase otherConductor = _overlapedCols[i].GetComponent<ConductorBase>();
+                if (otherConductor != null)
+                    ElectricityManager.Instance.ElectricityProcess(this, otherConductor);
             }
             else if(_overlapedCols[i].GetComponent<Electric_Wire>())
             {

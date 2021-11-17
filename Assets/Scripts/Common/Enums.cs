@@ -83,3 +83,9 @@ public enum ElectricSwitchDurationType
     Continuation,
     OnOff,
 }
+
+public enum LogicCondition
+{
+    And,
+    Or
+}

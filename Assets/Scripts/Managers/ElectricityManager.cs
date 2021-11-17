@@ -24,23 +24,16 @@ public class ElectricityManager : ManagerBase<ElectricityManager>
         _eventNum = latestEventNum;
     }
 
-    public void ElectricityProcess(Transform giver, Transform taker)
+    public void ElectricityProcess(ConductorBase giver, ConductorBase taker)
     {
-        ConductorBase _giver = giver.GetComponent<ConductorBase>();
-        ConductorBase _taker = taker.GetComponent<ConductorBase>();
+        if (!giver || !taker) return;
 
-        if (!_giver || !_taker) return;
-
-        if (_giver.electricityEventInfo.EventNum == _taker.electricityEventInfo.EventNum)
+        if (giver.electricityEventInfo.EventNum > taker.electricityEventInfo.EventNum)
         {
-            return;
-        }
-        else if (_giver.electricityEventInfo.EventNum > _taker.electricityEventInfo.EventNum)
-        {
-            _taker.electricityEventInfo.EventNum = _giver.electricityEventInfo.EventNum;
+            taker.electricityEventInfo.EventNum = giver.electricityEventInfo.EventNum;
 
-            ExtraDamageInfo extraDamageInfo = new ExtraDamageInfo(Vector3.zero, _giver.curElementType, _giver.transform);
-            _taker.GetComponent<IHitable>()?.TakeDamage(0, extraDamageInfo);
+            ExtraDamageInfo extraDamageInfo = new ExtraDamageInfo(Vector3.zero, ElementType.Electricity, giver.transform);
+            taker.GetComponent<IHitable>()?.TakeDamage(0, extraDamageInfo);
         }
     }
 

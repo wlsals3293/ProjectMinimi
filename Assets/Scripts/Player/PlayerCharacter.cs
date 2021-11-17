@@ -14,11 +14,6 @@ public class PlayerCharacter : MonoBehaviour, IHitable
     private int curHP;
 
     /// <summary>
-    /// 남은 무적 시간
-    /// </summary>
-    private float invincibility_Interval = 0f;
-
-    /// <summary>
     /// 현재 무적 상태 여부
     /// </summary>
     private bool isInvincibility = false;
@@ -48,20 +43,6 @@ public class PlayerCharacter : MonoBehaviour, IHitable
         }
     }
 
-    private void Update()
-    {
-        if (isInvincibility)
-        {
-            invincibility_Interval += Time.deltaTime;
-
-            if (invincibility_Interval > 0.2f)
-            {
-                isInvincibility = false;
-                invincibility_Interval = 0f;
-            }
-        }
-    }
-
     /// <summary>
     /// 현재 체력을 설정합니다
     /// </summary>
@@ -83,7 +64,7 @@ public class PlayerCharacter : MonoBehaviour, IHitable
         onHpChanged?.Invoke(curHP);
     }
 
-    
+
     public void TakeDamage(int amount)
     {
         if (!isInvincibility)
@@ -91,6 +72,9 @@ public class PlayerCharacter : MonoBehaviour, IHitable
             int newHP = curHP - amount;
 
             SetHP(newHP);
+
+            isInvincibility = true;
+            Timer.SetTimer(this, () => isInvincibility = false, 0.5f);
 
             // 데미지 입은 것에 대한 이펙트, UI 처리 등등
         }
@@ -109,6 +93,7 @@ public class PlayerCharacter : MonoBehaviour, IHitable
             controller.ActivateHitDisorder(hitDirection);
 
             isInvincibility = true;
+            Timer.SetTimer(this, () => isInvincibility = false, 0.5f);
 
             // 데미지 입은 것에 대한 이펙트, UI 처리 등등
         }

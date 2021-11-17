@@ -166,11 +166,18 @@ public class TimerInstance
     }
 
     /// <summary>
-    /// 경과시간을 0으로 만들어 타이머를 처음부터 다시시작합니다. (갱신)
+    /// (갱신) 타이머를 처음부터 다시시작합니다. 
+    /// 이미 종료된 타이머가 다시 작동하지는 않습니다.
     /// </summary>
-    public void Renew()
+    /// <param name="newTargetTime">새로운 목표시간</param>
+    public void Restart(float newTargetTime = 0f)
     {
         elapsedTime = 0f;
+
+        if (newTargetTime > 0f)
+        {
+            targetTime = newTargetTime;
+        }
     }
 
     /// <summary>

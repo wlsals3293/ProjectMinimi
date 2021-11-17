@@ -45,7 +45,6 @@ public partial class PlayerController : BaseCharacterController
     {
         Hold_GetInput();
         UpdateRotation();
-        UpdateControlBlock();
         Animate();
     }
 

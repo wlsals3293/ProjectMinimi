@@ -2,59 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressSwitch : SwitchBase
+public class PressSwitch : Activator
 {
-    public enum SwitchType { Maintain, OnOff }
-    public SwitchType _type = SwitchType.OnOff;
+    [SerializeField]
+    private LayerMask pressMask;
+
+    [SerializeField]
+    private BoxCollider boxCollider;
+
 
     private Coroutine onActivateCort;
 
-    public Transform box;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _thisColor = GetComponent<Renderer>();
+    [SerializeField]
+    private Renderer switchRenderer;
 
-    }
+    [SerializeField]
+    private Material[] colorTemp;
+
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == Layers.Obj)
+        if (pressMask.Contains(other.gameObject.layer) && onActivateCort == null)
         {
-            IsActivate = true;
-
+            Activate();
             onActivateCort = StartCoroutine(OnActivate());
         }
     }
 
-    // 임시. 나중에 개편 예정
+
     private IEnumerator OnActivate()
     {
+        if (switchRenderer != null && colorTemp[1] != null)
+            switchRenderer.material = colorTemp[1];
+
         yield return null;
+
+        Vector3 origin = transform.position + transform.TransformDirection(boxCollider.center);
+        Vector3 ext = boxCollider.size / 2;
+        var delay = new WaitForSeconds(0.3f);
+
+        boxCollider.enabled = false;
+
         while (true)
         {
-            Collider[] cols = Physics.OverlapBox(box.position + (Vector3.up * 0.2f), box.lossyScale / 2, transform.rotation, LayerMasks.PO, QueryTriggerInteraction.Ignore);
-
-            bool isEmpty = true;
-
-            foreach (Collider col in cols)
+            if (!Physics.CheckBox(origin, ext, transform.rotation,
+                pressMask, QueryTriggerInteraction.Ignore))
             {
-                if (col.gameObject.layer == Layers.Obj)
-                {
-                    isEmpty = false;
-                    break;
-                }
-            }
-
-            if (isEmpty)
-            {
-                IsActivate = false;
+                Deactivate();
                 StopCoroutine(onActivateCort);
+                onActivateCort = null;
                 break;
             }
 
-            yield return new WaitForSeconds(0.3f);
+            yield return delay;
         }
+
+        if (switchRenderer != null && colorTemp[0] != null)
+            switchRenderer.material = colorTemp[0];
+        boxCollider.enabled = true;
     }
 }

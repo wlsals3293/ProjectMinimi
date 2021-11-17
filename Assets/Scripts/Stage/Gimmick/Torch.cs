@@ -2,46 +2,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Torch : MonoBehaviour, IHitable
+public class Torch : Activator, IHitable
 {
-    [Tooltip("활성화 여부")]
+    [Tooltip("true면 불이 붙은 상태가 기본상태, false면 불이 꺼진 상태가 기본상태.")]
     [SerializeField]
-    private bool activate = false;
+    private bool defaultState = false;
 
     [Tooltip("일반 = 체크 해제 / 특수 = 체크")]
     [SerializeField]
     private bool isSpecial = false;
-    [HideInInspector]
-    public bool burn = false;
+
+
+    [SerializeField]
+    private Renderer switchRenderer;
+
+    [SerializeField]
+    private Material[] colorTemp;
+
 
     private TimerInstance timer;
 
-    private void Awake()
+
+    private void Start()
     {
-        if(activate)
-        {
-            SetBurningTorch(true);
-        }
+        SetFire(defaultState);
     }
 
-    private void SetBurningTorch(bool getActive)
+    public override void Activate()
     {
-        if(getActive)
+        if (isSpecial)
         {
-            burn = true;
-            Debug.Log("Create fire effect");
+            if (timer == null)
+                timer = Timer.SetTimer(this, OnSpecialType, 2.0f);
+            else
+                timer.Restart();
         }
-        else
-        {
-            burn = false;
-            Debug.Log("Delect fire effect");
-        }
+
+        if (isActive)
+            return;
+
+        base.Activate();
+        SetFire(!defaultState);
     }
 
-    private void OnSpecialType()
+    public override void Deactivate()
     {
-        SetBurningTorch(activate);
-        timer = null;
+        if (isSpecial && timer != null)
+        {
+            timer.Cancel();
+            timer = null;
+        }
+
+        if (!isActive)
+            return;
+
+        base.Deactivate();
+        SetFire(defaultState);
     }
 
     public void TakeDamage(int amount)
@@ -50,28 +66,37 @@ public class Torch : MonoBehaviour, IHitable
 
     public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
     {
-        if(!burn && extraDamageInfo.elementType == ElementType.Fire)
+        if (extraDamageInfo.elementType == ElementType.Fire)
         {
-            if (timer != null)
-            {
-                timer.Renew();
-            }
-
-            SetBurningTorch(true);
+            if (!defaultState) Activate();
+            else Deactivate();
         }
-        else if (burn && extraDamageInfo.elementType == ElementType.Water)
+        else if (extraDamageInfo.elementType == ElementType.Water)
         {
-            if (timer != null)
-            {
-                timer.Renew();
-            }
-
-            SetBurningTorch(false);
+            if (defaultState) Activate();
+            else Deactivate();
         }
+    }
 
-        if (isSpecial)
+    private void OnSpecialType()
+    {
+        timer = null;
+        Deactivate();
+    }
+
+    private void SetFire(bool value)
+    {
+        if(value)
         {
-            timer = Timer.SetTimer(this, OnSpecialType, 2.0f);
+            // 불 켜짐
+            if (switchRenderer != null && colorTemp[1] != null)
+                switchRenderer.material = colorTemp[1];
+        }
+        else
+        {
+            // 불 꺼짐
+            if (switchRenderer != null && colorTemp[0] != null)
+                switchRenderer.material = colorTemp[0];
         }
     }
 }

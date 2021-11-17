@@ -22,7 +22,6 @@ public partial class PlayerController : BaseCharacterController
     {
         Idle_GetInput();
         UpdateRotation();
-        UpdateControlBlock();
         Animate();
 
         if (playerAbility != null)

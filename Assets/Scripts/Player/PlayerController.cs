@@ -73,12 +73,11 @@ public partial class PlayerController : BaseCharacterController
 
     // 피격이상
     private bool hitDisordering;
-    private float elapsedHitDisorderTime;
+    private TimerInstance hitDisorderingTimer;
 
     // 캐릭터 제어 일시 제한
     private bool controlStop = false;
-    private float controlStopTime;
-    private float elapsedControlStopTime;
+    private TimerInstance controlStopTimer;
 
 
 
@@ -385,9 +384,22 @@ public partial class PlayerController : BaseCharacterController
     private void StopControl(float time)
     {
         controlStop = true;
-        elapsedControlStopTime = 0f;
-        controlStopTime = time;
 
+        if (controlStopTimer == null)
+        {
+            controlStopTimer = Timer.SetTimer(this, () =>
+            {
+                controlStop = false;
+                controlStopTimer = null;
+            }, time);
+        }
+        else
+        {
+            if (controlStopTimer.TargetTime < time)
+                controlStopTimer.Restart(time);
+            else
+                controlStopTimer.Restart();
+        }
 
         moveDirectionRaw = Vector3.zero;
         moveDirection = moveDirectionRaw;
@@ -404,19 +416,6 @@ public partial class PlayerController : BaseCharacterController
         key_f = false;
     }
 
-    private void UpdateControlBlock()
-    {
-        if (!controlStop)
-            return;
-
-        elapsedControlStopTime += Time.deltaTime;
-
-        if (elapsedControlStopTime >= controlStopTime)
-        {
-            controlStop = false;
-        }
-    }
-
 
     /// <summary>
     /// 피격이상을 발동합니다. 피격이상이 활성화된 동안은 캐릭터에 이동조작이 먹히지 않습니다.
@@ -430,27 +429,18 @@ public partial class PlayerController : BaseCharacterController
         movement.velocity = hitDirection * 10.0f;
         movement.DisableGrounding();
 
-        elapsedHitDisorderTime = 0.0f;
         if (!hitDisordering)
         {
             hitDisordering = true;
-            StartCoroutine(UpdateHitDisorder());
-        }
-    }
-
-    private IEnumerator UpdateHitDisorder()
-    {
-        while (hitDisordering)
-        {
-            elapsedHitDisorderTime += Time.deltaTime;
-
-            if (elapsedHitDisorderTime >= hitDisorderTime)
+            hitDisorderingTimer = Timer.SetTimer(this, () =>
             {
                 hitDisordering = false;
-                break;
-            }
-
-            yield return null;
+                hitDisorderingTimer = null;
+            }, hitDisorderTime);
+        }
+        else
+        {
+            hitDisorderingTimer.Restart();
         }
     }
 
