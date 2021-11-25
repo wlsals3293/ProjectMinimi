@@ -21,12 +21,7 @@ public class Puddle : MonoBehaviour, IHitable
         cachedCollider = GetComponent<Collider>();
     }
 
-    public void TakeDamage(int amount)
-    {
-        // 일반 피해는 무시
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         if (extraDamageInfo.elementType == ElementType.Fire)
         {

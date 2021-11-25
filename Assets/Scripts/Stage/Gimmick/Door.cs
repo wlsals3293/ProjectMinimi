@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class Door : Activatee
 {
-    public float doorSpd = 4.0f;
-    private Vector3 startPoint;
-    private Vector3 endPoint;
+    [Tooltip("¹® ¼Óµµ")]
+    public float doorSpeed = 4.0f;
+    private Vector3 startPosition;
+    private Vector3 endPosition;
     private Vector3 targetPosition;
 
 
@@ -17,34 +18,40 @@ public class Door : Activatee
 
     private void Start()
     {
-        startPoint = transform.position;
-        endPoint = startPoint - new Vector3(0, transform.lossyScale.y, 0);
+        startPosition = transform.position;
+        endPosition = startPosition - new Vector3(0, transform.lossyScale.y, 0);
 
-        if (ActivateOnStart)
+        if (activateOnStart)
             Activate();
     }
 
 
-    protected override void Activate()
+    protected override bool Activate()
     {
-        base.Activate();
+        if (!base.Activate())
+            return false;
 
-        targetPosition = endPoint;
+        targetPosition = endPosition;
         if (coroutine == null)
         {
             coroutine = StartCoroutine(OnMove());
         }
+
+        return true;
     }
 
-    protected override void Deactivate()
+    protected override bool Deactivate()
     {
-        base.Deactivate();
+        if (!base.Deactivate())
+            return false;
 
-        targetPosition = startPoint;
+        targetPosition = startPosition;
         if (coroutine == null)
         {
             coroutine = StartCoroutine(OnMove());
         }
+
+        return true;
     }
 
     private IEnumerator OnMove()
@@ -60,7 +67,7 @@ public class Door : Activatee
             }
 
             transform.position =
-                Vector3.MoveTowards(transform.position, targetPosition, doorSpd * Time.deltaTime);
+                Vector3.MoveTowards(transform.position, targetPosition, doorSpeed * Time.deltaTime);
 
             yield return null;
         }

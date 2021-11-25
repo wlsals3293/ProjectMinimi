@@ -5,25 +5,23 @@ using UnityEngine;
 public class LaserBundle : Activatee
 {
     private LineRenderer[] lasers;
-    //private Transform[] startPoints;
 
     private Coroutine activeCoroutine;
+
 
     // Start is called before the first frame update
     private void Start()
     {
         lasers = GetComponentsInChildren<LineRenderer>();
-        //startPoints = GetComponentsInChildren<Transform>();
-        //ConnectingSwitch();
 
-        //AllSwitchOn = false;
-        if (ActivateOnStart)
+        if (activateOnStart)
             Activate();
     }
 
-    protected override void Activate()
+    protected override bool Activate()
     {
-        base.Activate();
+        if (!base.Activate())
+            return false;
 
         foreach (LineRenderer laser in lasers)
         {
@@ -31,11 +29,14 @@ public class LaserBundle : Activatee
         }
 
         activeCoroutine = StartCoroutine(ActiveLaser());
+
+        return true;
     }
 
-    protected override void Deactivate()
+    protected override bool Deactivate()
     {
-        base.Deactivate();
+        if (!base.Deactivate())
+            return false;
 
         StopCoroutine(activeCoroutine);
         activeCoroutine = null;
@@ -44,12 +45,12 @@ public class LaserBundle : Activatee
         {
             laser.enabled = false;
         }
+
+        return true;
     }
 
     IEnumerator ActiveLaser()
     {
-        var delay = new WaitForSeconds(0.03f);
-
         while (true)
         {
             foreach (LineRenderer laser in lasers)
@@ -70,7 +71,7 @@ public class LaserBundle : Activatee
                 laser.SetPosition(0, Vector3.zero);
                 laser.SetPosition(1, new Vector3(0, 0, distance));
 
-                if (hit.collider != null && hit.transform.gameObject.layer == Layers.Player)
+                if (hit.collider != null && hit.collider.gameObject.layer == Layers.Player)
                 {
                     Vector3 proj = Vector3.Project(
                         hit.transform.position - laser.transform.position,
@@ -84,7 +85,7 @@ public class LaserBundle : Activatee
                 }
             }
 
-            yield return delay;
+            yield return null;
         }
     }
 }

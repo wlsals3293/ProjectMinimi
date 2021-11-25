@@ -2,5 +2,5 @@
 public interface IInteractable
 {
 
-    public void Interact(PlayerController player);
+    void Interact(PlayerController player);
 }

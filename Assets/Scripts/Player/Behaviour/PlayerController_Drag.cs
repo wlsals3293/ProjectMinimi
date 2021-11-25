@@ -3,7 +3,11 @@ using UnityEngine;
 
 public partial class PlayerController : BaseCharacterController
 {
-    public float dragSpeed = 3.0f;
+    [Header("Drag")]
+
+
+    [SerializeField]
+    private float dragSpeed = 3.0f;
 
     private Vector3 dragDir = Vector3.zero;
 
@@ -19,6 +23,7 @@ public partial class PlayerController : BaseCharacterController
 
     private void Drag_Enter(PlayerState prev)
     {
+        movement.velocity = Vector3.zero;
         transform.rotation = hold_target.rotation;
         Vector3 handle = hold_target.Find("PlayerLocation").transform.position;
         transform.position = new Vector3(handle.x, transform.position.y, handle.z);

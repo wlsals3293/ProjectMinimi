@@ -11,4 +11,12 @@ public class TriggerSwitch : Activator
             Activate();
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == Layers.Player)
+        {
+            Deactivate();
+        }
+    }
 }

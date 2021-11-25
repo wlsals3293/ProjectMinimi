@@ -1554,7 +1554,7 @@ MonoBehaviour:
   climbingSpeed: 5
   dragSpeed: 3
   holdingPivot: {fileID: 6800537864608850124}
-  holdMoveSpeed: 1.8
+  holdMoveSpeed: 4
   pullUpCurve:
     x:
       serializedVersion: 2

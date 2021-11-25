@@ -124,13 +124,7 @@ public class RainyCloud : MonoBehaviour, IHitable
             effectRadius = cloudSizeList[step] * effectRangeRate * 0.5f;
     }
 
-
-    public void TakeDamage(int amount)
-    {
-        // 일반 피해는 무시
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         ElementType damageElement = extraDamageInfo.elementType;
 

@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class HitSwitch : Activator, IHitable
 {
-    [Tooltip("활성화 시간")]
+    [Tooltip("체크되어 있으면 활성화 후 일정시간이 지나면 다시 비활성화 됩니다.")]
+    [SerializeField]
+    private bool autoRevert;
+
+    [Tooltip("활성화 지속시간 (Auto Revert 체크시)")]
     [SerializeField]
     private float activationTime = 3.0f;
 
@@ -18,55 +22,42 @@ public class HitSwitch : Activator, IHitable
     private TimerInstance timerInstance;
 
 
-    public override void Activate()
+    public override bool Activate()
     {
-        if (!isActive)
-        {
-            isActive = true;
+        if (autoRevert && timerInstance != null)
+            timerInstance.Restart();
 
-            for (int i = 0; i < activatees.Count; i++)
-            {
-                if (activatees[i] != null)
-                    activatees[i].ReceiveSignal(true);
-            }
-            if (radioGroup != null)
-            {
-                radioGroup.ActivateOnly(this);
-            }
+        if (!base.Activate())
+            return false;
 
-            if (timerInstance == null)
-                timerInstance = Timer.SetTimer(this, () => Deactivate(), activationTime);
 
-            if (switchRenderer != null && colorTemp[1] != null)
-                switchRenderer.material = colorTemp[1];
-        }
-        else
-        {
-            if (timerInstance != null)
-                timerInstance.Restart();
-        }
+        if (autoRevert && timerInstance == null)
+            timerInstance = Timer.SetTimer(this, () => Deactivate(), activationTime);
+
+        if (switchRenderer != null && colorTemp[1] != null)
+            switchRenderer.material = colorTemp[1];
+
+        return true;
     }
 
-    public override void Deactivate()
+    public override bool Deactivate()
     {
-        base.Deactivate();
-
         if (timerInstance != null)
         {
             timerInstance.Cancel();
             timerInstance = null;
         }
 
+        if (!base.Deactivate())
+            return false;
+
         if (switchRenderer != null && colorTemp[0] != null)
             switchRenderer.material = colorTemp[0];
+
+        return true;
     }
 
-    public void TakeDamage(int amount)
-    {
-        Activate();
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         Activate();
     }

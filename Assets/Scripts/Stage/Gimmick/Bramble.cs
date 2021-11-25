@@ -23,11 +23,7 @@ public class Bramble : MonoBehaviour, IHitable
         }
     }
 
-    public void TakeDamage(int amount)
-    {
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         if (extraDamageInfo.elementType == ElementType.Fire)
         {

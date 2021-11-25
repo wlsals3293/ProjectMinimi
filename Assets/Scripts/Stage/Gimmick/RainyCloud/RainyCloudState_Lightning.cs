@@ -39,7 +39,7 @@ public class RainyCloudState_Lightning : RainyCloudState
         foreach (Collider col in colliders)
         {
             // 전도체가 아니라면 다음으로
-            if (!col.CompareTag(Tags.Conductor))
+            if (!col.CompareTag(Tags.Conductor) || col.GetComponent<IHitable>() == null)
                 continue;
 
             Vector3 closestPoint = col.ClosestPoint(cloud.transform.position);

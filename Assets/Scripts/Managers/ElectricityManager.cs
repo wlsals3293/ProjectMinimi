@@ -2,11 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct ElectricityEventInfo
-{
-    public Transform source;
-    public int EventNum;
-}
+
 
 public class ElectricityManager : ManagerBase<ElectricityManager>
 {
@@ -24,7 +20,7 @@ public class ElectricityManager : ManagerBase<ElectricityManager>
         _eventNum = latestEventNum;
     }
 
-    public void ElectricityProcess(ConductorBase giver, ConductorBase taker)
+    /*public void ElectricityProcess(ConductorBase giver, ConductorBase taker)
     {
         if (!giver || !taker) return;
 
@@ -71,5 +67,5 @@ public class ElectricityManager : ManagerBase<ElectricityManager>
 
             _taker.ActivateElectricSwitch();
         }
-    }
+    }*/
 }

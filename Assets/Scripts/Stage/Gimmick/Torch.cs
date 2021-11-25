@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Torch : Activator, IHitable
 {
-    [Tooltip("true면 불이 붙은 상태가 기본상태, false면 불이 꺼진 상태가 기본상태.")]
+    [Tooltip("체크되어 있으면 불이 붙은 상태가 기본 상태 " +
+        "체크해제되어 있으면 불이 꺼진 상태가 기본 상태.")]
     [SerializeField]
     private bool defaultState = false;
 
@@ -28,7 +29,7 @@ public class Torch : Activator, IHitable
         SetFire(defaultState);
     }
 
-    public override void Activate()
+    public override bool Activate()
     {
         if (isSpecial)
         {
@@ -38,14 +39,14 @@ public class Torch : Activator, IHitable
                 timer.Restart();
         }
 
-        if (isActive)
-            return;
+        if (!base.Activate())
+            return false;
 
-        base.Activate();
         SetFire(!defaultState);
+        return true;
     }
 
-    public override void Deactivate()
+    public override bool Deactivate()
     {
         if (isSpecial && timer != null)
         {
@@ -53,18 +54,14 @@ public class Torch : Activator, IHitable
             timer = null;
         }
 
-        if (!isActive)
-            return;
+        if (!base.Deactivate())
+            return false;
 
-        base.Deactivate();
         SetFire(defaultState);
+        return true;
     }
 
-    public void TakeDamage(int amount)
-    {
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         if (extraDamageInfo.elementType == ElementType.Fire)
         {

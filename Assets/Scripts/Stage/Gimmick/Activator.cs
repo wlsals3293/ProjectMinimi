@@ -14,10 +14,10 @@ public class Activator : MonoBehaviour
     [SerializeField]
     protected List<Activatee> activatees = new List<Activatee>();
 
-    [Tooltip("체크되어 있으면 한 번 활성화되면 비활성화되지 않습니다.")]
+    /*[Tooltip("체크되어 있으면 한 번 활성화되면 비활성화되지 않습니다.")]
     [SerializeField]
     protected bool permanent;
-
+    */
     protected bool isActive;
 
 
@@ -119,10 +119,10 @@ public class Activator : MonoBehaviour
 #endif
 
 
-    public virtual void Activate()
+    public virtual bool Activate()
     {
         if (isActive)
-            return;
+            return false;
 
         isActive = true;
 
@@ -135,12 +135,14 @@ public class Activator : MonoBehaviour
         {
             radioGroup.ActivateOnly(this);
         }
+
+        return true;
     }
 
-    public virtual void Deactivate()
+    public virtual bool Deactivate()
     {
-        if (!isActive || permanent)
-            return;
+        if (!isActive)
+            return false;
 
         isActive = false;
 
@@ -149,6 +151,8 @@ public class Activator : MonoBehaviour
             if (activatees[i] != null)
                 activatees[i].ReceiveSignal(false);
         }
+
+        return true;
     }
 }
 

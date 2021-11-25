@@ -10,16 +10,13 @@ public class PressSwitch : Activator
     [SerializeField]
     private BoxCollider boxCollider;
 
-
-    private Coroutine onActivateCort;
-
-
     [SerializeField]
     private Renderer switchRenderer;
 
     [SerializeField]
     private Material[] colorTemp;
 
+    private Coroutine onActivateCort;
 
 
     private void OnTriggerEnter(Collider other)

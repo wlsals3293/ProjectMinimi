@@ -64,8 +64,7 @@ public class PlayerCharacter : MonoBehaviour, IHitable
         onHpChanged?.Invoke(curHP);
     }
 
-
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         if (!isInvincibility)
         {
@@ -73,25 +72,13 @@ public class PlayerCharacter : MonoBehaviour, IHitable
 
             SetHP(newHP);
 
-            isInvincibility = true;
-            Timer.SetTimer(this, () => isInvincibility = false, 0.5f);
-
-            // 데미지 입은 것에 대한 이펙트, UI 처리 등등
-        }
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo)
-    {
-        if (!isInvincibility)
-        {
-            int newHP = curHP - amount;
-
-            SetHP(newHP);
-
-            // 짧은 경직 발생
-            Vector3 hitDirection = transform.position - extraDamageInfo.hitPoint;
-            controller.ActivateHitDisorder(hitDirection);
-
+            if(extraDamageInfo != null)
+            {
+                // 짧은 경직 발생
+                Vector3 hitDirection = transform.position - extraDamageInfo.hitPoint;
+                controller.ActivateHitDisorder(hitDirection);
+            }
+            
             isInvincibility = true;
             Timer.SetTimer(this, () => isInvincibility = false, 0.5f);
 

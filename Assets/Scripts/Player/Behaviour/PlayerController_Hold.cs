@@ -11,7 +11,7 @@ public partial class PlayerController : BaseCharacterController
 
 
     [SerializeField]
-    private float holdMoveSpeed = 1f;
+    private float holdMoveSpeed = 4f;
 
     private float savedMoveSpeed;
 

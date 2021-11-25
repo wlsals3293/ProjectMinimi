@@ -78,12 +78,6 @@ public enum ElementType
     Electricity
 }
 
-public enum ElectricSwitchDurationType
-{
-    Continuation,
-    OnOff,
-}
-
 public enum LogicCondition
 {
     And,

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public struct ExtraDamageInfo
+public class ExtraDamageInfo
 {
     /// <summary>
     /// 피해가 발생한 지점
