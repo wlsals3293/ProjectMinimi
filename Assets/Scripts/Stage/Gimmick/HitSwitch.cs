@@ -12,6 +12,10 @@ public class HitSwitch : Activator, IHitable
     [SerializeField]
     private float activationTime = 3.0f;
 
+    [Tooltip("스위치가 작동하는 원소. None으로 설정하면 모든 원소에 작동")]
+    [SerializeField]
+    private ElementType triggerElement;
+
     [SerializeField]
     private Renderer switchRenderer;
 
@@ -59,6 +63,10 @@ public class HitSwitch : Activator, IHitable
 
     public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
-        Activate();
+        if (triggerElement == ElementType.None ||
+            extraDamageInfo.elementType == triggerElement)
+        {
+            Activate();
+        }
     }
 }

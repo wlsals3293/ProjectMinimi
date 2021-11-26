@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Falling_Block : MonoBehaviour
+public class BreakingBlock : MonoBehaviour
 {
-    bool isCollisioned;
-    Coroutine coroutine;
-    MeshRenderer _renderer;
     public float interval;
 
+    private Coroutine coroutine;
+    private MeshRenderer _renderer;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _renderer = GetComponent<MeshRenderer>();
     }
 
     private void OnCollisionEnter(Collision other)
     {
-
-
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag(Tags.Player) && coroutine == null)
         {
             coroutine = StartCoroutine(OnActivate());
         }
@@ -33,9 +31,8 @@ public class Falling_Block : MonoBehaviour
         _renderer.material.color = Color.red;
         yield return new WaitForSeconds(interval);
 
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
 
-        yield return null;
     }
 
 }

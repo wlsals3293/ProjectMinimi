@@ -7,7 +7,7 @@ public class Torch : Activator, IHitable
     [Tooltip("체크되어 있으면 불이 붙은 상태가 기본 상태 " +
         "체크해제되어 있으면 불이 꺼진 상태가 기본 상태.")]
     [SerializeField]
-    private bool defaultState = false;
+    private bool defaultState;
 
     [Tooltip("일반 = 체크 해제 / 특수 = 체크")]
     [SerializeField]

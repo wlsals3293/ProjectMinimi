@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class LaserBundle : Activatee
 {
+    [Tooltip("기본 상태 설정")]
+    [SerializeField]
+    private bool defaultState;
+
     private LineRenderer[] lasers;
 
     private Coroutine activeCoroutine;
@@ -14,6 +18,8 @@ public class LaserBundle : Activatee
     {
         lasers = GetComponentsInChildren<LineRenderer>();
 
+        SetLaser(defaultState);
+
         if (activateOnStart)
             Activate();
     }
@@ -23,12 +29,7 @@ public class LaserBundle : Activatee
         if (!base.Activate())
             return false;
 
-        foreach (LineRenderer laser in lasers)
-        {
-            laser.enabled = true;
-        }
-
-        activeCoroutine = StartCoroutine(ActiveLaser());
+        SetLaser(!defaultState);
 
         return true;
     }
@@ -38,13 +39,7 @@ public class LaserBundle : Activatee
         if (!base.Deactivate())
             return false;
 
-        StopCoroutine(activeCoroutine);
-        activeCoroutine = null;
-
-        foreach (LineRenderer laser in lasers)
-        {
-            laser.enabled = false;
-        }
+        SetLaser(defaultState);
 
         return true;
     }
@@ -59,17 +54,17 @@ public class LaserBundle : Activatee
                     laser.transform.position,
                     laser.transform.forward,
                     out RaycastHit hit,
-                    40f,
+                    100f,
                     LayerMasks.PGO,
                     QueryTriggerInteraction.Ignore
                     );
 
                 float distance = result ?
                     Vector3.Distance(laser.transform.position, hit.point)
-                    : 40f;
+                    : 100f;
 
                 laser.SetPosition(0, Vector3.zero);
-                laser.SetPosition(1, new Vector3(0, 0, distance));
+                laser.SetPosition(1, new Vector3(0, 0, distance * (1 / transform.lossyScale.z)));
 
                 if (hit.collider != null && hit.collider.gameObject.layer == Layers.Player)
                 {
@@ -86,6 +81,32 @@ public class LaserBundle : Activatee
             }
 
             yield return null;
+        }
+    }
+
+    private void SetLaser(bool value)
+    {
+        if (value)
+        {
+            foreach (LineRenderer laser in lasers)
+            {
+                laser.enabled = true;
+            }
+
+            activeCoroutine = StartCoroutine(ActiveLaser());
+        }
+        else
+        {
+            if (activeCoroutine != null)
+            {
+                StopCoroutine(activeCoroutine);
+                activeCoroutine = null;
+            }
+
+            foreach (LineRenderer laser in lasers)
+            {
+                laser.enabled = false;
+            }
         }
     }
 }
