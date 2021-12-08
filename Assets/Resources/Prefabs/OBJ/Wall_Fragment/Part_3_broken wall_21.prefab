@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1419252951640487039}
   - component: {fileID: 2602491931350776794}
   - component: {fileID: 286295057729539856}
-  - component: {fileID: 1457066723652633284}
+  - component: {fileID: 4787809841075714256}
   m_Layer: 0
   m_Name: Part_3_broken wall_21
   m_TagString: Untagged
@@ -83,29 +83,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!61 &1457066723652633284
-BoxCollider2D:
+--- !u!65 &4787809841075714256
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799719831004835525}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.000015258789, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.927799, y: 2.1731222}
-  m_EdgeRadius: 0
+  m_Size: {x: 3.9277992, y: 2.1731224, z: 2.8580506}
+  m_Center: {x: 0, y: 0, z: 0}
