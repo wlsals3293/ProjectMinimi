@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2938800387696178124}
   - component: {fileID: 1093319351101671174}
   - component: {fileID: 1796326614785285021}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Part_3_Stairs gimmick_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

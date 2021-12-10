@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BalanceScaleController : MonoBehaviour
 {
-    [SerializeField] private BalanceScale balanceScale;
-    [SerializeField] private bool isLeft = true;
+    //[SerializeField] private BalanceScale balanceScale;
+    //[SerializeField] private bool isLeft = true;
 
     private void OnTriggerStay(Collider other)
     {

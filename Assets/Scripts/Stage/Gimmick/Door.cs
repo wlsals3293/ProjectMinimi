@@ -7,9 +7,14 @@ using ProjectMinimi;
 public class Door : Activatee
 {
     [Tooltip("문 속도")]
-    public float doorSpeed = 4.0f;
+    [SerializeField]
+    private float doorSpeed = 4.0f;
+
+    [Tooltip("이동 거리")]
+    [SerializeField]
+    private float moveDistance = 10f;
+
     private Vector3 startPosition;
-    private Vector3 endPosition;
     private Vector3 targetPosition;
 
 
@@ -19,7 +24,6 @@ public class Door : Activatee
     private void Start()
     {
         startPosition = transform.position;
-        endPosition = startPosition - new Vector3(0, transform.lossyScale.y, 0);
 
         if (activateOnStart)
             Activate();
@@ -31,7 +35,7 @@ public class Door : Activatee
         if (!base.Activate())
             return false;
 
-        targetPosition = endPosition;
+        targetPosition = startPosition + Vector3.down * moveDistance;
         if (coroutine == null)
         {
             coroutine = StartCoroutine(OnMove());
