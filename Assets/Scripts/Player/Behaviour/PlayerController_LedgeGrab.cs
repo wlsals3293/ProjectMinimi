@@ -36,8 +36,8 @@ public partial class PlayerController : BaseCharacterController
             PlayerState.LedgeGrab
             , new SimpleBehaviour(LedgeGrab_Enter, LedgeGrab_Update, LedgeGrab_FixedUpdate, LedgeGrab_Exit));
 
-        ledgeDistance = col.radius + 0.4f;
-        ledgeHeight = col.height * 0.5f;
+        ledgeDistance = col.radius + 0.3f;
+        ledgeHeight = col.height - 0.3f;
     }
 
     private void LedgeGrab_Enter(PlayerState prev)
@@ -123,15 +123,18 @@ public partial class PlayerController : BaseCharacterController
         if (!isFalling)
             return;
 
+        Vector3 pos = transform.position + (transform.up * ledgeHeight);
+
         // 캐릭터 전방으로 레이를 쏴서 히트했는지 체크
-        if (RaycastForward(out RaycastHit hit, ledgeDistance, LayerMasks.GO))
+        if (Physics.Raycast(pos, transform.forward, out RaycastHit hit, ledgeDistance,
+                LayerMasks.GO, QueryTriggerInteraction.Ignore))
         {
             Vector3 grabForward = Vector3.ProjectOnPlane(-hit.normal, Vector3.up).normalized;
-            Vector3 pos = hit.point + (grabForward * 0.2f) + (transform.up * ledgeHeight);
+            pos = hit.point + (grabForward * 0.2f) + (transform.up * 0.3f);
 
 
             // 첫번째 레이가 히트한 위치를 기준으로 위에서 아래로 다시 레이를 쏴 히트했는지 체크
-            if (Physics.Raycast(pos, -transform.up, out RaycastHit hit2, 0.2f,
+            if (Physics.Raycast(pos, -transform.up, out RaycastHit hit2, 0.3f,
                 LayerMasks.GO, QueryTriggerInteraction.Ignore))
             {
                 float dot = Vector3.Dot(hit2.normal, Vector3.up);
@@ -159,7 +162,6 @@ public partial class PlayerController : BaseCharacterController
                 Quaternion rotation = Quaternion.LookRotation(grabForward);
 
                 transform.SetPositionAndRotation(position, rotation);
-
 
                 ChangeState(PlayerState.LedgeGrab);
             }
