@@ -56,7 +56,7 @@ public class LaserBundle : Activatee
                     laser.transform.forward,
                     out RaycastHit hit,
                     100f,
-                    LayerMasks.PGO,
+                    LayerMasks.GOP,
                     QueryTriggerInteraction.Ignore
                     );
 

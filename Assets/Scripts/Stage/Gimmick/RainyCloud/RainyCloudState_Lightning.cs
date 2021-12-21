@@ -79,7 +79,7 @@ public class RainyCloudState_Lightning : RainyCloudState
         ExtraDamageInfo damageInfo = new ExtraDamageInfo(lightningPoint, ElementType.Electricity);
 
         colliders = Physics.OverlapSphere(lightningPoint, cloud.LightningExplosionRadius,
-            LayerMasks.POE, QueryTriggerInteraction.Ignore);
+            LayerMasks.EOP, QueryTriggerInteraction.Ignore);
 
 
         // 임시 번개 표시

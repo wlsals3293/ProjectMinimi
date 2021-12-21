@@ -18,7 +18,7 @@ public class Scale_Side : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (LayerMasks.PO.Contains(other.gameObject.layer))
+        if (LayerMasks.OP.Contains(other.gameObject.layer))
         {
             onActivateCort = StartCoroutine(OnActivate());
         }
@@ -31,7 +31,7 @@ public class Scale_Side : MonoBehaviour
         while (true)
         {
             Vector3 center = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-            Collider[] cols = Physics.OverlapBox(center, transform.lossyScale / 2, transform.rotation, LayerMasks.PO, QueryTriggerInteraction.Ignore);
+            Collider[] cols = Physics.OverlapBox(center, transform.lossyScale / 2, transform.rotation, LayerMasks.OP, QueryTriggerInteraction.Ignore);
             
             bool isEmpty = true;
 
@@ -39,7 +39,7 @@ public class Scale_Side : MonoBehaviour
 
             foreach (Collider col in cols)
             {
-                if (LayerMasks.PO.Contains(col.gameObject.layer))
+                if (LayerMasks.OP.Contains(col.gameObject.layer))
                 {
                     isEmpty = false;
                     otherWeight += col.gameObject.GetComponent<Rigidbody>().mass;

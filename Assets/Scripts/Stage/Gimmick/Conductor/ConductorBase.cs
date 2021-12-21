@@ -133,7 +133,7 @@ public abstract class ConductorBase : MonoBehaviour
             transform.position,
             boxCollider.size * 0.5f + (Vector3.one * conductionRange),
             transform.rotation,
-            LayerMasks.POE,
+            LayerMasks.EOP,
             QueryTriggerInteraction.Ignore
         );
 

@@ -62,6 +62,8 @@ namespace ECM.Controllers
             }
         }
 
+        public bool IsNavMovement { get; set; }
+
         /// <summary>
         /// Distance from target position to start braking.
         /// </summary>
@@ -199,6 +201,25 @@ namespace ECM.Controllers
             // Set agent destination to ground hit point
 
             agent.SetDestination(hitInfo.point);
+        }
+
+        /// <summary>
+        /// 현재 서 있는 위치가 네비메쉬 위인지 확인합니다,
+        /// </summary>
+        /// <returns>네비메쉬 위에 있으면 true를 반환합니다.</returns>
+        public bool CheckOnNavMesh()
+        {
+            return NavMesh.SamplePosition(transform.position, out _, 0.2f, NavMesh.AllAreas);
+        }
+
+        /// <summary>
+        /// 목표위치가 네비메쉬 위인지 확인합니다.
+        /// </summary>
+        /// <param name="targetPosition">목표위치</param>
+        /// <returns>목표위치가 네비메쉬 위에 있으면 true를 반환합니다.</returns>
+        public bool CheckOnNavMesh(Vector3 targetPosition)
+        {
+            return NavMesh.SamplePosition(targetPosition, out _, 0.2f, NavMesh.AllAreas);
         }
 
         #endregion
