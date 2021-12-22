@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ManagerBase<T> : MonoBehaviour where T : class
 {
-    private static T _Instance = null;
+    protected static T _Instance = null;
 
     public static T Instance 
     { 
@@ -15,7 +15,7 @@ public abstract class ManagerBase<T> : MonoBehaviour where T : class
     {
         if(_Instance == null)
         {
-            _Instance = gameObject.GetComponent<T>(); 
+            _Instance = GetComponent<T>(); 
         }
         else
         {

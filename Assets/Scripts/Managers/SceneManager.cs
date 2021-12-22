@@ -17,6 +17,14 @@ public class SceneManager : ManagerBase<SceneManager>
     /// </summary>
     private bool isLoading = false;
 
+    /// <summary>
+    /// 로딩 진행도
+    /// </summary>
+    private float loadingProgress;
+
+
+    public float LoadingProgress { get => loadingProgress; }
+
 
     public UnityAction onLoadComplete;
 
@@ -51,16 +59,17 @@ public class SceneManager : ManagerBase<SceneManager>
 
     private IEnumerator LoadSceneAsync(string sceneName)
     {
+        while(!transitionReady)
+        {
+            //Debug.Log($"Ready:{transitionReady}");
+            yield return null;
+        }
+
         AsyncOperation asyncOperation = UnityScene.SceneManager.LoadSceneAsync(sceneName);
-
-        asyncOperation.allowSceneActivation = false;
-
         while (!asyncOperation.isDone)
         {
-            if (transitionReady)
-                asyncOperation.allowSceneActivation = true;
-
-            //Debug.Log($"Loading:{asyncOperation.progress}, Ready:{transitionReady}");
+            //Debug.Log($"Loading:{asyncOperation.progress}");
+            loadingProgress = asyncOperation.progress;
 
             yield return null;
         }

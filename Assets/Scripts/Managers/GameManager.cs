@@ -15,7 +15,15 @@ public class GameManager : ManagerBase<GameManager>
 
     protected override void Awake()
     {
-        base.Awake();
+        if (_Instance == null)
+        {
+            _Instance = GetComponent<GameManager>();
+        }
+        else
+        {
+            DestroyImmediate(gameObject);
+            return;
+        }
 
         DontDestroyOnLoad(gameObject);
 
