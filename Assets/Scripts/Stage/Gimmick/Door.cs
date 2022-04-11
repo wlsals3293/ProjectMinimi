@@ -10,9 +10,9 @@ public class Door : Activatee
     [SerializeField]
     private float doorSpeed = 4.0f;
 
-    [Tooltip("이동 거리")]
+    [Tooltip("이동 위치(로컬기준)")]
     [SerializeField]
-    private float moveDistance = 10f;
+    private Vector3 movePosition = new Vector3(0f, -10f, 0f);
 
     private Vector3 startPosition;
     private Vector3 targetPosition;
@@ -35,7 +35,7 @@ public class Door : Activatee
         if (!base.Activate())
             return false;
 
-        targetPosition = startPosition + Vector3.down * moveDistance;
+        targetPosition = startPosition + transform.TransformDirection(movePosition);
         if (coroutine == null)
         {
             coroutine = StartCoroutine(OnMove());

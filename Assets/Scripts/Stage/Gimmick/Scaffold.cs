@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using ProjectMinimi;
 
 public class Scaffold : Activatee
@@ -8,10 +9,6 @@ public class Scaffold : Activatee
     public enum ScaffoldType { Continuous, Temporary }
 
     public ScaffoldType moveType;
-
-
-    [SerializeField]
-    private Transform endPoint;
 
     [SerializeField]
     private float speed = 4.0f;
@@ -23,13 +20,17 @@ public class Scaffold : Activatee
     private bool goToEnd = true;
 
     private Vector3 startPosition;
-    private Vector3 endPosition;
+
+    public Vector3 endPosition;
+
     private Vector3 targetPosition;
 
     private Rigidbody rb;
 
 
     private Coroutine coroutine;
+
+
 
 
     private void Awake()
@@ -39,14 +40,18 @@ public class Scaffold : Activatee
 
     private void Start()
     {
-        startPosition = rb.position;
-        endPosition = endPoint.position;
-        targetPosition = endPoint.position;
+        startPosition = transform.position;
+        targetPosition = endPosition;
 
         if (activateOnStart)
         {
             Activate();
         }
+    }
+
+    private void Reset()
+    {
+        endPosition = transform.position + Vector3.up;
     }
 
     protected override bool Activate()
@@ -122,7 +127,7 @@ public class Scaffold : Activatee
                 goToEnd = !goToEnd;
                 targetPosition = goToEnd ? endPosition : startPosition;
 
-                if (waitTime > 0.1f)
+                if (waitTime > 0.01f)
                 {
                     yield return wait;
                 }
@@ -152,5 +157,27 @@ public class Scaffold : Activatee
 
             yield return delay;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector3 startPos = EditorApplication.isPlaying ? startPosition : transform.position;
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(startPos, endPosition);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(startPos, 0.3f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(endPosition, 0.3f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector3 startPos = EditorApplication.isPlaying ? startPosition : transform.position;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(startPos, endPosition);
     }
 }

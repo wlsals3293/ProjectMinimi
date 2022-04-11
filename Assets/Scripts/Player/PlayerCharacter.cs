@@ -3,33 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerCharacter : MonoBehaviour, IHitable
+public class PlayerCharacter : CharacterBase
 {
-    [Tooltip("최대 체력")]
-    [SerializeField]
-    private int maxHP = 3;
-
-    [Tooltip("현재 체력")]
-    [SerializeField, ReadOnly]
-    private int curHP;
-
-    /// <summary>
-    /// 현재 무적 상태 여부
-    /// </summary>
-    private bool isInvincibility = false;
-
 
     private PlayerController controller = null;
 
-
-    /// <summary>
-    /// 캐릭터의 HP가 변경되었을 때 호출
-    /// </summary>
-    public UnityAction<int> onHpChanged;
-
-
-    public int MaxHP { get => maxHP; }
-    public int CurHP { get => curHP; }
 
 
     private void Awake()
@@ -41,30 +19,11 @@ public class PlayerCharacter : MonoBehaviour, IHitable
         {
             Debug.LogError("PlayerController 없음");
         }
+
+        onHpZero += () => controller.ChangeState(PlayerState.Dead);
     }
 
-    /// <summary>
-    /// 현재 체력을 설정합니다
-    /// </summary>
-    /// <param name="newHP">설정할 체력</param>
-    public void SetHP(int newHP)
-    {
-        newHP = Mathf.Min(newHP, maxHP);
-
-        if (newHP <= 0)
-        {
-            newHP = 0;
-
-            controller.ChangeState(PlayerState.Dead);
-        }
-
-        curHP = newHP;
-
-        // 현재 체력 나타내는 UI는 여기서 업데이트
-        onHpChanged?.Invoke(curHP);
-    }
-
-    public void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
+    public override void TakeDamage(int amount, ExtraDamageInfo extraDamageInfo = null)
     {
         if (!isInvincibility)
         {
@@ -72,13 +31,16 @@ public class PlayerCharacter : MonoBehaviour, IHitable
 
             SetHP(newHP);
 
-            if(extraDamageInfo != null)
+            if (isDead)
+                return;
+
+            if (extraDamageInfo != null)
             {
                 // 짧은 경직 발생
                 Vector3 hitDirection = transform.position - extraDamageInfo.hitPoint;
                 controller.ActivateHitDisorder(hitDirection);
             }
-            
+
             isInvincibility = true;
             Timer.SetTimer(this, () => isInvincibility = false, 0.5f);
 
