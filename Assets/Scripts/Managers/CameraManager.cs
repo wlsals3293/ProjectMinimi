@@ -57,7 +57,7 @@ public class CameraManager : ManagerBase<CameraManager>
 
 
     [SerializeField]
-    private ForwardRendererData rendererData;
+    private UniversalRendererData rendererData;
 
 
 
@@ -77,7 +77,7 @@ public class CameraManager : ManagerBase<CameraManager>
 
     public bool IsBlending { get => brain.IsBlending; }
 
-    public ForwardRendererData RendererData { get => rendererData; }
+    public UniversalRendererData RendererData { get => rendererData; }
 
     public RadialBlurFilter RadialBlurFilter { get => radialBlurFilter; }
 

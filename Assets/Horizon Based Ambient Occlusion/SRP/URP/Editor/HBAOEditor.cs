@@ -31,7 +31,7 @@ namespace HorizonBasedAmbientOcclusion.Universal
             { 5, HBAO.Preset.HighestQuality }
         };
 
-        public override bool hasAdvancedMode => false;
+        //public override bool hasAdvancedMode => false;
 
         public override void OnEnable()
         {

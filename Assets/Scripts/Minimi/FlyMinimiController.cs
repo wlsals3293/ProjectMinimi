@@ -5,8 +5,8 @@ using ECM.Controllers;
 
 public class FlyMinimiController : BaseAgentController
 {
-    [SerializeField]
-    private float floatingDistance = 2f;
+    //[SerializeField]
+    //private float floatingDistance = 2f;
 
     [Tooltip("수평이동 지연값. 값이 클수록 목표를 늦게 따라감")]
     [SerializeField, Range(0.0f, 1.0f)]
